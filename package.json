@@ -1,0 +1,22 @@
+{
+  "name": "blog-server",
+  "version": "0.0.1",
+  "description": "My blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iluhaprog/blog-server.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "Ilya Novak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Iluhaprog/blog-server/issues"
+  },
+  "homepage": "https://github.com/Iluhaprog/blog-server#readme"
+}
