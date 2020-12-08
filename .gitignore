@@ -1,1 +1,4 @@
 node_modules/
+src/database/*
+!src/database/blog.sql
+.env
