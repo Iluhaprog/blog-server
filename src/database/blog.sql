@@ -49,6 +49,18 @@ CREATE TABLE IF NOT EXISTS `files` (
         ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS `projects` (
+    `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(100) NOT NULL,
+    `description` TEXT NOT NULL,
+    `projectLink` VARCHAR(200) NOT NULL DEFAULT '',
+    `githubLink` VARCHAR(200) NOT NULL DEFAULT '',
+    `fileId` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY(`fileId`) REFERENCES `files`(`id`)
+        ON DELETE CASCADE
+);
+
 CREATE TABLE `likes` (
     `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
     `postId` INT NOT NULL,
