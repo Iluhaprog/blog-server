@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "private": true,
   "scripts": {
-    "test": "mocha tests/**/*.test.js",
+    "test": "mocha --timeout 10000 tests/**/*.test.js",
     "dev": "nodemon src/app.js"
   },
   "repository": {
