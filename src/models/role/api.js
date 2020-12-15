@@ -2,8 +2,8 @@ const { Role } = require('./model');
 
 async function create(roleName) {
     try {
-        const { id, role } = await Role.create({ role: roleName });
-        return { id: id, role: role };
+        const result = await Role.create({ role: roleName });
+        return result ? result.get({ plain: true }) : {};
     } catch (error) {
         console.error(error);
     }
@@ -11,9 +11,8 @@ async function create(roleName) {
 
 async function getById(roleId) {
     try {
-        const { id, role } = await Role.findByPk(roleId) || {};
-        const result = (!id && !role) ? {} : { id: id, role: role };
-        return result;
+        const result = await Role.findByPk(roleId);
+        return result ? result.get({ plain: true }) : {};
     } catch (error) {
         console.error(error);
     }
