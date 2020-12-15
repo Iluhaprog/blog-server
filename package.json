@@ -2,10 +2,11 @@
   "name": "blog-server",
   "version": "0.0.1",
   "description": "My blog",
-  "main": "index.js",
+  "main": "src/app.js",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,7 @@
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
+    "mocha": "^8.2.1",
     "nodemon": "^2.0.6"
   }
 }
