@@ -7,26 +7,38 @@ describe('Test for role api', async function() {
     let mainId = 0;
     const expectedRole = 'USER';
 
+    const msg = (id, role) => `Result: id=${id}, role=${role}`
+
     it('Should create a role', async function(){
-        await sync();
-        const {id, role} = await RoleApi.create(expectedRole);
-        const result = {id: id, role: role};
-        const expected = { id: id, role: expectedRole };
-        mainId = id;
-        assert.notStrictEqual(result, expected, `Result: id=${id}, role=${role}`);
+        try {
+            await sync();
+            const result = await RoleApi.create(expectedRole);
+            const expected = { id: result.id, role: expectedRole };
+            mainId = result.id;
+            assert.notStrictEqual(result, expected, msg(result.id, result.role));
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     it(`Should return role by id`, async function() {
-        const {id, role} = await RoleApi.getById(mainId);
-        const result = {id: id, role: role};
-        const expected = { id: id, role: expectedRole };
-        assert.notStrictEqual(result, expected, `Result: id=${id}, role=${role}`);
+        try {
+            const result = await RoleApi.getById(mainId);
+            const expected = { id: result.id, role: expectedRole };
+            assert.notStrictEqual(result, expected, msg(result.id, result.role));
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     it(`Should delete role by id`, async function() {
-        await RoleApi.deleteById(mainId);
-        const result = await RoleApi.getById(mainId);
-        const expected = {};
-        assert.notStrictEqual(result, expected);
+        try {
+            await RoleApi.deleteById(mainId);
+            const result = await RoleApi.getById(mainId);
+            const expected = {};
+            assert.notStrictEqual(result, expected);
+        } catch (error) {
+            console.error(error);
+        }
     });
 });
