@@ -1,3 +1,4 @@
+const { User } = require('../user/model');
 const { Role } = require('./model');
 
 async function create(roleName) {
@@ -18,8 +19,13 @@ async function getById(roleId) {
     }
 }
 
-async function getByUserId(userId) {
-    // to do
+async function getByUser(user) {
+    try {
+        const result = await getById(user.roleId);
+        return result;
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 async function deleteById(id) {
@@ -37,6 +43,6 @@ async function deleteById(id) {
 module.exports = {
     create,
     getById,
-    getByUserId,
+    getByUser,
     deleteById,
 };
