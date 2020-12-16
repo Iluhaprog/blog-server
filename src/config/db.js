@@ -10,6 +10,12 @@ const sequelize = new Sequelize(name, user, pass, {
     host: host,
     dialect: 'mysql',
     logging: false,
+    pool: {
+        max: 10,
+        min: 0,
+        acquire: 30000,
+        idle: 10000,
+    },
 });
 
 try {
