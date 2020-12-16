@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../config/db');
+const { Post } = require('../post/model');
 
 const User = sequelize.define('User', {
         id: {
@@ -53,6 +54,14 @@ const User = sequelize.define('User', {
     }, {
         tableName: 'users',
         timestamps: false,
+});
+
+User.hasMany(Post, {
+    foreignKey: {
+        name: 'userId',
+        allowNull: false,
+    },
+    onDelete: 'CASCADE',
 });
 
 module.exports = { 
