@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
-const  { sequelize } = require('../../config/db');
+const { sequelize } = require('../../config/db');
+const { File } = require('../file/model');
 
 const Post = sequelize.define('Post', {
         id: {
@@ -38,6 +39,14 @@ const Post = sequelize.define('Post', {
     }, {
         tableName: 'posts',
         timestamps: false,
+});
+
+Post.hasMany(File, {
+    foreignKey: {
+        name: 'postId',
+        allowNull: false,
+    },
+    onDelete: 'CASCADE',
 });
 
 module.exports = {
