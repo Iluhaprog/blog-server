@@ -67,8 +67,11 @@ CREATE TABLE IF NOT EXISTS `projects` (
 CREATE TABLE `likes` (
     `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
     `postId` INT NOT NULL,
+    `userId` INT NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY(`postId`) REFERENCES `posts`(`id`)
+        ON DELETE CASCADE,
+    FOREIGN KEY(`userId`) REFERENCES `users`(`id`)
         ON DELETE CASCADE
 );
 
@@ -99,16 +102,5 @@ CREATE TABLE IF NOT EXISTS `tags_posts` (
     FOREIGN KEY(`tagId`) REFERENCES `tags`(`id`)
         ON DELETE CASCADE,
     FOREIGN KEY(`postId`) REFERENCES `posts`(`id`)
-        ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS `likes_users` (
-    `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
-    `userId` INT NOT NULL,
-    `likeId` INT NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY(`userId`) REFERENCES `users`(`id`)
-        ON DELETE CASCADE,
-    FOREIGN KEY(`likeId`) REFERENCES `likes`(`id`)
         ON DELETE CASCADE
 );
