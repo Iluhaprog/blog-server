@@ -53,13 +53,14 @@ CREATE TABLE IF NOT EXISTS `files` (
 
 CREATE TABLE IF NOT EXISTS `projects` (
     `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
+    `preview` VARCHAR(255) NOT NULL,
     `title` VARCHAR(100) NOT NULL,
     `description` TEXT NOT NULL,
     `projectLink` VARCHAR(200) NOT NULL DEFAULT '',
     `githubLink` VARCHAR(200) NOT NULL DEFAULT '',
-    `fileId` INT NOT NULL,
+    `userId` INT NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY(`fileId`) REFERENCES `files`(`id`)
+    FOREIGN KEY(`userId`) REFERENCES `users`(`id`)
         ON DELETE CASCADE
 );
 
