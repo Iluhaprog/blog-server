@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../config/db');
 const { Post } = require('../post/model');
+const { Project } = require('../project/model');
 
 const User = sequelize.define('User', {
         id: {
@@ -57,6 +58,14 @@ const User = sequelize.define('User', {
 });
 
 User.hasMany(Post, {
+    foreignKey: {
+        name: 'userId',
+        allowNull: false,
+    },
+    onDelete: 'CASCADE',
+});
+
+User.hasMany(Project, {
     foreignKey: {
         name: 'userId',
         allowNull: false,
