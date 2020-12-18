@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../config/db');
+const { Comment } = require('../comment/model');
 const { Like } = require('../like/model');
 const { Post } = require('../post/model');
 const { Project } = require('../project/model');
@@ -80,7 +81,15 @@ User.hasMany(Like, {
         allowNull: false,
     },
     onDelete: 'CASCADE',
-})
+});
+
+User.hasMany(Comment, {
+    foreignKey: {
+        name: 'userId',
+        allowNull: false,
+    },
+    onDelete: 'CASCADE',
+});
 
 module.exports = { 
     User,

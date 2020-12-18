@@ -6,6 +6,7 @@ const { PostApi } = require('./post/index');
 const { FileApi } = require('./file/index');
 const { ProjectApi } = require('./project/index');
 const { LikeApi } = require('./like/index');
+const { CommentApi } = require('./comment/index');
 
 const sync = async () => {
     await sequelize.sync({ alter: true });
@@ -18,5 +19,6 @@ module.exports = {
     FileApi,
     ProjectApi,
     LikeApi,
+    CommentApi,
     sync,
 };

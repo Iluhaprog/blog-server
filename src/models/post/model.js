@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../config/db');
+const { Comment } = require('../comment/model');
 const { File } = require('../file/model');
 const { Like } = require('../like/model');
 
@@ -51,6 +52,14 @@ Post.hasMany(File, {
 });
 
 Post.hasMany(Like, {
+    foreignKey: {
+        name: 'postId',
+        allowNull: false,
+    },
+    onDelete: 'CASCADE',  
+});
+
+Post.hasMany(Comment, {
     foreignKey: {
         name: 'postId',
         allowNull: false,
