@@ -6,6 +6,7 @@ describe('Test for tag api', async function() {
         title: 'React',
     };
     let roleId = 0;
+    let postId = 0;
 
     it ('Should create tag', async function() {
         const role = await RoleApi.create('User');
@@ -30,10 +31,10 @@ describe('Test for tag api', async function() {
             visible: false,
             userId: user.id,
         });
+        postId = post.id;
         
         const newTag = await TagApi.create(tag);
         tag.id = newTag.id;
-        tag.postId = newTag.postId;
 
         assert.deepStrictEqual(newTag, tag);
     });
@@ -42,9 +43,9 @@ describe('Test for tag api', async function() {
         const tagData = await TagApi.getById(tag.id);
         assert.deepStrictEqual(tagData, tag);
     });
-
+    
     it ('Should get tags by post id', async function() {
-        const tags = await TagApi.getById(tag.postId);
+        const tags = await TagApi.getByPostId(postId);
         assert.deepStrictEqual(tags, [tag]);
     });
 
