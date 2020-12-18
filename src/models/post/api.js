@@ -32,6 +32,13 @@ async function create(post) {
     }
 }
 
+async function setTags(postId, tags) {
+    try {
+        // TO DO
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 async function update(post) {
     try {
@@ -64,4 +71,5 @@ module.exports = {
     create,
     update,
     deleteById,
+    setTags,
 };
