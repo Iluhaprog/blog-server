@@ -1,4 +1,5 @@
-const { Post } = require('./model');
+const { Tag } = require('../tag/model');
+const { Post, PostTag } = require('./model');
 
 async function getById(id) {
     try {
@@ -32,9 +33,17 @@ async function create(post) {
     }
 }
 
-async function setTags(postId, tags) {
+async function setTags(postId, tagsId) {
     try {
-        // TO DO
+        const post = await Post.findByPk(postId);
+        const postsTags = await post.addTags(tagsId);
+        postsTags.forEach(async postTag => {
+            const postTagData = postTag.get({ plain: true });
+            await PostTag.create({ 
+                postId: postTagData.postId, 
+                tagId: postTagData.tagId ,
+            });
+        });
     } catch (error) {
         console.error(error);
     }
