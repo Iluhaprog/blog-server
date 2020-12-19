@@ -21,8 +21,17 @@ async function getById(id) {
 
 async function getByPostId(postId) {
     try {
-        // TO DO
-        return [];
+        const post = await Post.findByPk(postId, {
+            include: [{
+                model: Tag,
+            }],
+        });
+        const tags = post.Tags.map(tag => {
+            const tagData = tag.get({ plain: true });
+            delete tagData.PostTag;
+            return tagData;
+        });
+        return tags;
     } catch (error) {
         console.error(error);
     }
