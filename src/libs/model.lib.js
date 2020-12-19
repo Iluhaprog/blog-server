@@ -23,7 +23,17 @@ function manyToMany(model1, model2, through) {
     });
 }
 
+function getModelData(model) {
+    return model ? model.get({ plain: true }) : {};
+}
+
+function getModelsDataArray(arr) {
+    return arr.map(el => getModelData(el)) || arr;
+}
+
 module.exports = {
     oneToMany,
     manyToMany,
+    getModelData,
+    getModelsDataArray,
 };
