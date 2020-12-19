@@ -1,6 +1,7 @@
 const assert = require('assert');
 
-const { RoleApi, UserApi, sync } = require('../../src/models/index');
+const { RoleApi, UserApi, sync } = require('../../src/models');
+const { user: userData } = require('./initObjects');
 
 
 describe('Test for role api', async function() {
@@ -33,15 +34,8 @@ describe('Test for role api', async function() {
 
     it(`Should return role by user`, async function() {
         try {
-            const user = await UserApi.create({
-                firstName: 'Ilya',
-                lastName: 'Novak',
-                username: 'ilyaNovak',
-                email: 'rickmortyand4@gmail.com',
-                password: '123456',
-                salt: '',
-                roleId: mainId
-            });
+            userData.roleId = mainId;
+            const user = await UserApi.create(userData);
             const role = await RoleApi.getByUser(user);
             await UserApi.deleteById(user.id);
             assert.strictEqual(role.id, mainId);

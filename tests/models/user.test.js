@@ -1,16 +1,10 @@
 const assert = require('assert');
-const { UserApi, RoleApi } = require('../../src/models/index');
+
+const { UserApi, RoleApi } = require('../../src/models');
+const { user : userData } = require('./initObjects');
 
 describe('Test for user api', async function() {
-    const user = {
-        firstName: 'Ilya',
-        lastName: 'Novak',
-        username: 'ilyaNovak',
-        email: 'rickmortyand4@gmail.com',
-        password: '123456',
-        salt: '',
-        roleId: -1,
-    };
+    const user = userData;
     let userId = 0;
 
     const genActualExpect = (raw, expectedValue) => {
@@ -113,6 +107,4 @@ describe('Test for user api', async function() {
             console.error(error);
         }
     });
-
-
 });

@@ -1,46 +1,46 @@
 const assert = require('assert');
-const { TagApi, PostApi, UserApi, RoleApi } = require('../../src/models/index');
+
+const { TagApi, PostApi, UserApi, RoleApi } = require('../../src/models');
+const { post: postData, user: userData } = require('./initObjects');
 
 describe('Test api of post model', async function() {
-    const post = {
-        title: 'My first project',
-        description: 'I tell you about problems with wich i will face',
-        preview: 'preview.png',
-        text: 'bla bla bla',
-        visible: false,
-    };
+    const post = postData;
 
     let roleId = 0;
 
     it('Should create post', async function() {
-        const role = await RoleApi.create('User');
-        const user = await UserApi.create({
-            firstName: 'Ilya',
-            lastName: 'Novak',
-            username: 'ilyaNovak',
-            email: 'rickmortyand4@gmail.com',
-            bio: '',
-            password: '123456',
-            salt: '',
-            roleId: role.id,
-        });
-        roleId = role.id;
-        post.userId = user.id;
-        const newPost = await PostApi.create(post);
-        post.id = newPost.id;
-        post.date = newPost.date;
-        assert.deepStrictEqual(newPost, post);
+        try {
+            const role = await RoleApi.create('User');
+            userData.roleId = role.id;
+            const user = await UserApi.create(userData);
+            roleId = role.id;
+            post.userId = user.id;
+            const newPost = await PostApi.create(post);
+            post.id = newPost.id;
+            post.date = newPost.date;
+            assert.deepStrictEqual(newPost, post);
+        } catch(error) {
+            console.error(error);
+        }
     });
 
     it('Should get post by id', async function() {
-        const postData = await PostApi.getById(post.id);
-        post.date = postData.date;
-        assert.deepStrictEqual(postData, post);
+        try {
+            const postData = await PostApi.getById(post.id);
+            post.date = postData.date;
+            assert.deepStrictEqual(postData, post);
+        } catch(error) {
+            console.error(error);
+        }
     });
 
     it('Should get post by user id', async function() {
-        const postData = await PostApi.getByUserId(post.userId);
-        assert.deepStrictEqual(postData, [post]);
+        try {
+            const postData = await PostApi.getByUserId(post.userId);
+            assert.deepStrictEqual(postData, [post]);
+        } catch(error) {
+            console.error(error);
+        }
     });
 
     it('Should set tags to post', async function() {
@@ -58,19 +58,27 @@ describe('Test api of post model', async function() {
         }
     });
 
-    it('Sould update', async function() {
-        post.visible = true;
-        post.title = 'New title';
-        await PostApi.update(post);
-        const postData = await PostApi.getById(post.id);
-        assert.deepStrictEqual(postData, post);
+    it('Should update', async function() {
+        try {
+            post.visible = true;
+            post.title = 'New title';
+            await PostApi.update(post);
+            const postData = await PostApi.getById(post.id);
+            assert.deepStrictEqual(postData, post);
+        } catch(error) {
+            console.error(error);
+        }
     });
 
     it('Should delete by id', async function() {
-        await PostApi.deleteById(post.id);
-        const postData = await PostApi.getById(post.id);
-        assert.deepStrictEqual(postData, {});
+        try {
+            await PostApi.deleteById(post.id);
+            const postData = await PostApi.getById(post.id);
+            await RoleApi.deleteById(roleId);
 
-        await RoleApi.deleteById(roleId);
+            assert.deepStrictEqual(postData, {});
+        } catch(error) {
+            console.error(error);
+        }
     });
 });

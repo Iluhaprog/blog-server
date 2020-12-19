@@ -1,76 +1,85 @@
 const assert = require('assert');
-const { CommentApi, PostApi, UserApi, RoleApi } = require('../../src/models/index');
+
+const { CommentApi, PostApi, UserApi, RoleApi } = require('../../src/models');
+const { post: postData, user: userData, comment: commentData } = require('./initObjects');
 
 describe('Test comment api', async function() {
-    const comment = {
-        text: 'Cool post',
-    };
+    const comment = commentData;
     let roleId = 0;
 
     it('Should create comment', async function() {
-        const role = await RoleApi.create('User');
+        try {
+            const role = await RoleApi.create('User');
+            userData.roleId = role.id;
 
-        const user = await UserApi.create({
-            firstName: 'Ilya',
-            lastName: 'Novak',
-            username: 'ilyaNovak',
-            email: 'rickmortyand4@gmail.com',
-            bio: '',
-            password: '123456',
-            salt: '',
-            roleId: role.id,
-        });
-        roleId = role.id;
+            const user = await UserApi.create(userData);
+            roleId = role.id;
+            postData.userId = user.id;
 
-        const post = await PostApi.create({
-            title: 'My first project',
-            description: 'I tell you about problems with wich i will face',
-            preview: 'preview.png',
-            text: 'bla bla bla',
-            visible: false,
-            userId: user.id,
-        });
-        comment.userId = user.id;
-        comment.postId = post.id;
+            const post = await PostApi.create(postData);
+            comment.userId = user.id;
+            comment.postId = post.id;
 
-        const newComment = await CommentApi.create(comment);
-        comment.id = newComment.id;
-        comment.date = newComment.date;
+            const newComment = await CommentApi.create(comment);
+            comment.id = newComment.id;
+            comment.date = newComment.date;
 
-        assert.deepStrictEqual(newComment, comment);
+            assert.deepStrictEqual(newComment, comment);
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     it('Should get comment by id', async function() {
-        const commentData = await CommentApi.getById(comment.id);
-        comment.date = commentData.date;
+        try {
+            const commentData = await CommentApi.getById(comment.id);
+            comment.date = commentData.date;
 
-        assert.deepStrictEqual(commentData, comment);
+            assert.deepStrictEqual(commentData, comment);
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     it('Should get comment by post id', async function() {
-        const commentData = await CommentApi.getByPostId(comment.postId);
-        assert.deepStrictEqual(commentData, [comment]);
+        try {
+            const commentData = await CommentApi.getByPostId(comment.postId);
+            assert.deepStrictEqual(commentData, [comment]);
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     it('Should get comment by user id', async function() {
-        const commentData = await CommentApi.getByUserId(comment.userId);
-        assert.deepStrictEqual(commentData, [comment]);
+        try {
+            const commentData = await CommentApi.getByUserId(comment.userId);
+            assert.deepStrictEqual(commentData, [comment]);
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     it('Should update comment', async function() {
-        comment.text = 'Whery cool post!';
-        await CommentApi.update(comment);
+        try {
+            comment.text = 'Whery cool post!';
+            await CommentApi.update(comment);
 
-        const commentData = await CommentApi.getById(comment.id);
-        assert.deepStrictEqual(commentData, comment);
+            const commentData = await CommentApi.getById(comment.id);
+            assert.deepStrictEqual(commentData, comment);
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     it('Should delete comment by', async function() {
-        await CommentApi.deleteById(comment.id);
+        try {
+            await CommentApi.deleteById(comment.id);
 
-        const commentData = await CommentApi.getById(comment.id);
-        await RoleApi.deleteById(roleId);
-        assert.deepStrictEqual(commentData, {});
+            const commentData = await CommentApi.getById(comment.id);
+            await RoleApi.deleteById(roleId);
+            assert.deepStrictEqual(commentData, {});
+        } catch (error) {
+            console.error(error);
+        }
     });
-
 });
