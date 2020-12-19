@@ -45,6 +45,7 @@ describe('Test for tag api', async function() {
     });
     
     it ('Should get tags by post id', async function() {
+        await PostApi.setTags(postId, [tag.id]);
         const tags = await TagApi.getByPostId(postId);
         assert.deepStrictEqual(tags, [tag]);
     });
