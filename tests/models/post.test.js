@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { PostApi, UserApi, RoleApi } = require('../../src/models/index');
+const { TagApi, PostApi, UserApi, RoleApi } = require('../../src/models/index');
 
 describe('Test api of post model', async function() {
     const post = {
@@ -41,6 +41,21 @@ describe('Test api of post model', async function() {
     it('Should get post by user id', async function() {
         const postData = await PostApi.getByUserId(post.userId);
         assert.deepStrictEqual(postData, [post]);
+    });
+
+    it('Should set tags to post', async function() {
+        try {
+            const tag = { title: 'React' };
+            const newTag = await TagApi.create(tag);
+            tag.id = newTag.id;
+
+            await PostApi.setTags(post.id, [newTag.id]);
+
+            const tags = await TagApi.getByPostId(post.id);
+            assert.deepStrictEqual(tags, [tag]);
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     it('Sould update', async function() {
