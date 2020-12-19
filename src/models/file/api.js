@@ -1,9 +1,10 @@
 const { File } = require('./model');
+const { getModelData, getModelsDataArray } = require('../../libs/model.lib');
 
 async function create(file) {
     try {
         const newFile = await File.create(file);
-        return newFile ? newFile.get({ plain: true }) : {};
+        return getModelData(newFile);
     } catch (error) {
         console.error(error);
     }
@@ -12,7 +13,7 @@ async function create(file) {
 async function getById(id) {
     try {
         const file = await File.findByPk(id);
-        return file ? file.get({ plain: true }) : {};
+        return getModelData(file);
     } catch (error) {
         console.error(error);
     }
@@ -25,8 +26,7 @@ async function getByPostId(postId) {
                 postId: postId,
             },
         });
-        const files = postFiles.map(file => file.get({ plain: true }));
-        return files;
+        return getModelsDataArray(postFiles);
     } catch (error) {
         console.error(error);
     }

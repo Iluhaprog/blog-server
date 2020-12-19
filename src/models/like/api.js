@@ -1,9 +1,10 @@
 const { Like } = require('./model');
+const { getModelData, getModelsDataArray } = require('../../libs/model.lib');
 
 async function create(like) {
     try {
         const newLike = await Like.create(like);
-        return newLike ? newLike.get({ plain: true }) : {};
+        return getModelData(newLike);
     } catch (error) {
         console.error(error);
     }
@@ -12,7 +13,7 @@ async function create(like) {
 async function getById(id) {
     try {
         const like = await Like.findByPk(id);
-        return like ? like.get({ plain: true }) : {};
+        return getModelData(like);
     } catch (error) {
         console.error(error);
     }
@@ -39,8 +40,7 @@ async function getByPostId(postId) {
                 postId: postId,
             },
         });
-        const likes = postLikes.map(like => like.get({ plain: true }));
-        return likes;
+        return getModelsDataArray(postLikes);
     } catch (error) {
         console.error(error);
     }
@@ -57,6 +57,7 @@ async function deleteById(id) {
         console.error(error);
     }
 }
+
 module.exports = { 
     create,
     getById,

@@ -1,10 +1,10 @@
-const { User } = require('../user/model');
 const { Role } = require('./model');
+const { getModelData } = require('../../libs/model.lib');
 
 async function create(roleName) {
     try {
         const result = await Role.create({ role: roleName });
-        return result ? result.get({ plain: true }) : {};
+        return getModelData(result);
     } catch (error) {
         console.error(error);
     }
@@ -13,7 +13,7 @@ async function create(roleName) {
 async function getById(roleId) {
     try {
         const result = await Role.findByPk(roleId);
-        return result ? result.get({ plain: true }) : {};
+        return getModelData(result);
     } catch (error) {
         console.error(error);
     }

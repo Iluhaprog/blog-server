@@ -1,9 +1,10 @@
 const { Project } = require('./model');
+const { getModelData, getModelsDataArray } = require('../../libs/model.lib');
 
 async function create(project) {
     try { 
         const newProject = await Project.create(project);
-        return newProject ? newProject.get({ plain: true }) : {};
+        return getModelData(newProject);
     } catch (error) {
         console.error(error);
     }
@@ -12,12 +13,11 @@ async function create(project) {
 async function getById(id) {
     try { 
         const project = await Project.findByPk(id);
-        return project ? project.get({ plain: true }) : {};
+        return getModelData(project);
     } catch (error) {
         console.error(error);
     }
 }
-
 
 async function getByUserId(userId) {
     try { 
@@ -26,13 +26,11 @@ async function getByUserId(userId) {
                 userId: userId,
             },
         });
-        const projects = userProjects.map(project => project.get({ plain: true }));
-        return projects;
+        return getModelsDataArray(userProjects);
     } catch (error) {
         console.error(error);
     }
 }
-
 
 async function update(project) {
     try { 
@@ -45,7 +43,6 @@ async function update(project) {
         console.error(error);
     }
 }
-
 
 async function deleteById(id) {
     try { 

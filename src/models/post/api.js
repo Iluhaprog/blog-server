@@ -1,10 +1,10 @@
-const { Tag } = require('../tag/model');
 const { Post, PostTag } = require('./model');
+const { getModelData, getModelsDataArray } = require('../../libs/model.lib');
 
 async function getById(id) {
     try {
         const post = await Post.findByPk(id);
-        return post ? post.get({ plain: true }) : {};
+        return getModelData(post);
     } catch (error) {
         console.error(error);
     }
@@ -17,8 +17,7 @@ async function getByUserId(userId) {
                 userId: userId,
             }
         });
-        const posts = userPosts.map(post => post.get({ plain: true }));
-        return posts || [];
+        return getModelsDataArray(userPosts);
     } catch (error) {
         console.error(error);
     }
@@ -27,7 +26,7 @@ async function getByUserId(userId) {
 async function create(post) {
     try {
         const newPost = await Post.create(post);
-        return newPost ? newPost.get({ plain: true }) : {};
+        return getModelData(newPost);
     } catch (error) {
         console.error(error);
     }
@@ -72,7 +71,6 @@ async function deleteById(id) {
         console.error(error);
     }
 } 
-
 
 module.exports = {
     getById,

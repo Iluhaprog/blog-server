@@ -1,10 +1,12 @@
 const { Tag } = require('./model');
 const { Post } = require('../post/model');
+const { getModelData } = require('../../libs/model.lib');
+
 
 async function create(tag) {
     try {
         const newTag = await Tag.create(tag);
-        return newTag ? newTag.get({ plain: true }) : {};
+        return getModelData(newTag);
     } catch (error) {
         console.error(error);
     }
@@ -13,7 +15,7 @@ async function create(tag) {
 async function getById(id) {
     try {
         const tag = await Tag.findByPk(id);
-        return tag ? tag.get({ plain: true }) : {};
+        return getModelData(tag);
     } catch (error) {
         console.error(error);
     }

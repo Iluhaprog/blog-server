@@ -1,10 +1,10 @@
-const comment = require('.');
 const { Comment } = require('./model');
+const { getModelData, getModelsDataArray } = require('../../libs/model.lib');
 
 async function create(comment) {
     try {
         const newComment = await Comment.create(comment);
-        return newComment ? newComment.get({ plain:true }) : {};
+        return getModelData(newComment);
     } catch (error) {
         console.error(error);
     }
@@ -13,7 +13,7 @@ async function create(comment) {
 async function getById(id) {
     try {
         const comment = await Comment.findByPk(id);
-        return comment ? comment.get({ plain: true }) : {};
+        return getModelData(comment);
     } catch (error) {
         console.error(error);
     }
@@ -26,8 +26,7 @@ async function getByPostId(postId) {
                 postId: postId,
             },
         });
-        const comments = postComments.map(comment => comment.get({ plain: true }));
-        return comments;
+        return getModelsDataArray(postComments);
     } catch (error) {
         console.error(error);
     }
@@ -35,13 +34,12 @@ async function getByPostId(postId) {
 
 async function getByUserId(userId) {
     try {
-        const postComments = await Comment.findAll({
+        const userComments = await Comment.findAll({
             where: {
                 userId: userId,
             },
         });
-        const comments = postComments.map(comment => comment.get({ plain: true }));
-        return comments;
+        return getModelsDataArray(userComments);
     } catch (error) {
         console.error(error);
     }

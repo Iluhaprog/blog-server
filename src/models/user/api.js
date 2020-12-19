@@ -1,4 +1,5 @@
 const { User } = require('./model');
+const { getModelData } = require('../../libs/model.lib');
 
 async function usernameIsUnique(username) {
     try {
@@ -21,7 +22,7 @@ async function emailIsUnique(email) {
 async function getById(id) {
     try {
         const result = await User.findByPk(id);
-        return result ? result.get({ plain: true }) : {};
+        return getModelData(result);
     } catch (error) {
         console.error(error);
     }
@@ -34,7 +35,7 @@ async function getByEmail(email) {
                 email: email,
             },
         });
-        return result ? result.get({ plain: true }) : {};
+        return getModelData(result);
     } catch (error) {
         console.error(error);
     }
@@ -47,7 +48,7 @@ async function getByUsername(username) {
                 username: username,
             },
         });
-        return result ? result.get({ plain: true }) : {};
+        return getModelData(result);
     } catch (error) {
         console.error(error);
     }
@@ -56,7 +57,7 @@ async function getByUsername(username) {
 async function create(user) {
     try {
         const result = await User.create(user, { raw: true });
-        return result ? result.get({ plain: true }) : {};
+        return getModelData(result);
     } catch (error) {
         console.error(error);
     }
