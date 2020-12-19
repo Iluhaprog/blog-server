@@ -4,6 +4,7 @@ const { Comment } = require('../comment/model');
 const { Like } = require('../like/model');
 const { Post } = require('../post/model');
 const { Project } = require('../project/model');
+const { oneToMany } = require('../../libs/model.lib');
 
 const User = sequelize.define('User', {
         id: {
@@ -59,37 +60,10 @@ const User = sequelize.define('User', {
         timestamps: false,
 });
 
-User.hasMany(Post, {
-    foreignKey: {
-        name: 'userId',
-        allowNull: false,
-    },
-    onDelete: 'CASCADE',
-});
-
-User.hasMany(Project, {
-    foreignKey: {
-        name: 'userId',
-        allowNull: false,
-    },
-    onDelete: 'CASCADE',
-});
-
-User.hasMany(Like, {
-    foreignKey: {
-        name: 'userId',
-        allowNull: false,
-    },
-    onDelete: 'CASCADE',
-});
-
-User.hasMany(Comment, {
-    foreignKey: {
-        name: 'userId',
-        allowNull: false,
-    },
-    onDelete: 'CASCADE',
-});
+oneToMany(User, Post);
+oneToMany(User, Project);
+oneToMany(User, Like);
+oneToMany(User, Comment);
 
 module.exports = { 
     User,

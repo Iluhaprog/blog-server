@@ -4,6 +4,7 @@ const { Comment } = require('../comment/model');
 const { File } = require('../file/model');
 const { Like } = require('../like/model');
 const { Tag } = require('../tag/model');
+const { oneToMany, manyToMany } = require('../../libs/model.lib');
 
 const Post = sequelize.define('Post', {
         id: {
@@ -57,33 +58,11 @@ const PostTag = sequelize.define('PostTag', {
         timestamps: false,
 });
 
-Post.hasMany(File, {
-    foreignKey: {
-        name: 'postId',
-        allowNull: false,
-    },
-    onDelete: 'CASCADE',
-});
+oneToMany(Post, File);
+oneToMany(Post, Like);
+oneToMany(Post, Comment);
 
-Post.hasMany(Like, {
-    foreignKey: {
-        name: 'postId',
-        allowNull: false,
-    },
-    onDelete: 'CASCADE',  
-});
-
-Post.hasMany(Comment, {
-    foreignKey: {
-        name: 'postId',
-        allowNull: false,
-    },
-    onDelete: 'CASCADE',  
-});
-
-Post.belongsToMany(Tag, { through: PostTag, foreignKey: 'postId' });
-
-Tag.belongsToMany(Post, { through: PostTag, foreignKey: 'tagId' });
+manyToMany(Post, Tag, PostTag);
 
 module.exports = {
     Post,
