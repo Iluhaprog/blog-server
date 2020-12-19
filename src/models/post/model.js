@@ -45,19 +45,12 @@ const Post = sequelize.define('Post', {
 });
 
 const PostTag = sequelize.define('PostTag', {
-        postId: {
+        id: {
             type: DataTypes.INTEGER,
-		    references: {
-		      model: Post,
-		      key: 'id'
-		    }
-        },
-        tagId: {
-            type: DataTypes.INTEGER,
-		    references: {
-		      model: Tag,
-		      key: 'id'
-		    }
+            allowNull: false,
+            autoIncrement: true,
+            unique: true,
+            primaryKey: true,
         },
     }, {
         tableName: 'tags_posts',
@@ -88,18 +81,11 @@ Post.hasMany(Comment, {
     onDelete: 'CASCADE',  
 });
 
-Post.belongsToMany(Tag, { 
-    through: PostTag,
-    foreignKey: 'postId',
-    onDelete: 'CASCADE',
-});
+Post.belongsToMany(Tag, { through: PostTag, foreignKey: 'postId' });
 
-Tag.belongsToMany(Post, {
-    through: PostTag,
-    foreignKey: 'tagId',
-    onDelete: 'CASCADE',
-})
+Tag.belongsToMany(Post, { through: PostTag, foreignKey: 'tagId' });
 
 module.exports = {
     Post,
+    PostTag,
 };
