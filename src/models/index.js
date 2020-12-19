@@ -1,13 +1,13 @@
 const { sequelize } = require('../config/db');
 
-const { RoleApi } = require('./role/index');
-const { UserApi } = require('./user/index');
-const { PostApi } = require('./post/index');
-const { FileApi } = require('./file/index');
-const { ProjectApi } = require('./project/index');
-const { LikeApi } = require('./like/index');
-const { CommentApi } = require('./comment/index');
-const { TagApi } = require('./tag/index');
+const { RoleApi } = require('./role');
+const { UserApi } = require('./user');
+const { PostApi } = require('./post');
+const { FileApi } = require('./file');
+const { ProjectApi } = require('./project');
+const { LikeApi } = require('./like');
+const { CommentApi } = require('./comment');
+const { TagApi } = require('./tag');
 
 const sync = async () => {
     await sequelize.sync({ alter: true });
