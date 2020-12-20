@@ -1,6 +1,6 @@
 const { Tag } = require('./model');
 const { Post } = require('../post/model');
-const { getModelData } = require('../../libs/model.lib');
+const { getModelData } = require('../../libs/model');
 
 
 async function create(tag) {

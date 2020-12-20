@@ -1,5 +1,5 @@
 const { User } = require('./model');
-const { getModelData } = require('../../libs/model.lib');
+const { getModelData } = require('../../libs/model');
 
 async function usernameIsUnique(username) {
     try {

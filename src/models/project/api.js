@@ -1,5 +1,5 @@
 const { Project } = require('./model');
-const { getModelData, getModelsDataArray } = require('../../libs/model.lib');
+const { getModelData, getModelsDataArray } = require('../../libs/model');
 
 async function create(project) {
     try { 

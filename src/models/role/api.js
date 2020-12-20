@@ -1,5 +1,5 @@
 const { Role } = require('./model');
-const { getModelData } = require('../../libs/model.lib');
+const { getModelData } = require('../../libs/model');
 
 async function create(roleName) {
     try {

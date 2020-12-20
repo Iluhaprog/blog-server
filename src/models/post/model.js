@@ -4,7 +4,7 @@ const { Comment } = require('../comment/model');
 const { File } = require('../file/model');
 const { Like } = require('../like/model');
 const { Tag } = require('../tag/model');
-const { oneToMany, manyToMany } = require('../../libs/model.lib');
+const { oneToMany, manyToMany } = require('../../libs/model');
 
 const Post = sequelize.define('Post', {
         id: {

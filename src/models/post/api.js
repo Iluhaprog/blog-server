@@ -1,5 +1,5 @@
 const { Post, PostTag } = require('./model');
-const { getModelData, getModelsDataArray } = require('../../libs/model.lib');
+const { getModelData, getModelsDataArray } = require('../../libs/model');
 
 async function getById(id) {
     try {
