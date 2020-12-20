@@ -56,7 +56,7 @@ async function getByUsername(username) {
 
 async function create(user) {
     try {
-        const result = await User.create(user, { raw: true });
+        const result = await User.create(user);
         return getModelData(result);
     } catch (error) {
         console.error(error);
@@ -78,7 +78,11 @@ async function update(user) {
 
 async function deleteById(id) {
     try {
-        await User.destroy({ where: { id: id}});
+        await User.destroy({ 
+            where: { 
+                id: id
+            },
+        });
     } catch (error) {
         console.error(error);
     }

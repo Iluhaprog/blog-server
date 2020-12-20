@@ -26,7 +26,7 @@ async function getByUserId(userId) {
                 userId: userId,
             },
         });
-        const likes = userLikes.map(like => like.get({ plain: true }));
+        const likes = getModelsDataArray(userLikes);
         return likes;
     } catch (error) {
         console.error(error);
