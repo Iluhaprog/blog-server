@@ -19,6 +19,7 @@ describe('Test for model lib', async function() {
         });
 
     const model1 = makeModel('Model1');
+    sequelize.sync({ alter: true });
 
     it('Should get name for foreignKey from model', async function() {
         try {
