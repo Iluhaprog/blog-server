@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "private": true,
   "scripts": {
-    "test": "mocha --max-old-space-size=4096 --timeout 10000 tests/api/*.test.js",
+    "test": "mocha --max-old-space-size=4096 --timeout 10000 tests/**/*.test.js",
     "dev": "nodemon src/app.js"
   },
   "repository": {
