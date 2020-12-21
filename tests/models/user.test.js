@@ -13,7 +13,6 @@ describe('Test for user api', async function() {
             lastName: raw.lastName || '',
             username: raw.username || '',
             email: raw.email || '',
-            salt: raw.salt || '',
             password: raw.password || '',
             roleId: raw.roleId || '',
         };

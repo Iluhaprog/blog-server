@@ -4,7 +4,6 @@ const user = {
     username: 'ilyaNovak',
     email: 'rickmortyand4@gmail.com',
     password: '123456',
-    salt: '',
     roleId: -1,
 };
 
