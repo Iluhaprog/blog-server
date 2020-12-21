@@ -42,10 +42,6 @@ const User = sequelize.define('User', {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        salt: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
         skills: {
             type: DataTypes.STRING,
             defaultValue: '',
