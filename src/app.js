@@ -1,9 +1,6 @@
-const { app, port } = require('./config/express');
+const { app } = require('./config/express');
+const { UserRouter } = require('./routes');
 
-app.get('/', (req, res) => {
-    res.send('test');
-});
+app.use('/user', UserRouter);
 
-app.listen(port, () => {
-    console.log(`App listen on port ${port}`);
-});
+module.exports = app;
