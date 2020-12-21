@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "private": true,
   "scripts": {
-    "test": "mocha --max-old-space-size=4096 --timeout 10000 tests/**/*.test.js",
+    "test": "mocha --max-old-space-size=4096 --timeout 10000 tests/api/*.test.js",
     "dev": "nodemon src/app.js"
   },
   "repository": {
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Iluhaprog/blog-server#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "connect-redis": "^5.0.0",
     "cors": "^2.8.5",
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "mocha": "^8.2.1",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "supertest": "^6.0.1"
   }
 }
