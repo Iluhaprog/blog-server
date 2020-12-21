@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS `users` (
     `bio` TEXT NOT NULL,
     `email` VARCHAR(255) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
-    `salt` VARCHAR(255) NOT NULL,
     `skills` VARCHAR(255) DEFAULT '',
     `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `roleId` INT NOT NULL,
