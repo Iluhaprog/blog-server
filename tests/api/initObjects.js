@@ -34,10 +34,15 @@ const file = {
     name: 'main.png',
 };
 
+const tag = {
+    title: 'React',
+};
+
 module.exports = {
     userData: user,
     postData: post,
     projectData: project,
     commentData: comment,
     fileData: file,
+    tagData: tag,
 };
