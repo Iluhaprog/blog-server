@@ -6,5 +6,6 @@ app.use('/user', routes.UserRouter);
 app.use('/post', routes.PostRouter);
 app.use('/project', routes.ProjectRouter);
 app.use('/comment', routes.CommnetRouter);
+app.use('/file',routes.FileRouter);
 
 module.exports = app;
