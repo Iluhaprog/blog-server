@@ -1,7 +1,7 @@
 const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
-const { RoleApi, UserApi } = require('../../src/models');
+const { RoleApi, UserApi, TagApi } = require('../../src/models');
 const { userData, postData } = require('./initObjects');
 
 describe('Test for post api of app', async function() {
@@ -44,6 +44,18 @@ describe('Test for post api of app', async function() {
                             .set('Accept', 'application/json')
                             .send({ post: postData });
         assert.deepStrictEqual(body, postData);
+    });
+
+    it('Should set tags id to post', async function() {
+        const newTag = await TagApi.create({ title: 'JavaScript' });
+        const res = await request(app)
+                        .put('/post/setTags')
+                        .set('Accept', 'application/json')
+                        .send({
+                            postId: postData.id,
+                            tagsId: [newTag.id],
+                        });
+        assert.strictEqual(res.status, 204);
     });
 
     it('Should delete by id', async function() {
