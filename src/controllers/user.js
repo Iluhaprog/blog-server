@@ -1,4 +1,4 @@
-const { getPasswordHash, compare } = require('../libs/crypt');
+const { getPasswordHash } = require('../libs/crypt');
 const { UserApi } = require('../models/');
 
 async function getById(req, res) {
