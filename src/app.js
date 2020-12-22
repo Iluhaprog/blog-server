@@ -1,9 +1,10 @@
 const { app } = require('./config/express');
-const { UserRouter, RoleRouter, PostRouter, ProjectRouter } = require('./routes');
+const routes = require('./routes');
 
-app.use('/role', RoleRouter);
-app.use('/user', UserRouter);
-app.use('/post', PostRouter);
-app.use('/project', ProjectRouter);
+app.use('/role', routes.RoleRouter);
+app.use('/user', routes.UserRouter);
+app.use('/post', routes.PostRouter);
+app.use('/project', routes.ProjectRouter);
+app.use('/comment', routes.CommnetRouter);
 
 module.exports = app;
