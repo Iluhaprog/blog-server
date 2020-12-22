@@ -4,6 +4,7 @@ const PostRouter = require('./post');
 const ProjectRouter = require('./project');
 const CommnetRouter = require('./comment');
 const FileRouter = require('./file');
+const LikeRouter = require('./like');
 
 module.exports = {
     RoleRouter,
@@ -12,4 +13,5 @@ module.exports = {
     ProjectRouter,
     CommnetRouter,
     FileRouter,
+    LikeRouter,
 };
