@@ -9,10 +9,12 @@ describe('Test for user api', async function() {
 
     const genActualExpect = (raw, expectedValue) => {
         const result = { 
+            avatarImage: raw.avatarImage || '',
             firstName: raw.firstName || '',
             lastName: raw.lastName || '',
             username: raw.username || '',
             email: raw.email || '',
+            bio: raw.bio || '',
             password: raw.password || '',
             roleId: raw.roleId || '',
         };

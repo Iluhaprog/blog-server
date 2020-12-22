@@ -1,9 +1,11 @@
 const user = {
+    avatarImage: '',
     firstName: 'Ilya',
     lastName: 'Novak',
     username: 'ilyaNovak',
     email: 'rickmortyand4@gmail.com',
     password: '123456',
+    bio: 'My bio.',
     roleId: -1,
 };
 
