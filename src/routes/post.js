@@ -8,6 +8,7 @@ router
     .get('/getById', PostController.getById)
     .get('/getByUserId', PostController.getByUserId)
     .put('/update', PostController.update)
+    .put('/setTags', PostController.setTags)
     .delete('/deleteById', PostController.deleteById);
 
 module.exports = router;

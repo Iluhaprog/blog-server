@@ -41,6 +41,16 @@ async function update(req, res) {
     }
 }
 
+async function setTags(req, res) {
+    try {
+        const { postId, tagsId } = req.body;
+        await PostApi.setTags(postId, tagsId);
+        res.status(204).send();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function deleteById(req, res) {
     try {
         const { id } = req.query;
@@ -57,4 +67,5 @@ module.exports = {
     getByUserId,
     update,
     deleteById,
+    setTags,
 };
