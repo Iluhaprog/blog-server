@@ -3,6 +3,7 @@ const UserController = require('./user');
 const PostController = require('./post');
 const ProjectController = require('./project');
 const CommentController = require('./comment');
+const FileController = require('./file');
 
 module.exports = {
     RoleController,
@@ -10,4 +11,5 @@ module.exports = {
     PostController,
     ProjectController,
     CommentController,
+    FileController,
 };

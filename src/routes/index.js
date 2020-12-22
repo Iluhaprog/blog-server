@@ -3,6 +3,7 @@ const UserRouter = require('./user');
 const PostRouter = require('./post');
 const ProjectRouter = require('./project');
 const CommnetRouter = require('./comment');
+const FileRouter = require('./file');
 
 module.exports = {
     RoleRouter,
@@ -10,4 +11,5 @@ module.exports = {
     PostRouter,
     ProjectRouter,
     CommnetRouter,
+    FileRouter,
 };
