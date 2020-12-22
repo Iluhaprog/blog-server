@@ -18,7 +18,16 @@ const post = {
     visible: false,
 };
 
+const project = {
+    preview: 'project_preview.png',
+    title: 'Chat',
+    description: 'Chat for people',
+    projectLink: 'https://chat.com',
+    githubLink: 'https://github.com',
+};
+
 module.exports = {
     userData: user,
     postData: post,
+    projectData: project,
 };
