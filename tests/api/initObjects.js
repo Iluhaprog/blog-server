@@ -30,9 +30,14 @@ const comment = {
     text: 'Cool post',
 };
 
+const file = {
+    name: 'main.png',
+};
+
 module.exports = {
     userData: user,
     postData: post,
     projectData: project,
     commentData: comment,
+    fileData: file,
 };
