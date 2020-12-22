@@ -2,19 +2,10 @@ const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
 const { RoleApi } = require('../../src/models');
+const { userData } = require('./initObjects');
 
 describe('Test for user api of app', async function() {
-    const user = {
-        avatarImage: '',
-        firstName: 'Ilya',
-        lastName: 'Novak',
-        username: 'ilkass',
-        bio: 'Bla bla bla!',
-        email: 'email@email.email',
-        password: '12345',
-        skills: 'All',
-        roleId: 0,
-    };
+    const user = userData;
 
     it('Should create user', async function() {
         const role = await RoleApi.create('User' + Date.now());
