@@ -8,5 +8,6 @@ app.use('/project', routes.ProjectRouter);
 app.use('/comment', routes.CommnetRouter);
 app.use('/file', routes.FileRouter);
 app.use('/like', routes.LikeRouter);
+app.use('/tag', routes.TagRouter);
 
 module.exports = app;
