@@ -26,8 +26,13 @@ const project = {
     githubLink: 'https://github.com',
 };
 
+const comment = {
+    text: 'Cool post',
+};
+
 module.exports = {
     userData: user,
     postData: post,
     projectData: project,
+    commentData: comment,
 };
