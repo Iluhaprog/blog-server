@@ -12,7 +12,6 @@ describe('Test for role api', async function() {
 
     it('Should create a role', async function(){
         try {
-            await sync();
             const result = await RoleApi.create(expectedRole);
             const expected = { id: result.id, role: expectedRole };
             mainId = result.id;
