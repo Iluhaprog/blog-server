@@ -1,11 +1,11 @@
-const RoleRouter = require('./role');
-const UserRouter = require('./user');
-const PostRouter = require('./post');
-const ProjectRouter = require('./project');
-const CommnetRouter = require('./comment');
-const FileRouter = require('./file');
-const LikeRouter = require('./like');
-const TagRouter = require('./tag');
+const RoleRouter = require('./role.router');
+const UserRouter = require('./user.router');
+const PostRouter = require('./post.router');
+const ProjectRouter = require('./project.router');
+const CommnetRouter = require('./comment.router');
+const FileRouter = require('./file.router');
+const LikeRouter = require('./like.router');
+const TagRouter = require('./tag.router');
 
 module.exports = {
     RoleRouter,
