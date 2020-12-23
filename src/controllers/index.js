@@ -1,11 +1,11 @@
-const RoleController = require('./role');
-const UserController = require('./user');
-const PostController = require('./post');
-const ProjectController = require('./project');
-const CommentController = require('./comment');
-const FileController = require('./file');
-const LikeController = require('./like');
-const TagController = require('./tag');
+const RoleController = require('./role.controller');
+const UserController = require('./user.controller');
+const PostController = require('./post.controller');
+const ProjectController = require('./project.controller');
+const CommentController = require('./comment.controller');
+const FileController = require('./file.controller');
+const LikeController = require('./like.controller');
+const TagController = require('./tag.controller');
 
 module.exports = {
     RoleController,
