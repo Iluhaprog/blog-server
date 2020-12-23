@@ -1,7 +1,7 @@
 const assert = require('assert');
 
-const { RoleApi, UserApi, sync } = require('../../src/models');
-const { user: userData } = require('./initObjects');
+const { RoleApi, UserApi } = require('../../src/models');
+const { userData } = require('../initObjects');
 
 
 describe('Test for role api', async function() {

@@ -1,7 +1,7 @@
 const assert = require('assert');
 
 const { ProjectApi, UserApi, RoleApi } = require('../../src/models');
-const { project: projectData, user: userData } = require('./initObjects');
+const { projectData, userData } = require('../initObjects');
 
 describe('Test project api', async function() {
     const project = projectData;

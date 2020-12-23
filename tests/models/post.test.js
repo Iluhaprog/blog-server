@@ -1,7 +1,7 @@
 const assert = require('assert');
 
 const { TagApi, PostApi, UserApi, RoleApi } = require('../../src/models');
-const { post: postData, user: userData } = require('./initObjects');
+const { postData, userData } = require('../initObjects');
 
 describe('Test api of post model', async function() {
     const post = postData;

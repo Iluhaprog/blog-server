@@ -1,7 +1,7 @@
 const assert = require('assert');
 
 const { CommentApi, PostApi, UserApi, RoleApi } = require('../../src/models');
-const { post: postData, user: userData, comment: commentData } = require('./initObjects');
+const { postData, userData, commentData } = require('../initObjects');
 
 describe('Test comment api', async function() {
     const comment = commentData;

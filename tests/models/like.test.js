@@ -1,7 +1,7 @@
 const assert = require('assert');
 
 const { RoleApi, UserApi, PostApi, LikeApi } = require('../../src/models');
-const { post: postData, user: userData } = require('./initObjects');
+const { postData, userData } = require('../initObjects');
 
 describe('Test for like api', async function() {
     let like = {};

@@ -2,7 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
 const { RoleApi, UserApi } = require('../../src/models');
-const { userData, projectData } = require('./initObjects');
+const { userData, projectData } = require('../initObjects');
 
 describe('Test for project api of app', async function() {
     let roleId = 0;

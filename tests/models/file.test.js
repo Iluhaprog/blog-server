@@ -1,7 +1,7 @@
 const assert = require('assert');
 
 const { FileApi, PostApi, UserApi, RoleApi } = require('../../src/models');
-const { post: postData, user: userData, file: fileData } = require('./initObjects');
+const { postData, userData, fileData } = require('../initObjects');
 
 describe('Test file api', async function() {
     const file = fileData;
