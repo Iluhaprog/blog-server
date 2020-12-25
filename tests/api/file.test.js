@@ -4,7 +4,7 @@ const app = require('../../src/app');
 const { RoleApi, UserApi, PostApi } = require('../../src/models');
 const { userData, postData, fileData } = require('../initObjects');
 
-describe('Test for comment api of app', async function() {
+describe('Test for file api of app', async function() {
     let roleId = 0;
 
     it('Should create file', async function() {

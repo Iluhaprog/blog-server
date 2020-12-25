@@ -4,7 +4,7 @@ const app = require('../../src/app');
 const { RoleApi, UserApi, PostApi } = require('../../src/models');
 const { userData, postData } = require('../initObjects');
 
-describe('Test for comment api of app', async function() {
+describe('Test for like api of app', async function() {
     let roleId = 0;
     let likeData = {};
 
