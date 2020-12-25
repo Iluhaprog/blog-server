@@ -20,14 +20,6 @@ async function getById(req, res) {
     }
 }
 
-async function getByUser(req, res) {
-    try {
-        // TO DO       
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 async function deleteById(req, res) {
     try {
         const { id } = req.query;
