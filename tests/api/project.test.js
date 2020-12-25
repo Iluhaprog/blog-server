@@ -28,6 +28,13 @@ describe('Test for project api of app', async function() {
         assert.deepStrictEqual(body, projectData);
     });
 
+    it('Should get all projects', async function() {
+        const res = await request(app)
+                            .get(`/project/getAll`)
+                            .send();
+        assert.deepStrictEqual(res.body, [projectData]);
+    });
+
     it('Should get projects by user id', async function() {
         const { body } = await request(app)
                                 .get(`/project/getByUserId?userId=${projectData.userId}`)

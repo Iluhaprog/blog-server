@@ -30,6 +30,13 @@ describe('Test for post api of app', async function() {
         assert.deepStrictEqual(body, postData);
     });
 
+    it('Should get all posts', async function() {
+        const res = await request(app)
+                            .get(`/post/getAll`)
+                            .send();
+        assert.deepStrictEqual(res.body, [postData]);
+    });
+
     it('Should get post by user id', async function() {
         const { body } = await request(app)
                             .get(`/post/getByUserId?userId=${postData.userId}`)

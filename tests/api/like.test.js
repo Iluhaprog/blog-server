@@ -35,6 +35,13 @@ describe('Test for comment api of app', async function() {
         assert.deepStrictEqual(body, likeData);
     });
 
+    it('Should get all likes', async function() {
+        const res = await request(app)
+                            .get(`/like/getAll`)
+                            .send();
+        assert.deepStrictEqual(res.body, [likeData]);
+    });
+
     it('Should get likes by post id', async function() {
         const { body } = await request(app)
                                 .get(`/like/getByPostId?postId=${likeData.postId}`)

@@ -34,6 +34,15 @@ describe('Test api of post model', async function() {
         }
     });
 
+    it('Should get all posts', async function() {
+        try {
+            const posts = await PostApi.getAll();
+            assert.deepStrictEqual(posts, [postData]);
+        } catch (error) {
+            console.error(error)
+        }
+    });
+
     it('Should get post by user id', async function() {
         try {
             const postData = await PostApi.getByUserId(post.userId);

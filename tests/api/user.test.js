@@ -31,6 +31,13 @@ describe('Test for user api of app', async function() {
         assert.deepStrictEqual(res.body, user);
     });
 
+    it('Should get all users', async function() {
+        const res = await request(app)
+                            .get(`/user/getAll`)
+                            .send();
+        assert.deepStrictEqual(res.body, [user]);
+    });
+
     it('Should get by email', async function() { 
         const res = await request(app)
                             .get(`/user/getByEmail?email=${user.email}`)

@@ -39,6 +39,15 @@ describe('Test for like api', async function() {
         }
     });
 
+    it('Should get all likes', async function() {
+        try {
+            const likes = await LikeApi.getAll();
+            assert.deepStrictEqual(likes, [like]);
+        } catch (error) {
+            console.error(error)
+        }
+    });
+
     it('Should get likes by user id', async function() {
         try {
             const likes = await LikeApi.getByUserId(like.userId);

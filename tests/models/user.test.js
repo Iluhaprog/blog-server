@@ -45,6 +45,15 @@ describe('Test for user api', async function() {
         }
     });
 
+    it('Should get all users', async function() {
+        try {
+            const users = await UserApi.getAll();
+            assert.deepStrictEqual(users, [userData]);
+        } catch (error) {
+            console.error(error)
+        }
+    });
+
     it('Should get user by username', async function() {
         try {
             const user = await UserApi.getByUsername(userData.username);

@@ -33,6 +33,15 @@ describe('Test project api', async function() {
         }
     });
 
+    it('Should get all projects', async function() {
+        try {
+            const projects = await ProjectApi.getAll();
+            assert.deepStrictEqual(projects, [projectData]);
+        } catch (error) {
+            console.error(error)
+        }
+    });
+
     it('Should get project by user id', async function() {
         try {
             const projectData = await ProjectApi.getByUserId(project.userId);

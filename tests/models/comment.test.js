@@ -41,6 +41,15 @@ describe('Test comment api', async function() {
         }
     });
 
+    it('Should get all comments', async function() {
+        try {
+            const comments = await CommentApi.getAll();
+            assert.deepStrictEqual(comments, [comment]);
+        } catch (error) {
+            console.error(error)
+        }
+    });
+
     it('Should get comment by post id', async function() {
         try {
             const commentData = await CommentApi.getByPostId(comment.postId);
