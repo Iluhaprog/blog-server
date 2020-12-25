@@ -20,6 +20,15 @@ async function getById(req, res) {
     }
 }
 
+async function getAll(req, res) {
+    try {
+        const posts = await PostApi.getAll();
+        res.json(posts);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function getByUserId(req, res) {
     try {
         const { userId } = req.query;
@@ -64,6 +73,7 @@ async function deleteById(req, res) {
 module.exports = {
     create,
     getById,
+    getAll,
     getByUserId,
     update,
     deleteById,

@@ -20,6 +20,15 @@ async function getById(req, res) {
     }
 }
 
+async function getAll(req, res) {
+    try {
+        const likes = await LikeApi.getAll();
+        res.json(likes);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function getByPostId(req, res) {
     try {
         const { postId } = req.query;
@@ -52,6 +61,7 @@ async function deleteById(req, res) {
 module.exports = {
     create,
     getById,
+    getAll,
     getByUserId,
     getByPostId,
     deleteById,

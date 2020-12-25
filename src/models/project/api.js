@@ -19,6 +19,15 @@ async function getById(id) {
     }
 }
 
+async function getAll() {
+    try {
+        const projects = await Project.findAll();
+        return getModelsDataArray(projects);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function getByUserId(userId) {
     try { 
         const userProjects = await Project.findAll({
@@ -59,6 +68,7 @@ async function deleteById(id) {
 module.exports = {
     create,
     getById,
+    getAll,
     getByUserId,
     update,
     deleteById,

@@ -40,6 +40,15 @@ async function getByUserId(req, res) {
     }
 }
 
+async function getAll(req, res) {
+    try {
+        const comments = await CommentApi.getAll();
+        res.json(comments);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function update(req, res) {
     try {
         const { comment } = req.body;
@@ -64,6 +73,7 @@ async function deleteById(req, res) {
 module.exports = {
     create, 
     getById,
+    getAll,
     getByPostId,
     getByUserId,
     update,

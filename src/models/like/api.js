@@ -19,6 +19,15 @@ async function getById(id) {
     }
 }
 
+async function getAll() {
+    try {
+        const likes = await Like.findAll();
+        return getModelsDataArray(likes);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function getByUserId(userId) {
     try {
         const userLikes = await Like.findAll({
@@ -61,6 +70,7 @@ async function deleteById(id) {
 module.exports = { 
     create,
     getById,
+    getAll,
     getByUserId,
     getByPostId,
     deleteById,

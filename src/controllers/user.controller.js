@@ -11,6 +11,15 @@ async function getById(req, res) {
     }
 }
 
+async function getAll(req, res) {
+    try {
+        const users = await UserApi.getAll();
+        res.json(users);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function getByEmail(req, res) {
     try {
         const { email } = req.query;
@@ -66,6 +75,7 @@ async function deleteById(req, res) {
 
 module.exports = {
     getById,
+    getAll,
     getByEmail,
     getByUsername,
     create,

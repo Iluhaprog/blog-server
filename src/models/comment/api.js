@@ -19,6 +19,15 @@ async function getById(id) {
     }
 }
 
+async function getAll() {
+    try {
+        const comments = await Comment.findAll();
+        return getModelsDataArray(comments);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function getByPostId(postId) {
     try {
         const postComments = await Comment.findAll({
@@ -72,6 +81,7 @@ async function deleteById(id) {
 module.exports = {
     create, 
     getById,
+    getAll,
     getByPostId,
     getByUserId,
     update,

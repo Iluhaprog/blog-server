@@ -1,5 +1,5 @@
 const { User } = require('./model');
-const { getModelData } = require('../../libs/model');
+const { getModelData, getModelsDataArray } = require('../../libs/model');
 
 async function usernameIsUnique(username) {
     try {
@@ -23,6 +23,15 @@ async function getById(id) {
     try {
         const result = await User.findByPk(id);
         return getModelData(result);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function getAll() {
+    try {
+        const users = await User.findAll();
+        return getModelsDataArray(users);
     } catch (error) {
         console.error(error);
     }
@@ -90,6 +99,7 @@ async function deleteById(id) {
 
 module.exports = {
     getById,
+    getAll,
     getByEmail,
     getByUsername,
     create,

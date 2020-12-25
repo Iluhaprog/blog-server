@@ -5,6 +5,7 @@ const router = express.Router();
 
 router
     .get('/getById', UserController.getById)
+    .get('/getAll', UserController.getAll)
     .get('/getByEmail', UserController.getByEmail)
     .get('/getByUsername', UserController.getByUsername)
     .post('/create', UserController.create)

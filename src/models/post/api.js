@@ -10,6 +10,15 @@ async function getById(id) {
     }
 }
 
+async function getAll() {
+    try {
+        const posts = await Post.findAll();
+        return getModelsDataArray(posts);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function getByUserId(userId) {
     try {
         const userPosts = await Post.findAll({
@@ -74,6 +83,7 @@ async function deleteById(id) {
 
 module.exports = {
     getById,
+    getAll,
     getByUserId,
     create,
     update,
