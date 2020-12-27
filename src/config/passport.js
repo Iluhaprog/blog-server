@@ -1,5 +1,5 @@
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const BasicStrategy = require('passport-http').BasicStrategy;
 const { UserApi } = require('../models');
 const crypt = require('../libs/crypt');
 
@@ -23,7 +23,7 @@ passport.deserializeUser(async function(id, done) {
     }
 });
 
-passport.use(new LocalStrategy(
+passport.use(new BasicStrategy(
     async function(username, password, done) {
         try {
             const user = await getUser(username);
