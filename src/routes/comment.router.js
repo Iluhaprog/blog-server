@@ -4,12 +4,12 @@ const { CommentController } = require('../controllers');
 const router = express.Router();
 
 router
-    .post('/create', passport.authenticate('local'), CommentController.create)
+    .post('/create', passport.authenticate('basic'), CommentController.create)
     .get('/getById', CommentController.getById)
     .get('/getAll', CommentController.getAll)
     .get('/getByPostId', CommentController.getByPostId)
     .get('/getByUserId', CommentController.getByUserId)
-    .put('/update', passport.authenticate('local'), CommentController.update)
-    .delete('/deleteById', passport.authenticate('local'), CommentController.deleteById);
+    .put('/update', passport.authenticate('basic'), CommentController.update)
+    .delete('/deleteById', passport.authenticate('basic'), CommentController.deleteById);
 
 module.exports = router;

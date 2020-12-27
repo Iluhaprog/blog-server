@@ -4,8 +4,8 @@ const { RoleController } = require('../controllers');
 const router = express.Router();
 
 router
-    .post('/create', passport.authenticate('local'), RoleController.create)
-    .get('/getById', passport.authenticate('local'), RoleController.getById)
-    .delete('/deleteById', passport.authenticate('local'),RoleController.deleteById);
+    .post('/create', passport.authenticate('basic'), RoleController.create)
+    .get('/getById', passport.authenticate('basic'), RoleController.getById)
+    .delete('/deleteById', passport.authenticate('basic'),RoleController.deleteById);
 
 module.exports = router;

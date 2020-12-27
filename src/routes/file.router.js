@@ -4,10 +4,10 @@ const { FileController } = require('../controllers');
 const router = express.Router();
 
 router
-    .post('/create', passport.authenticate('local'), FileController.create)
+    .post('/create', passport.authenticate('basic'), FileController.create)
     .get('/getById', FileController.getById)
     .get('/getByPostId', FileController.getByPostId)
-    .put('/update', passport.authenticate('local'), FileController.update)
-    .delete('/deleteById', passport.authenticate('local'), FileController.deleteById);
+    .put('/update', passport.authenticate('basic'), FileController.update)
+    .delete('/deleteById', passport.authenticate('basic'), FileController.deleteById);
 
 module.exports = router;

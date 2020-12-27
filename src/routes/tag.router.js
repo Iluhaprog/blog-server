@@ -4,9 +4,9 @@ const { TagController } = require('../controllers');
 const router = express.Router();
 
 router
-    .post('/create', passport.authenticate('local'),TagController.create)
+    .post('/create', passport.authenticate('basic'),TagController.create)
     .get('/getById', TagController.getById)
     .get('/getByPostId', TagController.getByPostId)
-    .delete('/deleteById', passport.authenticate('local'), TagController.deleteById);
+    .delete('/deleteById', passport.authenticate('basic'), TagController.deleteById);
 
 module.exports = router;
