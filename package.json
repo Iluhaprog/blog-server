@@ -25,6 +25,7 @@
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "connect-redis": "^5.0.0",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "dropbox": "^8.2.0",
@@ -36,12 +37,14 @@
     "multer-dropbox": "^1.0.1",
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "redis": "^3.0.2",
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
     "mocha": "^8.2.1",
     "nodemon": "^2.0.6",
-    "supertest": "^6.0.1"
+    "supertest": "^6.0.1",
+    "supertest-session": "^4.1.0"
   }
 }
