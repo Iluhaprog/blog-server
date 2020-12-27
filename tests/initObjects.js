@@ -38,6 +38,10 @@ const tag = {
     title: 'React',
 };
 
+const auth = {
+    row: 'username=email@email.email&password=12345',
+};
+
 module.exports = {
     userData: user,
     postData: post,
@@ -45,4 +49,5 @@ module.exports = {
     commentData: comment,
     fileData: file,
     tagData: tag,
+    auth,
 };

@@ -2,7 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
 const { RoleApi, UserApi, PostApi } = require('../../src/models');
-const { userData, postData, tagData } = require('../initObjects');
+const { userData, postData, tagData, auth } = require('../initObjects');
 
 describe('Test for tag api of app', async function() {
     let roleId = 0;
@@ -20,7 +20,7 @@ describe('Test for tag api of app', async function() {
         postId = post.id;
 
         const { body } = await request(app)
-                            .post('/tag/create')
+                            .post(`/tag/create?${auth.row}`)
                             .set('Accept', 'application/json')
                             .send({ tag: tagData });
         tagData.id = body.id;
@@ -45,7 +45,7 @@ describe('Test for tag api of app', async function() {
 
     it('Should delete tag by id', async function() {
         const res = await request(app)
-                        .delete(`/comment/deleteById?id=${tagData.id}`)
+                        .delete(`/comment/deleteById?id=${tagData.id}&${auth.row}`)
                         .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);

@@ -2,7 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
 const { RoleApi, UserApi, PostApi } = require('../../src/models');
-const { userData, postData, commentData } = require('../initObjects');
+const { userData, postData, commentData, auth } = require('../initObjects');
 
 describe('Test for comment api of app', async function() {
     let roleId = 0;
@@ -20,7 +20,7 @@ describe('Test for comment api of app', async function() {
         commentData.postId = post.id;
 
         const { body } = await request(app)
-                            .post('/comment/create')
+                            .post(`/comment/create?${auth.row}`)
                             .set('Accept', 'application/json')
                             .send({ comment: commentData });
         commentData.id = body.id;
@@ -60,7 +60,7 @@ describe('Test for comment api of app', async function() {
     it('Should update comment', async function() {
         commentData.text = 'New post is cool!';
         const { body } = await request(app)
-                            .put('/comment/update')
+                            .put(`/comment/update?${auth.row}`)
                             .set('Accept', 'application/json')
                             .send({ comment: commentData });
         assert.deepStrictEqual(body, commentData);
@@ -68,7 +68,7 @@ describe('Test for comment api of app', async function() {
 
     it('Should delete comment by id', async function() {
         const res = await request(app)
-                        .delete(`/comment/deleteById?id=${commentData.id}`)
+                        .delete(`/comment/deleteById?id=${commentData.id}&${auth.row}`)
                         .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);

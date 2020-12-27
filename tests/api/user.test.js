@@ -2,7 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
 const { RoleApi } = require('../../src/models');
-const { userData } = require('../initObjects');
+const { userData, auth } = require('../initObjects');
 
 describe('Test for user api of app', async function() {
     const user = userData;
@@ -33,7 +33,7 @@ describe('Test for user api of app', async function() {
 
     it('Should get all users', async function() {
         const res = await request(app)
-                            .get(`/user/getAll`)
+                            .get(`/user/getAll?${auth.row}`)
                             .send();
         assert.deepStrictEqual(res.body, [user]);
     });
@@ -55,7 +55,7 @@ describe('Test for user api of app', async function() {
     it('Should update', async function() { 
         user.avatarImage = 'newAvatar.png';
         const res = await request(app)
-                            .put('/user/update')
+                            .put(`/user/update?${auth.row}`)
                             .set('Accept', 'application/json')
                             .send({ user: user });
         assert.deepStrictEqual(res.body, user);
@@ -63,7 +63,7 @@ describe('Test for user api of app', async function() {
 
     it('Should delete user by id', async function() {
         const res = await request(app)
-                            .delete(`/user/deleteById?id=${user.id}`)
+                            .delete(`/user/deleteById?id=${user.id}&${auth.row}`)
                             .send();
         await RoleApi.deleteById(user.roleId);
         

@@ -2,7 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
 const { RoleApi, UserApi, TagApi } = require('../../src/models');
-const { userData, postData } = require('../initObjects');
+const { userData, postData, auth } = require('../initObjects');
 
 describe('Test for post api of app', async function() {
     let roleId = 0;
@@ -14,7 +14,7 @@ describe('Test for post api of app', async function() {
         const user = await UserApi.create(userData);
         postData.userId = user.id;
         const { body } = await request(app)
-                            .post('/post/create')
+                            .post(`/post/create?${auth.row}`)
                             .set('Accept', 'application/json')
                             .send({ post: postData });
         postData.id = body.id;
@@ -47,7 +47,7 @@ describe('Test for post api of app', async function() {
     it('Should update', async function() {
         postData.visible = true;
         const { body } = await request(app)
-                            .put('/post/update')
+                            .put(`/post/update?${auth.row}`)
                             .set('Accept', 'application/json')
                             .send({ post: postData });
         assert.deepStrictEqual(body, postData);
@@ -56,7 +56,7 @@ describe('Test for post api of app', async function() {
     it('Should set tags id to post', async function() {
         const newTag = await TagApi.create({ title: 'JavaScript' });
         const res = await request(app)
-                        .put('/post/setTags')
+                        .put(`/post/setTags?${auth.row}`)
                         .set('Accept', 'application/json')
                         .send({
                             postId: postData.id,
@@ -67,7 +67,7 @@ describe('Test for post api of app', async function() {
 
     it('Should delete by id', async function() {
         const res = await request(app)
-                        .delete(`/post/deleteById?id=${postData.id}`)
+                        .delete(`/post/deleteById?id=${postData.id}&${auth.row}`)
                         .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);

@@ -2,7 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
 const { RoleApi, UserApi } = require('../../src/models');
-const { userData, projectData } = require('../initObjects');
+const { userData, projectData, auth } = require('../initObjects');
 
 describe('Test for project api of app', async function() {
     let roleId = 0;
@@ -14,7 +14,7 @@ describe('Test for project api of app', async function() {
         const user = await UserApi.create(userData);
         projectData.userId = user.id;
         const { body } = await request(app)
-                        .post('/project/create')
+                        .post(`/project/create?${auth.row}`)
                         .send({ project: projectData });
         projectData.id = body.id;
 
@@ -45,7 +45,7 @@ describe('Test for project api of app', async function() {
     it('Should update project', async function() {
         projectData.title = 'New title';
         const { body } = await request(app)
-                            .put('/project/update')
+                            .put(`/project/update?${auth.row}`)
                             .set('Accept', 'application/json')
                             .send({ project: projectData });
         assert.deepStrictEqual(body, projectData);
@@ -53,7 +53,7 @@ describe('Test for project api of app', async function() {
 
     it('Should delete by id', async function() {
         const res = await request(app)
-                            .delete(`/project/deleteById?id=${projectData.id}`)
+                            .delete(`/project/deleteById?id=${projectData.id}&${auth.row}`)
                             .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);

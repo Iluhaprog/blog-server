@@ -2,7 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
 const { RoleApi, UserApi, PostApi } = require('../../src/models');
-const { userData, postData, fileData } = require('../initObjects');
+const { userData, postData, fileData, auth } = require('../initObjects');
 
 describe('Test for file api of app', async function() {
     let roleId = 0;
@@ -19,7 +19,7 @@ describe('Test for file api of app', async function() {
         fileData.postId = post.id;
 
         const { body } = await request(app)
-                            .post('/file/create')
+                            .post(`/file/create?${auth.row}`)
                             .set('Accept', 'application/json')
                             .send({ file: fileData });
         fileData.id = body.id;
@@ -45,7 +45,7 @@ describe('Test for file api of app', async function() {
     it('Should update file', async function() {
         fileData.name = 'newName.png';
         const { body } = await request(app)
-                                .put('/file/update')
+                                .put(`/file/update?${auth.row}`)
                                 .set('Accept', 'application/json')
                                 .send({ file: fileData });
         assert.deepStrictEqual(body, fileData);
@@ -53,7 +53,7 @@ describe('Test for file api of app', async function() {
 
     it('Should delete file by id', async function() {
         const res = await request(app)
-                        .delete(`/file/deleteById?id=${fileData.id}`)
+                        .delete(`/file/deleteById?id=${fileData.id}&${auth.row}`)
                         .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);
