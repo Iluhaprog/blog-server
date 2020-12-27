@@ -14,8 +14,9 @@ describe('Test for post api of app', async function() {
         const user = await UserApi.create(userData);
         postData.userId = user.id;
         const { body } = await request(app)
-                            .post(`/post/create?${auth.row}`)
+                            .post(`/post/create`)
                             .set('Accept', 'application/json')
+                            .set('Authorization', auth.header)
                             .send({ post: postData });
         postData.id = body.id;
         postData.date = body.date;
@@ -47,8 +48,9 @@ describe('Test for post api of app', async function() {
     it('Should update', async function() {
         postData.visible = true;
         const { body } = await request(app)
-                            .put(`/post/update?${auth.row}`)
+                            .put(`/post/update`)
                             .set('Accept', 'application/json')
+                            .set('Authorization', auth.header)
                             .send({ post: postData });
         assert.deepStrictEqual(body, postData);
     });
@@ -56,8 +58,9 @@ describe('Test for post api of app', async function() {
     it('Should set tags id to post', async function() {
         const newTag = await TagApi.create({ title: 'JavaScript' });
         const res = await request(app)
-                        .put(`/post/setTags?${auth.row}`)
+                        .put(`/post/setTags`)
                         .set('Accept', 'application/json')
+                        .set('Authorization', auth.header)
                         .send({
                             postId: postData.id,
                             tagsId: [newTag.id],
@@ -67,7 +70,8 @@ describe('Test for post api of app', async function() {
 
     it('Should delete by id', async function() {
         const res = await request(app)
-                        .delete(`/post/deleteById?id=${postData.id}&${auth.row}`)
+                        .delete(`/post/deleteById?id=${postData.id}`)
+                        .set('Authorization', auth.header)
                         .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);

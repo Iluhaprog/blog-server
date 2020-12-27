@@ -20,8 +20,9 @@ describe('Test for tag api of app', async function() {
         postId = post.id;
 
         const { body } = await request(app)
-                            .post(`/tag/create?${auth.row}`)
+                            .post(`/tag/create`)
                             .set('Accept', 'application/json')
+                            .set('Authorization', auth.header)
                             .send({ tag: tagData });
         tagData.id = body.id;
         await PostApi.setTags(post.id, [tagData.id]);
@@ -45,7 +46,8 @@ describe('Test for tag api of app', async function() {
 
     it('Should delete tag by id', async function() {
         const res = await request(app)
-                        .delete(`/comment/deleteById?id=${tagData.id}&${auth.row}`)
+                        .delete(`/comment/deleteById?id=${tagData.id}`)
+                        .set('Authorization', auth.header)
                         .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);

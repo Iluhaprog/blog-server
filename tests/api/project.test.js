@@ -14,7 +14,8 @@ describe('Test for project api of app', async function() {
         const user = await UserApi.create(userData);
         projectData.userId = user.id;
         const { body } = await request(app)
-                        .post(`/project/create?${auth.row}`)
+                        .post(`/project/create`)
+                        .set('Authorization', auth.header)
                         .send({ project: projectData });
         projectData.id = body.id;
 
@@ -45,15 +46,17 @@ describe('Test for project api of app', async function() {
     it('Should update project', async function() {
         projectData.title = 'New title';
         const { body } = await request(app)
-                            .put(`/project/update?${auth.row}`)
+                            .put(`/project/update`)
                             .set('Accept', 'application/json')
+                            .set('Authorization', auth.header)
                             .send({ project: projectData });
         assert.deepStrictEqual(body, projectData);
     });
 
     it('Should delete by id', async function() {
         const res = await request(app)
-                            .delete(`/project/deleteById?id=${projectData.id}&${auth.row}`)
+                            .delete(`/project/deleteById?id=${projectData.id}`)
+                            .set('Authorization', auth.header)
                             .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);

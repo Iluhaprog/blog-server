@@ -19,8 +19,9 @@ describe('Test for file api of app', async function() {
         fileData.postId = post.id;
 
         const { body } = await request(app)
-                            .post(`/file/create?${auth.row}`)
+                            .post(`/file/create`)
                             .set('Accept', 'application/json')
+                            .set('Authorization', auth.header)
                             .send({ file: fileData });
         fileData.id = body.id;
         fileData.date = body.date;
@@ -45,15 +46,17 @@ describe('Test for file api of app', async function() {
     it('Should update file', async function() {
         fileData.name = 'newName.png';
         const { body } = await request(app)
-                                .put(`/file/update?${auth.row}`)
+                                .put(`/file/update`)
                                 .set('Accept', 'application/json')
+                                .set('Authorization', auth.header)
                                 .send({ file: fileData });
         assert.deepStrictEqual(body, fileData);
     });
 
     it('Should delete file by id', async function() {
         const res = await request(app)
-                        .delete(`/file/deleteById?id=${fileData.id}&${auth.row}`)
+                        .delete(`/file/deleteById?id=${fileData.id}`)
+                        .set('Authorization', auth.header)
                         .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);

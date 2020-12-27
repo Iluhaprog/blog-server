@@ -40,6 +40,7 @@ const tag = {
 
 const auth = {
     row: 'username=email@email.email&password=12345',
+    header: 'Basic ZW1haWxAZW1haWwuZW1haWw6MTIzNDU=',
 };
 
 module.exports = {

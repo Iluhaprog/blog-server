@@ -21,8 +21,9 @@ describe('Test for like api of app', async function() {
         likeData.postId = post.id;
 
         const { body } = await request(app)
-                            .post(`/like/create?${auth.row}`)
+                            .post(`/like/create`)
                             .set('Accept', 'application/json')
+                            .set('Authorization', auth.header)
                             .send({ like: likeData });
         likeData.id = body.id;
         assert.deepStrictEqual(body, likeData);
@@ -58,7 +59,8 @@ describe('Test for like api of app', async function() {
 
     it('Should delete like by id', async function() {
         const res = await request(app)
-                        .delete(`/like/deleteById?id=${likeData.id}&${auth.row}`)
+                        .delete(`/like/deleteById?id=${likeData.id}`)
+                        .set('Authorization', auth.header)
                         .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);

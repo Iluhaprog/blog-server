@@ -20,8 +20,9 @@ describe('Test for comment api of app', async function() {
         commentData.postId = post.id;
 
         const { body } = await request(app)
-                            .post(`/comment/create?${auth.row}`)
+                            .post(`/comment/create`)
                             .set('Accept', 'application/json')
+                            .set('Authorization', auth.header)
                             .send({ comment: commentData });
         commentData.id = body.id;
         commentData.date = body.date;
@@ -60,15 +61,17 @@ describe('Test for comment api of app', async function() {
     it('Should update comment', async function() {
         commentData.text = 'New post is cool!';
         const { body } = await request(app)
-                            .put(`/comment/update?${auth.row}`)
+                            .put(`/comment/update`)
                             .set('Accept', 'application/json')
+                            .set('Authorization', auth.header)
                             .send({ comment: commentData });
         assert.deepStrictEqual(body, commentData);
     });
 
     it('Should delete comment by id', async function() {
         const res = await request(app)
-                        .delete(`/comment/deleteById?id=${commentData.id}&${auth.row}`)
+                        .delete(`/comment/deleteById?id=${commentData.id}`)
+                        .set('Authorization', auth.header)
                         .send();
         await RoleApi.deleteById(roleId);
         assert.strictEqual(res.status, 204);

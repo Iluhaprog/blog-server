@@ -33,8 +33,9 @@ describe('Test for user api of app', async function() {
 
     it('Should login user', async function() {
         const { body } = await request(app)
-                                .post(`/user/login?${auth.row}`)
+                                .post(`/user/login`)
                                 .set('Accept', 'application/json')
+                                .set('Authorization', auth.header)
                                 .send();
         assert.deepStrictEqual(body, user);
     });
@@ -43,13 +44,15 @@ describe('Test for user api of app', async function() {
         const { status } = await request(app)
                                 .post(`/user/logout?${auth.row}`)
                                 .set('Accept', 'application/json')
+                                .set('Authorization', auth.header)
                                 .send();
         assert.strictEqual(status, 204);
     });
 
     it('Should get all users', async function() {
         const res = await request(app)
-                            .get(`/user/getAll?${auth.row}`)
+                            .get(`/user/getAll`)
+                            .set('Authorization', auth.header)
                             .send();
         assert.deepStrictEqual(res.body, [user]);
     });
@@ -71,15 +74,17 @@ describe('Test for user api of app', async function() {
     it('Should update', async function() { 
         user.avatarImage = 'newAvatar.png';
         const res = await request(app)
-                            .put(`/user/update?${auth.row}`)
+                            .put(`/user/update`)
                             .set('Accept', 'application/json')
+                            .set('Authorization', auth.header)
                             .send({ user: user });
         assert.deepStrictEqual(res.body, user);
     });
 
     it('Should delete user by id', async function() {
         const res = await request(app)
-                            .delete(`/user/deleteById?id=${user.id}&${auth.row}`)
+                            .delete(`/user/deleteById?id=${user.id}`)
+                            .set('Authorization', auth.header)
                             .send();
         await RoleApi.deleteById(user.roleId);
         

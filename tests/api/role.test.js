@@ -19,7 +19,8 @@ describe('Test for role api of app', async function() {
                 .send({ user: user });
 
         const { body } = await request(app)
-                        .post(`/role/create?role=${role}&${auth.row}`)
+                        .post(`/role/create?role=${role}`)
+                        .set('Authorization', auth.header)
                         .send();
         roleId = body.id;
         assert.deepStrictEqual({id: roleId, role}, body);
@@ -27,14 +28,16 @@ describe('Test for role api of app', async function() {
 
     it('Should get role by id', async function() {
         const { body } = await request(app)
-                            .get(`/role/getById?id=${roleId}&${auth.row}`)
+                            .get(`/role/getById?id=${roleId}`)
+                            .set('Authorization', auth.header)
                             .send();
         assert.deepStrictEqual({id: roleId, role}, body);
     });
 
     it('Should delete role', async function() {
         const res = await request(app)
-                            .delete(`/role/deleteById?id=${roleId}&${auth.row}`)
+                            .delete(`/role/deleteById?id=${roleId}`)
+                            .set('Authorization', auth.header)
                             .send();
         await RoleApi.deleteById(user.roleId);
         assert.strictEqual(res.status, 204);
