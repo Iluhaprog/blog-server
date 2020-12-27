@@ -1,6 +1,23 @@
 const { getPasswordHash } = require('../libs/crypt');
 const { UserApi } = require('../models/');
 
+async function login(req, res) {
+    try {
+        res.json(req.user);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function logout(req, res) {
+    try {
+        req.logout();
+        res.status(204).send();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function getById(req, res) {
     try {
         const { id } = req.query;
@@ -81,4 +98,6 @@ module.exports = {
     create,
     update,
     deleteById,
+    login,
+    logout,
 };
