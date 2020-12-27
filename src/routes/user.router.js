@@ -4,6 +4,8 @@ const { UserController } = require('../controllers');
 const router = express.Router();
 
 router
+    .post('/login', passport.authenticate('local'), UserController.login)
+    .post('/logout', passport.authenticate('local'), UserController.logout)
     .get('/getById', UserController.getById)
     .get('/getAll', passport.authenticate('local'), UserController.getAll)
     .get('/getByEmail', UserController.getByEmail)
