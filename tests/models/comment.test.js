@@ -1,19 +1,14 @@
 const assert = require('assert');
 
-const { CommentApi, PostApi, UserApi, RoleApi } = require('../../src/models');
+const { CommentApi, PostApi, UserApi } = require('../../src/models');
 const { postData, userData, commentData } = require('../initObjects');
 
 describe('Test comment api', async function() {
     const comment = commentData;
-    let roleId = 0;
 
     it('Should create comment', async function() {
         try {
-            const role = await RoleApi.create('User');
-            userData.roleId = role.id;
-
             const user = await UserApi.create(userData);
-            roleId = role.id;
             postData.userId = user.id;
 
             const post = await PostApi.create(postData);
@@ -85,7 +80,7 @@ describe('Test comment api', async function() {
             await CommentApi.deleteById(comment.id);
 
             const commentData = await CommentApi.getById(comment.id);
-            await RoleApi.deleteById(roleId);
+            await UserApi.deleteById(postData.userId);
             assert.deepStrictEqual(commentData, {});
         } catch (error) {
             console.error(error);

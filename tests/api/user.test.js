@@ -1,24 +1,25 @@
 const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
-const { RoleApi } = require('../../src/models');
+const { UserApi } = require('../../src/models');
 const { userData, auth } = require('../initObjects');
 
 describe('Test for user api of app', async function() {
     const user = userData;
 
     it('Should create user', async function() {
-        const role = await RoleApi.create('User' + Date.now());
-        user.roleId = role.id;
-
         const res = await request(app)
                                 .post('/user/create')
                                 .set('Accept', 'application/json')
                                 .send({ user: user });
         const newUser = res.body;
+
         user.id = newUser.id;
+        user.roleId = parseInt(newUser.roleId);
+        newUser.roleId = parseInt(newUser.roleId);
         user.password = newUser.password;
         user.date = newUser.date;
+
         assert.deepStrictEqual(newUser, user);
 
     });
@@ -86,7 +87,7 @@ describe('Test for user api of app', async function() {
                             .delete(`/user/deleteById?id=${user.id}`)
                             .set('Authorization', auth.header)
                             .send();
-        await RoleApi.deleteById(user.roleId);
+        await UserApi.deleteById(user.id);
         
         assert.strictEqual(res.status, 204);
     });

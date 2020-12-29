@@ -1,18 +1,13 @@
 const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
-const { RoleApi, UserApi, PostApi } = require('../../src/models');
+const { UserApi, PostApi } = require('../../src/models');
 const { userData, postData, auth } = require('../initObjects');
 
 describe('Test for like api of app', async function() {
-    let roleId = 0;
     let likeData = {};
 
     it('Should create like', async function() {
-        const role = await RoleApi.create('ROLE');
-        roleId = role.id;
-        userData.roleId = roleId;
-
         const user = await UserApi.create(userData);
         postData.userId = user.id;
         likeData.userId = user.id;
@@ -62,7 +57,7 @@ describe('Test for like api of app', async function() {
                         .delete(`/like/deleteById?id=${likeData.id}`)
                         .set('Authorization', auth.header)
                         .send();
-        await RoleApi.deleteById(roleId);
+        await UserApi.deleteById(likeData.userId);
         assert.strictEqual(res.status, 204);
     });
 });

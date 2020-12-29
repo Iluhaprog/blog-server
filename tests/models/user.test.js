@@ -7,9 +7,10 @@ describe('Test for user api', async function() {
 
     it('Should create user', async function() {
         try {
-            userData.roleId = (await RoleApi.create('UserRole')).id;
             const newUser = await UserApi.create(userData);
             userData.id = newUser.id;
+            userData.roleId = parseInt(newUser.roleId);
+            newUser.roleId = parseInt(newUser.roleId);
             userData.date = newUser.date;
             assert.deepStrictEqual(newUser, userData);
         } catch (error) {
@@ -87,7 +88,6 @@ describe('Test for user api', async function() {
     it('Should delete user', async function() {
         try {
             await UserApi.deleteById(userData.id);
-            await RoleApi.deleteById(userData.roleId);
             const result = await UserApi.getById(userData.id);
             assert.deepStrictEqual(result, {});
         } catch (error) {

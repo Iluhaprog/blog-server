@@ -1,7 +1,7 @@
 const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
-const { RoleApi } = require('../../src/models');
+const { RoleApi, UserApi } = require('../../src/models');
 const { auth, userData } = require('../initObjects');
 
 describe('Test for role api of app', async function() {
@@ -13,10 +13,11 @@ describe('Test for role api of app', async function() {
         const newRole = await RoleApi.create('User' + Date.now());
         user.roleId = newRole.id;
 
-        await request(app)
-                .post('/user/create')
-                .set('Accept', 'application/json')
-                .send({ user: user });
+        const res = await request(app)
+                            .post('/user/create')
+                            .set('Accept', 'application/json')
+                            .send({ user: user });
+        user.id = res.body.id;
 
         const { body } = await request(app)
                         .post(`/role/create?role=${role}`)
@@ -39,7 +40,8 @@ describe('Test for role api of app', async function() {
                             .delete(`/role/deleteById?id=${roleId}`)
                             .set('Authorization', auth.header)
                             .send();
-        await RoleApi.deleteById(user.roleId);
+        await RoleApi.deleteById(roleId);
+        await UserApi.deleteById(user.id);
         assert.strictEqual(res.status, 204);
     });
 

@@ -1,19 +1,14 @@
 const assert = require('assert');
 
-const { ProjectApi, UserApi, RoleApi } = require('../../src/models');
+const { ProjectApi, UserApi } = require('../../src/models');
 const { projectData, userData } = require('../initObjects');
 
 describe('Test project api', async function() {
     const project = projectData;
-    let roleId = 0;
 
     it('Should create project', async function() {
         try {
-            const role = await RoleApi.create('User');
-            userData.roleId = role.id;
-
             const user = await UserApi.create(userData);
-            roleId = role.id;
             project.userId = user.id;
 
             const newProject = await ProjectApi.create(project);
@@ -67,7 +62,7 @@ describe('Test project api', async function() {
         try {
             await ProjectApi.deleteById(project.id);
             const projectData = await ProjectApi.getById(project.id);
-            await RoleApi.deleteById(roleId);
+            await UserApi.deleteById(project.userId);
             assert.deepStrictEqual(projectData, {});
         } catch(error) {
             console.error(error);

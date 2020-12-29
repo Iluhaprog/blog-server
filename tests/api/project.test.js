@@ -1,16 +1,11 @@
 const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
-const { RoleApi, UserApi } = require('../../src/models');
+const { UserApi } = require('../../src/models');
 const { userData, projectData, auth } = require('../initObjects');
 
 describe('Test for project api of app', async function() {
-    let roleId = 0;
-
     it('Should create project', async function() {
-        const role = await RoleApi.create('ROLE');
-        roleId = role.id;
-        userData.roleId = roleId;
         const user = await UserApi.create(userData);
         projectData.userId = user.id;
         const { body } = await request(app)
@@ -58,7 +53,7 @@ describe('Test for project api of app', async function() {
                             .delete(`/project/deleteById?id=${projectData.id}`)
                             .set('Authorization', auth.header)
                             .send();
-        await RoleApi.deleteById(roleId);
+        await UserApi.deleteById(projectData.userId);
         assert.strictEqual(res.status, 204);
     });
 }); 

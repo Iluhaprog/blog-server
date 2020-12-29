@@ -1,19 +1,15 @@
 const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
-const { RoleApi, UserApi, PostApi } = require('../../src/models');
+const { UserApi, PostApi } = require('../../src/models');
 const { userData, postData, fileData, auth } = require('../initObjects');
 
 describe('Test for file api of app', async function() {
-    let roleId = 0;
 
     it('Should create file', async function() {
-        const role = await RoleApi.create('ROLE');
-        roleId = role.id;
-        userData.roleId = roleId;
-
         const user = await UserApi.create(userData);
         postData.userId = user.id;
+        userData.roleId = user.roleId;
 
         const post = await PostApi.create(postData);
         fileData.postId = post.id;
@@ -58,7 +54,7 @@ describe('Test for file api of app', async function() {
                         .delete(`/file/deleteById?id=${fileData.id}`)
                         .set('Authorization', auth.header)
                         .send();
-        await RoleApi.deleteById(roleId);
+        await UserApi.deleteById(postData.userId);
         assert.strictEqual(res.status, 204);
     });
 

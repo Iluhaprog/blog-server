@@ -1,19 +1,14 @@
 const assert = require('assert');
 
-const { TagApi, PostApi, UserApi, RoleApi } = require('../../src/models');
+const { TagApi, PostApi, UserApi } = require('../../src/models');
 const { postData, userData } = require('../initObjects');
 
 describe('Test api of post model', async function() {
     const post = postData;
 
-    let roleId = 0;
-
     it('Should create post', async function() {
         try {
-            const role = await RoleApi.create('User');
-            userData.roleId = role.id;
             const user = await UserApi.create(userData);
-            roleId = role.id;
             post.userId = user.id;
             const newPost = await PostApi.create(post);
             post.id = newPost.id;
@@ -83,7 +78,7 @@ describe('Test api of post model', async function() {
         try {
             await PostApi.deleteById(post.id);
             const postData = await PostApi.getById(post.id);
-            await RoleApi.deleteById(roleId);
+            await UserApi.deleteById(post.userId);
 
             assert.deepStrictEqual(postData, {});
         } catch(error) {

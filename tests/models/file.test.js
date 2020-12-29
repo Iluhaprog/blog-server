@@ -1,21 +1,16 @@
 const assert = require('assert');
 
-const { FileApi, PostApi, UserApi, RoleApi } = require('../../src/models');
+const { FileApi, PostApi, UserApi } = require('../../src/models');
 const { postData, userData, fileData } = require('../initObjects');
 
 describe('Test file api', async function() {
     const file = fileData;
 
     let postId = 0;
-    let roleId = 0;
 
     it('Should create file', async function() {
         try {
-            const role = await RoleApi.create('User');
-            userData.roleId = role.id;
-
             const user = await UserApi.create(userData);
-            roleId = role.id;
             postData.userId = user.id;
 
             const post = await PostApi.create(postData);
@@ -67,7 +62,7 @@ describe('Test file api', async function() {
             await FileApi.deleteById(file.id);
 
             const fileData = await FileApi.getById(file.id);
-            await RoleApi.deleteById(roleId);
+            await UserApi.deleteById(postData.userId);
             assert.deepStrictEqual(fileData, {});
         } catch (error) {
             console.error(error);

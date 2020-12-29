@@ -1,19 +1,14 @@
 const request = require('supertest');
 const assert = require('assert');
 const app = require('../../src/app');
-const { RoleApi, UserApi, PostApi } = require('../../src/models');
+const { UserApi, PostApi } = require('../../src/models');
 const { userData, postData, commentData, auth } = require('../initObjects');
 
 describe('Test for comment api of app', async function() {
-    let roleId = 0;
-
-    it('Should create comment', async function() {
-        const role = await RoleApi.create('ROLE');
-        roleId = role.id;
-        userData.roleId = roleId;
-
+    it('Should create comment', async function() {      
         const user = await UserApi.create(userData);
         postData.userId = user.id;
+        userData.roleId = user.roleId;
         commentData.userId = user.id;
 
         const post = await PostApi.create(postData);
@@ -73,7 +68,7 @@ describe('Test for comment api of app', async function() {
                         .delete(`/comment/deleteById?id=${commentData.id}`)
                         .set('Authorization', auth.header)
                         .send();
-        await RoleApi.deleteById(roleId);
+        await UserApi.deleteById(commentData.userId);
         assert.strictEqual(res.status, 204);
     });
 });

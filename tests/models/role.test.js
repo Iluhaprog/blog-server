@@ -33,11 +33,10 @@ describe('Test for role api', async function() {
 
     it(`Should return role by user`, async function() {
         try {
-            userData.roleId = mainId;
             const user = await UserApi.create(userData);
             const role = await RoleApi.getByUser(user);
             await UserApi.deleteById(user.id);
-            assert.strictEqual(role.id, mainId);
+            assert.strictEqual(role.id, 2);
         } catch (error) {
             console.error(error);
         }
