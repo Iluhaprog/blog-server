@@ -1,5 +1,6 @@
 const { User } = require('./model');
 const { getModelData, getModelsDataArray } = require('../../libs/model');
+require('dotenv').config();
 
 async function usernameIsUnique(username) {
     try {
@@ -65,6 +66,7 @@ async function getByUsername(username) {
 
 async function create(user) {
     try {
+        user.roleId = process.env.FOLLOWER;
         const result = await User.create(user);
         return getModelData(result);
     } catch (error) {
