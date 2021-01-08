@@ -1,4 +1,5 @@
 node_modules/
 src/database/*
 !src/database/blog.sql
+!src/database/init.sql
 .env
