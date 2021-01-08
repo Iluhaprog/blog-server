@@ -1,14 +1,15 @@
 const { express, passport } = require('../config/express');
 const { LikeController } = require('../controllers');
+const { auth } = require('../libs/filters');
 
 const router = express.Router();
 
 router
-    .post('/create', passport.authenticate('basic'), LikeController.create)
+    .post('/create', auth.isAuthorized, LikeController.create)
     .get('/getById', LikeController.getById)
     .get('/getAll', LikeController.getAll)
     .get('/getByUserId', LikeController.getByUserId)
     .get('/getByPostId', LikeController.getByPostId)
-    .delete('/deleteById', passport.authenticate('basic'), LikeController.deleteById);
+    .delete('/deleteById', auth.isAuthorized, LikeController.deleteById);
 
 module.exports = router;

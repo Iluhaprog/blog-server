@@ -1,11 +1,12 @@
 const { express, passport } = require('../config/express');
 const { RoleController } = require('../controllers');
+const { auth } = require('../libs/filters');
 
 const router = express.Router();
 
 router
-    .post('/create', passport.authenticate('basic'), RoleController.create)
-    .get('/getById', passport.authenticate('basic'), RoleController.getById)
-    .delete('/deleteById', passport.authenticate('basic'),RoleController.deleteById);
+    .post('/create', auth.isAuthorized, RoleController.create)
+    .get('/getById', auth.isAuthorized, RoleController.getById)
+    .delete('/deleteById', auth.isAuthorized, RoleController.deleteById);
 
 module.exports = router;

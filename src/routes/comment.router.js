@@ -1,15 +1,16 @@
 const { express, passport } = require('../config/express');
 const { CommentController } = require('../controllers');
+const { auth } = require('../libs/filters');
 
 const router = express.Router();
 
 router
-    .post('/create', passport.authenticate('basic'), CommentController.create)
+    .post('/create', auth.isAuthorized, CommentController.create)
     .get('/getById', CommentController.getById)
     .get('/getAll', CommentController.getAll)
     .get('/getByPostId', CommentController.getByPostId)
     .get('/getByUserId', CommentController.getByUserId)
-    .put('/update', passport.authenticate('basic'), CommentController.update)
-    .delete('/deleteById', passport.authenticate('basic'), CommentController.deleteById);
+    .put('/update', auth.isAuthorized, CommentController.update)
+    .delete('/deleteById', auth.isAuthorized, CommentController.deleteById);
 
 module.exports = router;

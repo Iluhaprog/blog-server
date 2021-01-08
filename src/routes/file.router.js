@@ -1,13 +1,14 @@
 const { express, passport } = require('../config/express');
 const { FileController } = require('../controllers');
+const { auth } = require('../libs/filters');
 
 const router = express.Router();
 
 router
-    .post('/create', passport.authenticate('basic'), FileController.create)
+    .post('/create', auth.isAuthorized, FileController.create)
     .get('/getById', FileController.getById)
     .get('/getByPostId', FileController.getByPostId)
-    .put('/update', passport.authenticate('basic'), FileController.update)
-    .delete('/deleteById', passport.authenticate('basic'), FileController.deleteById);
+    .put('/update', auth.isAuthorized, FileController.update)
+    .delete('/deleteById', auth.isAuthorized, FileController.deleteById);
 
 module.exports = router;

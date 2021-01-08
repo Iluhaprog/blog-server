@@ -1,17 +1,18 @@
 const { express, passport } = require('../config/express');
 const { UserController } = require('../controllers');
+const { auth } = require('../libs/filters');
 
 const router = express.Router();
 
 router
     .post('/login', passport.authenticate('basic'), UserController.login)
-    .post('/logout', passport.authenticate('basic'), UserController.logout)
+    .post('/logout', auth.isAuthorized, UserController.logout)
     .get('/getById', UserController.getById)
-    .get('/getAll', passport.authenticate('basic'), UserController.getAll)
+    .get('/getAll', auth.isAuthorized, UserController.getAll)
     .get('/getByEmail', UserController.getByEmail)
     .get('/getByUsername', UserController.getByUsername)
     .post('/create', UserController.create)
-    .put('/update', passport.authenticate('basic'), UserController.update)
-    .delete('/deleteById', passport.authenticate('basic'), UserController.deleteById);
+    .put('/update', auth.isAuthorized, UserController.update)
+    .delete('/deleteById', auth.isAuthorized, UserController.deleteById);
 
 module.exports = router;
