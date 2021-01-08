@@ -1,15 +1,15 @@
 const { express, passport } = require('../config/express');
 const { ProjectController } = require('../controllers');
-const { auth } = require('../libs/filters');
+const { auth, access } = require('../libs/filters');
 
 const router = express.Router();
 
 router
-    .post('/create', auth.isAuthorized, ProjectController.create)
+    .post('/create', [auth.isAuthorized, access.isAdmin], ProjectController.create)
     .get('/getById', ProjectController.getById)
     .get('/getAll', ProjectController.getAll)
     .get('/getByUserId', ProjectController.getByUserId)
-    .put('/update', auth.isAuthorized, ProjectController.update)
-    .delete('/deleteById', auth.isAuthorized, ProjectController.deleteById);
+    .put('/update', [auth.isAuthorized, access.isAdmin], ProjectController.update)
+    .delete('/deleteById', [auth.isAuthorized, access.isAdmin], ProjectController.deleteById);
 
 module.exports = router;
