@@ -1,28 +1,27 @@
 const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
-const { UserApi, PostApi } = require('../../src/models');
-const { userData, postData, tagData, auth } = require('../initObjects');
+const { PostApi } = require('../../src/models');
+const { postData, tagData, auth } = require('../initObjects');
 
 describe('Test for tag api of app', async function() {
     let postId = 0;
 
     var testSession = session(app, {
         befor: function(req) {
-            req.set('authorization', auth.header);
+            req.set('authorization', auth.admin);
         }
     });
     
     it('Should create tag', async function() {
-        const user = await UserApi.create(userData);
-        postData.userId = user.id;
+        
+        const userData = await testSession
+                            .post('/user/login')
+                            .set('authorization', auth.admin)
+                            .send();
+        postData.userId = userData.body.id;
         const post = await PostApi.create(postData);
         postId = post.id;
-       
-        await testSession
-            .post('/user/login')
-            .set('authorization', auth.header)
-            .send();
 
         const { body } = await testSession
                             .post(`/tag/create`)
@@ -51,10 +50,10 @@ describe('Test for tag api of app', async function() {
     it('Should delete tag by id', async function() {
         const res = await testSession
                         .delete(`/comment/deleteById?id=${tagData.id}`)
-                        .set('authorization', auth.header)
+                        .set('authorization', auth.admin)
                         .send();
         await testSession.post('/user/logout').send();
-        await UserApi.deleteById(postData.userId);
+        await PostApi.deleteById(postId);
         assert.strictEqual(res.status, 204);
     });
 });

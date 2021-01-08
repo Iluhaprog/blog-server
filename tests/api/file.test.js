@@ -1,24 +1,22 @@
 const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
-const { UserApi, PostApi } = require('../../src/models');
-const { userData, postData, fileData, auth } = require('../initObjects');
+const { PostApi } = require('../../src/models');
+const { postData, fileData, auth } = require('../initObjects');
 
 describe('Test for file api of app', async function() {
     var testSession = session(app, {
         befor: function(req) {
-            req.set('authorization', auth.header);
+            req.set('authorization', auth.admin);
         }
     });
 
     it('Should create file', async function() {
-        const user = await UserApi.create(userData);
-        postData.userId = user.id;
-        userData.roleId = user.roleId;
-        await testSession
-            .post('/user/login')
-            .set('authorization', auth.header)
-            .send();
+        const user = await testSession
+                        .post('/user/login')
+                        .set('authorization', auth.admin)
+                        .send();
+        postData.userId = user.body.id;
 
         const post = await PostApi.create(postData);
         fileData.postId = post.id;
@@ -61,7 +59,7 @@ describe('Test for file api of app', async function() {
                         .delete(`/file/deleteById?id=${fileData.id}`)
                         .send();
         await testSession.post('/user/logout').send();
-        await UserApi.deleteById(postData.userId);
+        await PostApi.deleteById(fileData.postId);
         assert.strictEqual(res.status, 204);
     });
 

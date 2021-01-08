@@ -1,8 +1,8 @@
 const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
-const { UserApi } = require('../../src/models');
-const { userData, projectData, auth } = require('../initObjects');
+const { ProjectApi } = require('../../src/models');
+const { projectData, auth } = require('../initObjects');
 
 describe('Test for project api of app', async function() {
     var testSession = session(app, {
@@ -12,15 +12,14 @@ describe('Test for project api of app', async function() {
     });
 
     it('Should create project', async function() {
-        const user = await UserApi.create(userData);
-        projectData.userId = user.id;
-        await testSession
-            .post('/user/login')
-            .set('authorization', auth.header)
-            .send();
+        const user = await testSession
+                        .post('/user/login')
+                        .set('authorization', auth.admin)
+                        .send();
+        projectData.userId = user.body.id;
         const { body } = await testSession
                         .post(`/project/create`)
-                        .set('Authorization', auth.header)
+                        .set('Authorization', auth.admin)
                         .send({ project: projectData });
         projectData.id = body.id;
         assert.deepStrictEqual(body, projectData);
@@ -61,7 +60,7 @@ describe('Test for project api of app', async function() {
                             .delete(`/project/deleteById?id=${projectData.id}`)
                             .send();
         await testSession.post('/user/logout').send();
-        await UserApi.deleteById(projectData.userId);
+        await ProjectApi.deleteById(projectData.id);
         assert.strictEqual(res.status, 204);
     });
 }); 

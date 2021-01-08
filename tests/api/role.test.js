@@ -1,29 +1,20 @@
 const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
-const { RoleApi, UserApi } = require('../../src/models');
-const { auth, userData } = require('../initObjects');
+const { RoleApi } = require('../../src/models');
+const { auth } = require('../initObjects');
 
 describe('Test for role api of app', async function() {
     const role = 'ROLE';
-    const user = {...userData};
     let roleId = 0;
 
     var testSession = session(app, {
         befor: function(req) {
-            req.set('authorization', auth.header);
+            req.set('authorization', auth.admin);
         }
     });
 
     it('Should create role', async function() {
-        const newRole = await RoleApi.create('User' + Date.now());
-        // user.roleId = newRole.id;
-
-        // const res = await testSession
-        //                     .post('/user/create')
-        //                     .set('Accept', 'application/json')
-        //                     .send({ user: user });
-        // user.id = res.body.id;
         await testSession
             .post('/user/login')
             .set('authorization', auth.admin)

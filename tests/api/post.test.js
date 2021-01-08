@@ -1,8 +1,8 @@
 const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
-const { UserApi, TagApi } = require('../../src/models');
-const { userData, postData, auth } = require('../initObjects');
+const { TagApi, PostApi } = require('../../src/models');
+const { postData, auth } = require('../initObjects');
 
 describe('Test for post api of app', async function() {
     var testSession = session(app, {
@@ -12,12 +12,11 @@ describe('Test for post api of app', async function() {
     });
 
     it('Should create post', async function() {
-        const user = await UserApi.create(userData);
-        postData.userId = user.id;
-        await testSession
-            .post('/user/login')
-            .set('authorization', auth.header)
-            .send();
+        const user = await testSession
+                        .post('/user/login')
+                        .set('authorization', auth.admin)
+                        .send();
+        postData.userId = user.body.id;
         const { body } = await testSession
                             .post(`/post/create`)
                             .set('Accept', 'application/json')
@@ -75,7 +74,7 @@ describe('Test for post api of app', async function() {
                         .delete(`/post/deleteById?id=${postData.id}`)
                         .send();
         await testSession.post('/user/logout').send();
-        await UserApi.deleteById(postData.userId);
+        await PostApi.deleteById(postData.id);
         assert.strictEqual(res.status, 204);
     });
 
