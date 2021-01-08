@@ -1,4 +1,4 @@
-const request = require('supertest');
+const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
 const { UserApi, PostApi } = require('../../src/models');
@@ -7,17 +7,26 @@ const { userData, postData, tagData, auth } = require('../initObjects');
 describe('Test for tag api of app', async function() {
     let postId = 0;
 
+    var testSession = session(app, {
+        befor: function(req) {
+            req.set('authorization', auth.header);
+        }
+    });
+    
     it('Should create tag', async function() {
         const user = await UserApi.create(userData);
         postData.userId = user.id;
-
         const post = await PostApi.create(postData);
         postId = post.id;
+       
+        await testSession
+            .post('/user/login')
+            .set('authorization', auth.header)
+            .send();
 
-        const { body } = await request(app)
+        const { body } = await testSession
                             .post(`/tag/create`)
                             .set('Accept', 'application/json')
-                            .set('Authorization', auth.header)
                             .send({ tag: tagData });
         tagData.id = body.id;
         await PostApi.setTags(post.id, [tagData.id]);
@@ -26,24 +35,25 @@ describe('Test for tag api of app', async function() {
     });
 
     it('Should get tag by id', async function() {
-        const { body } = await request(app)
+        const { body } = await testSession
                                 .get(`/tag/getById?id=${tagData.id}`)
                                 .send();
         assert.deepStrictEqual(body, tagData);
     });
 
     it('Should get tags by post id', async function() {
-        const { body } = await request(app)
+        const { body } = await testSession
                                 .get(`/tag/getByPostId?postId=${postId}`)
                                 .send();
         assert.deepStrictEqual(body, [tagData]);             
     });
 
     it('Should delete tag by id', async function() {
-        const res = await request(app)
+        const res = await testSession
                         .delete(`/comment/deleteById?id=${tagData.id}`)
-                        .set('Authorization', auth.header)
+                        .set('authorization', auth.header)
                         .send();
+        await testSession.post('/user/logout').send();
         await UserApi.deleteById(postData.userId);
         assert.strictEqual(res.status, 204);
     });

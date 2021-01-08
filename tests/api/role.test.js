@@ -1,4 +1,4 @@
-const request = require('supertest');
+const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
 const { RoleApi, UserApi } = require('../../src/models');
@@ -9,37 +9,45 @@ describe('Test for role api of app', async function() {
     const user = {...userData};
     let roleId = 0;
 
+    var testSession = session(app, {
+        befor: function(req) {
+            req.set('authorization', auth.header);
+        }
+    });
+
     it('Should create role', async function() {
         const newRole = await RoleApi.create('User' + Date.now());
         user.roleId = newRole.id;
 
-        const res = await request(app)
+        const res = await testSession
                             .post('/user/create')
                             .set('Accept', 'application/json')
                             .send({ user: user });
         user.id = res.body.id;
+        await testSession
+            .post('/user/login')
+            .set('authorization', auth.header)
+            .send();
 
-        const { body } = await request(app)
+        const { body } = await testSession
                         .post(`/role/create?role=${role}`)
-                        .set('Authorization', auth.header)
                         .send();
         roleId = body.id;
         assert.deepStrictEqual({id: roleId, role}, body);
     });
 
     it('Should get role by id', async function() {
-        const { body } = await request(app)
+        const { body } = await testSession
                             .get(`/role/getById?id=${roleId}`)
-                            .set('Authorization', auth.header)
                             .send();
         assert.deepStrictEqual({id: roleId, role}, body);
     });
 
     it('Should delete role', async function() {
-        const res = await request(app)
+        const res = await testSession
                             .delete(`/role/deleteById?id=${roleId}`)
-                            .set('Authorization', auth.header)
                             .send();
+        await testSession.post('/user/logout').send();
         await RoleApi.deleteById(roleId);
         await UserApi.deleteById(user.id);
         assert.strictEqual(res.status, 204);

@@ -1,17 +1,26 @@
-const request = require('supertest');
+const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
 const { UserApi, TagApi } = require('../../src/models');
 const { userData, postData, auth } = require('../initObjects');
 
 describe('Test for post api of app', async function() {
+    var testSession = session(app, {
+        befor: function(req) {
+            req.set('authorization', auth.header);
+        }
+    });
+
     it('Should create post', async function() {
         const user = await UserApi.create(userData);
         postData.userId = user.id;
-        const { body } = await request(app)
+        await testSession
+            .post('/user/login')
+            .set('authorization', auth.header)
+            .send();
+        const { body } = await testSession
                             .post(`/post/create`)
                             .set('Accept', 'application/json')
-                            .set('Authorization', auth.header)
                             .send({ post: postData });
         postData.id = body.id;
         postData.date = body.date;
@@ -19,7 +28,7 @@ describe('Test for post api of app', async function() {
     });
 
     it('Should get post by id', async function() {
-        const { body } = await request(app)
+        const { body } = await testSession
                             .get(`/post/getById?id=${postData.id}`)
                             .send();
         postData.date = body.date;
@@ -27,14 +36,14 @@ describe('Test for post api of app', async function() {
     });
 
     it('Should get all posts', async function() {
-        const res = await request(app)
+        const res = await testSession
                             .get(`/post/getAll`)
                             .send();
         assert.deepStrictEqual(res.body, [postData]);
     });
 
     it('Should get post by user id', async function() {
-        const { body } = await request(app)
+        const { body } = await testSession
                             .get(`/post/getByUserId?userId=${postData.userId}`)
                             .send();
         assert.deepStrictEqual(body, [postData]);
@@ -42,20 +51,18 @@ describe('Test for post api of app', async function() {
 
     it('Should update', async function() {
         postData.visible = true;
-        const { body } = await request(app)
+        const { body } = await testSession
                             .put(`/post/update`)
                             .set('Accept', 'application/json')
-                            .set('Authorization', auth.header)
                             .send({ post: postData });
         assert.deepStrictEqual(body, postData);
     });
 
     it('Should set tags id to post', async function() {
         const newTag = await TagApi.create({ title: 'JavaScript' });
-        const res = await request(app)
+        const res = await testSession
                         .put(`/post/setTags`)
                         .set('Accept', 'application/json')
-                        .set('Authorization', auth.header)
                         .send({
                             postId: postData.id,
                             tagsId: [newTag.id],
@@ -64,10 +71,10 @@ describe('Test for post api of app', async function() {
     });
 
     it('Should delete by id', async function() {
-        const res = await request(app)
+        const res = await testSession
                         .delete(`/post/deleteById?id=${postData.id}`)
-                        .set('Authorization', auth.header)
                         .send();
+        await testSession.post('/user/logout').send();
         await UserApi.deleteById(postData.userId);
         assert.strictEqual(res.status, 204);
     });
