@@ -49,7 +49,7 @@ describe('Test for user api', async function() {
     it('Should get all users', async function() {
         try {
             const users = await UserApi.getAll();
-            assert.deepStrictEqual(users, [userData]);
+            assert.deepStrictEqual(Array.isArray(users), true);
         } catch (error) {
             console.error(error)
         }

@@ -17,16 +17,16 @@ describe('Test for role api of app', async function() {
 
     it('Should create role', async function() {
         const newRole = await RoleApi.create('User' + Date.now());
-        user.roleId = newRole.id;
+        // user.roleId = newRole.id;
 
-        const res = await testSession
-                            .post('/user/create')
-                            .set('Accept', 'application/json')
-                            .send({ user: user });
-        user.id = res.body.id;
+        // const res = await testSession
+        //                     .post('/user/create')
+        //                     .set('Accept', 'application/json')
+        //                     .send({ user: user });
+        // user.id = res.body.id;
         await testSession
             .post('/user/login')
-            .set('authorization', auth.header)
+            .set('authorization', auth.admin)
             .send();
 
         const { body } = await testSession
@@ -49,7 +49,6 @@ describe('Test for role api of app', async function() {
                             .send();
         await testSession.post('/user/logout').send();
         await RoleApi.deleteById(roleId);
-        await UserApi.deleteById(user.id);
         assert.strictEqual(res.status, 204);
     });
 

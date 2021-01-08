@@ -25,7 +25,6 @@ describe('Test for user api of app', async function() {
         newUser.roleId = parseInt(newUser.roleId);
         user.password = newUser.password;
         user.date = newUser.date;
-
         assert.deepStrictEqual(newUser, user);
 
     });
@@ -48,10 +47,10 @@ describe('Test for user api of app', async function() {
     });
 
     it('Should get all users', async function() {
-        const res = await testSession
+        const { body } = await testSession
                             .get(`/user/getAll`)
                             .send();
-        assert.deepStrictEqual(res.body, [user]);
+        assert.deepStrictEqual(Array.isArray(body), true);
     });
 
     it('Should get by email', async function() { 
