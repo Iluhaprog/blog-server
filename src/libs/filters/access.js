@@ -23,6 +23,5 @@ function getUser(req) {
 }
 
 module.exports = {
-    isFollower, 
     isAdmin,
 };
