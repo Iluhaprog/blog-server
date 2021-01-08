@@ -7,10 +7,14 @@ const { userData, auth } = require('../initObjects');
 describe('Test for user api of app', async function() {
     const user = userData;
 
-    var testSession;
+    var testSession = testSession = session(app, {
+        befor: function(req) {
+            req.set('authorization', auth.header);
+        }
+    });;
 
     it('Should create user', async function() {
-        const res = await request(app)
+        const res = await testSession
                                 .post('/user/create')
                                 .set('Accept', 'application/json')
                                 .send({ user: user });
@@ -27,7 +31,7 @@ describe('Test for user api of app', async function() {
     });
 
     it('Should get by id', async function() { 
-        const res = await request(app)
+        const res = await testSession
                             .get(`/user/getById?id=${user.id}`)
                             .send();
         user.date = res.body.date;
@@ -35,12 +39,6 @@ describe('Test for user api of app', async function() {
     });
 
     it('Should login user', async function() {
-        testSession = session(app, {
-            befor: function(req) {
-                req.set('authorization', auth.header);
-            }
-        });
-
         const { body, status } = await testSession
                     .post('/user/login')
                     .set('authorization', auth.header)
