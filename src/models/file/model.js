@@ -13,6 +13,10 @@ const File = sequelize.define('File', {
             type: DataTypes.STRING(100),
             allowNull: false,
         },
+        path: {
+            type: DataTypes.STRING(100),
+            allowNull: false,
+        },
         date: {
             type: DataTypes.DATE,
             allowNull: false,
