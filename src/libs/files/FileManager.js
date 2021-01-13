@@ -4,22 +4,22 @@ const { dropbox } = require('../../config/express');
 
 class FileManager {
  
-    async uploadFile(req, dirname, ext, cb = () => {}) {
+    async uploadFile(stream, dirname, ext, cb = () => {}) {
         const filename = `${dirname}-${Date.now()}.${ext}`;
         const uploadStream = dropbox({
             resource: 'files/upload',
             parameters: {
-                path: path.join(dirname, filename),
+                path: path.join(`/${dirname}`, filename),
             }
         }, (err, result, response) => cb(err, result, response, filename));
-        req.pipe(uploadStream);
+        stream.pipe(uploadStream);
     }
 
     async downloadFile(res, dirname, filename, cb = () => {}) {
         const downloadStream = dropbox({
             resource: 'files/download',
             parameters: {
-                path: path.join(dirname, filename),
+                path: path.join('/' + dirname, filename),
             }
         }, cb);
         downloadStream.on('data', chunk => {
@@ -31,7 +31,7 @@ class FileManager {
         dropbox({
             resource: 'files/create_folder',
             parameters: {
-                path: dirname,
+                path: '/' + dirname,
             }
         }, cb);
     }
@@ -40,7 +40,7 @@ class FileManager {
         dropbox({
             resource: 'files/delete',
             parameters: {
-                path: path.join(dirname, filename),
+                path: path.join('/' + dirname, filename),
             }
         }, cb);
     }
