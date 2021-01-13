@@ -7,7 +7,7 @@ async function getPasswordHash(password) {
     return hash;
 }
 
-async function compare(password, hash) {
+async function compare(password, hash = "") {
     return await bcrypt.compare(password, hash);
 }
 
