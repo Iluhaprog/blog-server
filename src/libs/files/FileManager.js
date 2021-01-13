@@ -1,11 +1,17 @@
-const { response } = require('express');
 const path = require('path');
-const { dropbox } = require('../../config/express');
+const dropboxApiV2 = require('dropbox-v2-api');
+
+function createDropbox() {
+    return dropboxApiV2.authenticate({
+        token: process.env.ACCESS_TOKEN,
+    });
+}
 
 class FileManager {
  
     async uploadFile(stream, dirname, ext, cb = () => {}) {
         const filename = `${dirname}-${Date.now()}.${ext}`;
+        const dropbox = createDropbox();
         const uploadStream = dropbox({
             resource: 'files/upload',
             parameters: {
@@ -16,6 +22,7 @@ class FileManager {
     }
 
     async downloadFile(res, dirname, filename, cb = () => {}) {
+        const dropbox = createDropbox();
         const downloadStream = dropbox({
             resource: 'files/download',
             parameters: {
@@ -28,6 +35,7 @@ class FileManager {
     }
 
     async createDir(dirname, cb = () => {}) {
+        const dropbox = createDropbox();
         dropbox({
             resource: 'files/create_folder',
             parameters: {
@@ -37,6 +45,7 @@ class FileManager {
     }
 
     async delete(dirname, filename = '', cb = () => {}) {
+        const dropbox = createDropbox();
         dropbox({
             resource: 'files/delete',
             parameters: {
