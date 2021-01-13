@@ -31,8 +31,8 @@ const comment = {
 };
 
 const file = {
-    name: 'main',
-    path: 'main.png',
+    name: 'image.png',
+    path: '',
 };
 
 const tag = {
