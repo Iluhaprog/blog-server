@@ -1,12 +1,19 @@
 const { FileApi } = require('../models');
+const { FileManager } = require('../libs/files');
 
 async function create(req, res) {
     try {
-        const { file } = req.body;
-        const newFile = await FileApi.create(file);
+        const { pathname, filename } = req.file;
+        const { postId } = req.query;
+        const newFile = await FileApi.create({
+            name: filename,
+            path: pathname,
+            postId,
+        });
         res.json(newFile);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error);
     }
 }
 
@@ -17,6 +24,7 @@ async function getById(req, res) {
         res.json(file);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error);
     }
 }
 
@@ -27,6 +35,7 @@ async function getByPostId(req, res) {
         res.json(files);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error);
     }
 }
 
@@ -38,16 +47,22 @@ async function update(req, res) {
         res.json(updatedFile);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error);
     }
 }
 
 async function deleteById(req, res) {
     try {
-        const { id } = req.query;
-        await FileApi.deleteById(id);
-        res.status(204).send();
+        const { id, dirname } = req.query;
+        const file = await FileApi.getById(id);
+        await FileManager.delete(dirname, file.path, async (err, result, response) => {
+            if (err) console.error(err);
+            await FileApi.deleteById(id);
+            res.status(204).send();
+        })
     } catch (error) {
         console.error(error);
+        res.status(400).send(error);
     }
 }
 
