@@ -73,7 +73,9 @@ async function setTags(req, res) {
 async function deleteById(req, res) {
     try {
         const { id } = req.query;
+        const { dirname } = await PostApi.getById(id);
         await PostApi.deleteById(id);
+        await FileManager.delete(dirname, '', err => console.error(err));
         res.status(204).send();
     } catch (error) {
         console.error(error);
