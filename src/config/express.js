@@ -7,12 +7,8 @@ const passport = require('./passport');
 const session = require('express-session');
 const redis = require('redis');
 const connectRedis = require('connect-redis');
-const dropboxApiV2 = require('dropbox-v2-api');
 
 const app = express();
-const dropbox = dropboxApiV2.authenticate({
-    token: process.env.ACCESS_TOKEN,
-});
 const RedisStore = connectRedis(session);
 const redisClient = redis.createClient();
 
@@ -43,5 +39,4 @@ module.exports = {
     express, 
     passport,
     port: process.env.PORT,
-    dropbox,
 }
