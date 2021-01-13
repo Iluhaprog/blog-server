@@ -10,6 +10,13 @@ async function getUser(username) {
     return await UserApi.getByUsername(username);
 }
 
+const isEmpty = obj => {
+    for (let key in obj) {
+        return false;
+    }
+    return true;
+}
+
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
@@ -27,7 +34,7 @@ passport.use(new BasicStrategy(
     async function(username, password, done) {
         try {
             const user = await getUser(username);
-            if (!user) {
+            if (isEmpty(user)) {
                 return done(null, false);
             }
             if (!crypt.compare(password, user.password)) {
