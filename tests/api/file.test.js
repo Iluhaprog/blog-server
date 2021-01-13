@@ -1,6 +1,7 @@
 const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
+const path = require('path')
 const { PostApi } = require('../../src/models');
 const { postData, fileData, auth } = require('../initObjects');
 
@@ -22,11 +23,12 @@ describe('Test for file api of app', async function() {
         fileData.postId = post.id;
 
         const { body } = await testSession
-                            .post(`/file/create`)
-                            .set('Accept', 'application/json')
-                            .send({ file: fileData });
+                            .post(`/file/create?dirname=uploads&filename=${fileData.name}&postId=${post.id}`)
+                            .attach('file', path.join(__dirname, '/../assets/image.png'));
         fileData.id = body.id;
+        fileData.path = body.path,
         fileData.date = body.date;
+        fileData.postId = body.postId;
         assert.deepStrictEqual(body, fileData);
     });
 
@@ -35,6 +37,7 @@ describe('Test for file api of app', async function() {
                             .get(`/file/getById?id=${fileData.id}`)
                             .send();
         fileData.date = body.date;
+        fileData.postId = body.postId;
         assert.deepStrictEqual(body, fileData);
     });
 
@@ -56,7 +59,7 @@ describe('Test for file api of app', async function() {
 
     it('Should delete file by id', async function() {
         const res = await testSession
-                        .delete(`/file/deleteById?id=${fileData.id}`)
+                        .delete(`/file/deleteById?id=${fileData.id}&dirname=uploads`)
                         .send();
         await testSession.post('/user/logout').send();
         await PostApi.deleteById(fileData.postId);
