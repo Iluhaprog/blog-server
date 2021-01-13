@@ -1,7 +1,7 @@
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
 const { UserApi } = require('../models');
-const crypt = require('../libs/crypt');
+const { compare } = require('../libs/crypt');
 
 async function getUser(username) {
     if (username.includes('@')) {
@@ -37,10 +37,10 @@ passport.use(new BasicStrategy(
             if (isEmpty(user)) {
                 return done(null, false);
             }
-            if (!crypt.compare(password, user.password)) {
-                return done(null, false);
+            if (await compare(password, user.password)) {
+                return done(null, user);
             }
-            return done(null, user);
+            return done(null, false);
         } catch (error) {
             return done(error);
         }
