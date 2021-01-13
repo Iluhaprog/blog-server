@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "test": "mocha --max-old-space-size=4096 --timeout 10000 tests/**/*.test.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/start.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "dropbox-v2-api": "^2.4.31",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "multiparty": "^4.2.2",
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
     "passport-http": "^0.3.0",
