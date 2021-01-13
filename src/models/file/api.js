@@ -19,6 +19,19 @@ async function getById(id) {
     }
 }
 
+async function getByName(name) {
+    try {
+        const file = await File.findOne({
+            where: {
+                name: name,
+            },
+        });
+        return getModelData(file);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function getByPostId(postId) {
     try {
         const postFiles = await File.findAll({
@@ -59,6 +72,7 @@ async function deleteById(id) {
 module.exports = {
     create,
     getById,
+    getByName,
     getByPostId,
     update,
     deleteById,

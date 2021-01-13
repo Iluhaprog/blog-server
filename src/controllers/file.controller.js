@@ -1,4 +1,4 @@
-const { FileApi } = require('../models');
+const { FileApi, PostApi } = require('../models');
 const { FileManager } = require('../libs/files');
 
 async function create(req, res) {
@@ -22,6 +22,26 @@ async function getById(req, res) {
         const { id } = req.query;
         const file = await FileApi.getById(id);
         res.json(file);
+    } catch (error) {
+        console.error(error);
+        res.status(400).send(error);
+    }
+}
+
+async function getByName(req, res) {
+    try {
+        const { name } = req.params;
+        const file = await FileApi.getByName(name);
+        if (file) {
+            const { dirname } = await PostApi.getById(file.postId);
+            const { path } = file;
+            await FileManager.downloadFile(res, dirname, path, err => {
+                if (err) res.status(404).send('Not found');
+                res.status(200).send();
+            })
+        } else {
+            res.status(404).send('Not found');
+        }
     } catch (error) {
         console.error(error);
         res.status(400).send(error);
@@ -69,6 +89,7 @@ async function deleteById(req, res) {
 module.exports = {
     create,
     getById,
+    getByName,
     getByPostId,
     update,
     deleteById,
