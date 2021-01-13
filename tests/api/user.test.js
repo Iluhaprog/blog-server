@@ -81,12 +81,12 @@ describe('Test for user api of app', async function() {
         assert.deepStrictEqual(res.body, user);
     });
 
-    it('Should delete user by id', async function() {
-        const res = await admin
-                            .delete(`/user/deleteById?id=${user.id}`)
+    it('Should remove user', async function() {
+        const res = await testSession
+                            .delete(`/user/remove`)
                             .send();
+
         await UserApi.deleteById(user.id);
-        
         assert.strictEqual(res.status, 204);
     });
 
