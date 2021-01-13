@@ -1,10 +1,14 @@
+const { FileManager } = require('../libs/files');
 const { PostApi } = require('../models');
 
 async function create(req, res) {
     try {
         const { post } = req.body;
         const newPost = await PostApi.create(post);
-        res.json(newPost);
+        await FileManager.createDir(newPost.dirname, err => {
+            if (err) res.status(500).send();
+            res.json(newPost);
+        });
     } catch (error) {
         console.error(error);
         res.status(400).send(error)
