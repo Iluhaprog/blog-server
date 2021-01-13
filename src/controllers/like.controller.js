@@ -7,6 +7,7 @@ async function create(req, res) {
         res.json(newLike);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -17,6 +18,7 @@ async function getById(req, res) {
         res.json(like);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -26,6 +28,7 @@ async function getAll(req, res) {
         res.json(likes);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -36,6 +39,7 @@ async function getByPostId(req, res) {
         res.json(likes);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -46,6 +50,7 @@ async function getByUserId(req, res) {
         res.json(likes);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -56,6 +61,7 @@ async function deleteById(req, res) {
         res.status(204).send();
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 module.exports = {

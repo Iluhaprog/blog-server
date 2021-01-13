@@ -7,6 +7,7 @@ async function create(req, res) {
         res.json(newComment);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -17,6 +18,7 @@ async function getById(req, res) {
         res.json(comment);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -27,6 +29,7 @@ async function getByPostId(req, res) {
         res.json(comments);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -37,6 +40,7 @@ async function getByUserId(req, res) {
         res.json(comments);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -46,6 +50,7 @@ async function getAll(req, res) {
         res.json(comments);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -57,6 +62,7 @@ async function update(req, res) {
         res.json(updatedComment);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -67,6 +73,7 @@ async function deleteById(req, res) {
         res.status(204).json();
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 

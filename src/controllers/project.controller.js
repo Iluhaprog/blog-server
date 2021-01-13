@@ -6,7 +6,7 @@ async function create(req, res) {
         const newProject = await ProjectApi.create(project);
         res.json(newProject);
     } catch (error) {
-        console.error(error);
+        console.error(error);res.status(400).send(error)
     }
 }
 
@@ -16,7 +16,7 @@ async function getById(req, res) {
         const project = await ProjectApi.getById(id);
         res.json(project);
     } catch (error) {
-        console.error(error);
+        console.error(error);res.status(400).send(error)
     }
 }
 
@@ -26,6 +26,7 @@ async function getAll(req, res) {
         res.json(projects);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -36,6 +37,7 @@ async function getByUserId(req, res) {
         res.json(projects);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -47,6 +49,7 @@ async function update(req, res) {
         res.json(updatedProject);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -57,6 +60,7 @@ async function deleteById(req, res) {
         res.status(204).send();
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 

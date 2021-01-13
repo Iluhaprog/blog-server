@@ -7,6 +7,7 @@ async function create(req, res) {
         res.json(newRole);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -17,6 +18,7 @@ async function getById(req, res) {
         res.json(role);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -27,6 +29,7 @@ async function deleteById(req, res) {
         res.status(204).send();
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 

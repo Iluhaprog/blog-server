@@ -7,6 +7,7 @@ async function create(req, res) {
         res.json(newPost);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -17,6 +18,7 @@ async function getById(req, res) {
         res.json(post);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -26,6 +28,7 @@ async function getAll(req, res) {
         res.json(posts);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -36,6 +39,7 @@ async function getByUserId(req, res) {
         res.json(posts);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -47,6 +51,7 @@ async function update(req, res) {
         res.json(updatedPost);
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -57,6 +62,7 @@ async function setTags(req, res) {
         res.status(204).send();
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
@@ -67,6 +73,7 @@ async function deleteById(req, res) {
         res.status(204).send();
     } catch (error) {
         console.error(error);
+        res.status(400).send(error)
     }
 }
 
