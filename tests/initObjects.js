@@ -16,6 +16,7 @@ const post = {
     preview: 'preview.png',
     text: 'bla bla bla',
     visible: false,
+    dirname: 'my_first_project',
 };
 
 const project = {

@@ -34,7 +34,9 @@ async function getByUserId(userId) {
 
 async function create(post) {
     try {
-        const newPost = await Post.create(post);
+        const { title } = post;
+        const dirname = title.split(' ').join('_').toLowerCase();
+        const newPost = await Post.create({...post, dirname});
         return getModelData(newPost);
     } catch (error) {
         console.error(error);

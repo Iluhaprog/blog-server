@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 CREATE TABLE IF NOT EXISTS `posts` (
     `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(150) NOT NULL,
+    `dirname` VARCHAR(100) NOT NULL,
     `text` TEXT NOT NULL,
     `description` TEXT NOT NULL,
     `preview` VARCHAR(255) NOT NULL,
