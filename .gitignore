@@ -4,4 +4,5 @@ src/database/*
 !src/database/init.sql
 tests/assets/*
 !tests/assets/file.txt
+!tests/assets/image.png
 .env
