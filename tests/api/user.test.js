@@ -7,11 +7,16 @@ const { userData, auth } = require('../initObjects');
 describe('Test for user api of app', async function() {
     const user = userData;
 
-    var testSession = testSession = session(app, {
+    var testSession = session(app, {
         befor: function(req) {
             req.set('authorization', auth.header);
         }
-    });;
+    });
+    const admin = await session(app, {
+        befor: function(req) {
+            req.set('authorization', auth.admin);
+        }
+    });
 
     it('Should create user', async function() {
         const res = await testSession
@@ -77,7 +82,7 @@ describe('Test for user api of app', async function() {
     });
 
     it('Should delete user by id', async function() {
-        const res = await testSession
+        const res = await admin
                             .delete(`/user/deleteById?id=${user.id}`)
                             .send();
         await UserApi.deleteById(user.id);

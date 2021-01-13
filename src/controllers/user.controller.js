@@ -6,7 +6,7 @@ async function login(req, res) {
         res.json(req.user);
     } catch (error) {
         console.error(error);
-        res.status(400).send(error)
+        res.status(400).send(error);
     }
 }
 
@@ -16,7 +16,7 @@ async function logout(req, res) {
         res.status(204).send();
     } catch (error) {
         console.error(error);
-        res.status(400).send(error)
+        res.status(400).send(error);
     }
 }
 
@@ -27,7 +27,7 @@ async function getById(req, res) {
         res.json(user);
     } catch (error) {
         console.error(error);
-        res.status(400).send(error)
+        res.status(400).send(error);
     }
 }
 
@@ -37,7 +37,7 @@ async function getAll(req, res) {
         res.json(users);
     } catch (error) {
         console.error(error);
-        res.status(400).send(error)
+        res.status(400).send(error);
     }
 }
 
@@ -48,7 +48,7 @@ async function getByEmail(req, res) {
         res.json(user);
     } catch (error) {
         console.error(error);
-        res.status(400).send(error)
+        res.status(400).send(error);
     }
 }
 
@@ -59,7 +59,7 @@ async function getByUsername(req, res) {
         res.json(user);
     } catch (error) {
         console.error(error);
-        res.status(400).send(error)
+        res.status(400).send(error);
     }
 }
 
@@ -72,7 +72,7 @@ async function create(req, res) {
         res.json(newUser);
     } catch (error) {
         console.log(error);
-        res.status(400).send(error)
+        res.status(400).send(error);
     }
 }
 
@@ -85,7 +85,18 @@ async function update(req, res) {
         res.json(updatedUser);
     } catch (error) {
         console.log(error);
-        res.status(400).send(error)
+        res.status(400).send(error);
+    }
+}
+
+async function remove(req, res) {
+    try {
+        const { id } = req.user;
+        await UserApi.deleteById(id);
+        res.status(204).send();
+    } catch (error) {
+        console.error(error);
+        res.status(400).send(error);
     }
 }
 
@@ -96,7 +107,7 @@ async function deleteById(req, res) {
         res.status(204).send();
     } catch (error) {
         console.error(error);
-        res.status(400).send(error)
+        res.status(400).send(error);
     }
 }
 
@@ -107,6 +118,7 @@ module.exports = {
     getByUsername,
     create,
     update,
+    remove,
     deleteById,
     login,
     logout,
