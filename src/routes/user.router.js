@@ -12,6 +12,7 @@ router
     .get('/getByEmail', UserController.getByEmail)
     .get('/getByUsername', UserController.getByUsername)
     .post('/create', UserController.create)
+    .get('/verify/:code', UserController.verify)
     .put('/update', auth.isAuthorized, UserController.update)
     .delete('/remove', auth.isAuthorized, UserController.remove)
     .delete('/deleteById', [auth.isAuthorized, access.isAdmin], UserController.deleteById);
