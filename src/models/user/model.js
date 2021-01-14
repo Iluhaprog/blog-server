@@ -5,6 +5,7 @@ const { Like } = require('../like/model');
 const { Post } = require('../post/model');
 const { Project } = require('../project/model');
 const { oneToMany } = require('../../libs/model');
+const { ConfirmationCode } = require('../confirmation_code/model');
 
 const User = sequelize.define('User', {
         id: {
@@ -65,6 +66,7 @@ oneToMany(User, Post);
 oneToMany(User, Project);
 oneToMany(User, Like);
 oneToMany(User, Comment);
+oneToMany(User, ConfirmationCode);
 
 module.exports = { 
     User,
