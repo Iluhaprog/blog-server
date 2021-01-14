@@ -11,6 +11,10 @@ const user = {
     roleId: 0,
 };
 
+const confirm = {
+    code: 'HASH',
+};
+
 const post = {
     title: 'My first project',
     description: 'I tell you about problems with wich i will face',
@@ -54,5 +58,6 @@ module.exports = {
     commentData: comment,
     fileData: file,
     tagData: tag,
+    confirmData: confirm,
     auth,
 };
