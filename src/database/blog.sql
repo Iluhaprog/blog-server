@@ -27,6 +27,15 @@ CREATE TABLE IF NOT EXISTS `users` (
         ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS `conformation_codes` (
+    `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
+    `code` VARCHAR(150) NOT NULL,
+    `userId` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`userId`) REFERENCES `users`(`id`)
+        ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS `posts` (
     `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(150) NOT NULL,
