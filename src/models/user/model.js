@@ -46,6 +46,11 @@ const User = sequelize.define('User', {
             type: DataTypes.STRING,
             defaultValue: '',
         },
+        confirmed: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+        },
         date: {
             type: DataTypes.DATE,
             allowNull: false,

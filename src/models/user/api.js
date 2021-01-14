@@ -64,6 +64,21 @@ async function getByUsername(username) {
     }
 }
 
+async function confirm(id) {
+    try {
+        await User.update({
+                confirmed: 1,
+            },{
+                where: {
+                    id: id,
+                },
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function create(user) {
     try {
         user.roleId = process.env.FOLLOWER;
@@ -109,4 +124,5 @@ module.exports = {
     deleteById,
     emailIsUnique,
     usernameIsUnique,
+    confirm,
 };

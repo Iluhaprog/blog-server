@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `email` VARCHAR(255) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
     `skills` VARCHAR(255) DEFAULT '',
+    `confirmed` INT NOT NULL DEFAULT 0,
     `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `roleId` INT NOT NULL,
     PRIMARY KEY (`id`),

@@ -9,6 +9,7 @@ describe('Test for user api', async function() {
         try {
             const newUser = await UserApi.create(userData);
             userData.id = newUser.id;
+            userData.confirmed = newUser.confirmed;
             userData.roleId = parseInt(newUser.roleId);
             newUser.roleId = parseInt(newUser.roleId);
             userData.date = newUser.date;
@@ -31,6 +32,16 @@ describe('Test for user api', async function() {
         try {
             const result = await UserApi.emailIsUnique(userData.email);
             assert.strictEqual(result, false);
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    it('Should make user confirmed', async function() {
+        try {
+            const id = await UserApi.confirm(userData.id);
+            userData.confirmed = 1;
+            assert.strictEqual(id, true);
         } catch (error) {
             console.error(error);
         }

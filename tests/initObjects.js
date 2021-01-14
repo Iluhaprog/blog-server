@@ -6,6 +6,7 @@ const user = {
     bio: 'Bla bla bla!',
     email: 'email@email.email',
     password: '12345',
+    confirmed: 0,
     skills: 'All',
     roleId: 0,
 };
