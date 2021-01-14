@@ -23,4 +23,9 @@ describe('Tests for crypt lib', function() {
         const isEqual = await crypt.compare(invalidString, hash);
         assert.strictEqual(isEqual, false);
     }); 
+
+    it('Should generate random string', async function() {
+        const rndStr = await crypt.genRandomString(30);
+        assert.strictEqual(rndStr.length, 30);
+    })
 });
