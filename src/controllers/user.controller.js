@@ -1,5 +1,6 @@
-const { getPasswordHash } = require('../libs/crypt');
-const { UserApi } = require('../models/');
+const { getPasswordHash, genRandomString } = require('../libs/crypt');
+const { mail } = require('../libs/mail');
+const { UserApi, ConfirmationCodeApi } = require('../models/');
 
 async function login(req, res) {
     try {
@@ -63,12 +64,41 @@ async function getByUsername(req, res) {
     }
 }
 
+async function createConfirmationCode(userId) {
+    try {
+        const code = await genRandomString(50);
+        await ConfirmationCodeApi.create({
+            code,
+            userId,
+        });
+        return code;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function sendCode(user, code) {
+    try {
+        const CONFIRM_URL = process.env.CONFIRM_URL;
+        await mail.send({
+            name: user.firstName,
+            email: user.email,
+        }, {
+            href: `${CONFIRM_URL}/user/verify/${code}`,
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 async function create(req, res) {
     try {
         const { user } = req.body;
         const hash = await getPasswordHash(user.password);
         user.password = hash;
         const newUser = await UserApi.create(user);
+        const code = await createConfirmationCode(newUser.id);
+        await sendCode(user, code);
         res.json(newUser);
     } catch (error) {
         console.log(error);
@@ -111,6 +141,26 @@ async function deleteById(req, res) {
     }
 }
 
+async function verify(req, res) {
+    try {
+        const { code } = req.params;
+        const confirmationCode = await ConfirmationCodeApi.getByCode(code);
+        if (confirmationCode.code) {
+            const { id, userId } = confirmationCode;
+            const user = await UserApi.getById(userId);
+            if (user) {
+                await UserApi.confirm(user.id);
+                await ConfirmationCodeApi.deleteById(id);
+                res.status(204).send();
+            }
+        }
+        res.status(404).send();
+    } catch (error) {
+        console.error(error);
+        res.status(400).send(error);
+    }
+}
+
 module.exports = {
     getById,
     getAll,
@@ -120,6 +170,7 @@ module.exports = {
     update,
     remove,
     deleteById,
+    verify,
     login,
     logout,
 };
