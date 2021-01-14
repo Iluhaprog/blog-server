@@ -1,15 +1,3 @@
-const user = {
-    avatarImage: '',
-    firstName: 'Ilya',
-    lastName: 'Novak',
-    username: 'ilkass',
-    bio: 'Bla bla bla!',
-    email: 'email@email.email',
-    password: '12345',
-    confirmed: 0,
-    skills: 'All',
-    roleId: 0,
-};
 
 const confirm = {
     code: 'HASH',
@@ -45,13 +33,31 @@ const tag = {
     title: 'React',
 };
 
-const auth = {
-    row: 'username=email@email.email&password=12345',
-    header: 'Basic ZW1haWxAZW1haWwuZW1haWw6MTIzNDU=',
-    admin: 'Basic YWRtaW5AYWRtaW4uY29tOjEyMzQ1',
+const toBase64 = data => {
+    let buff = new Buffer(data);
+    return buff.toString('base64');
+}
+
+
+const testEmail = 'hohoya6537@izzum.com';
+
+const user = {
+    avatarImage: '',
+    firstName: 'Ilya',
+    lastName: 'Novak',
+    username: 'ilkass',
+    bio: 'Bla bla bla!',
+    email: testEmail,
+    password: '12345',
+    confirmed: 0,
+    skills: 'All',
+    roleId: 0,
 };
 
-const testEmail = 'yoyef31841@izzum.com';
+const auth = {
+    header: `Basic ${toBase64(`${user.email}:${user.password}`)}`,
+    admin: 'Basic YWRtaW5AYWRtaW4uY29tOjEyMzQ1',
+};
 
 module.exports = {
     userData: user,
