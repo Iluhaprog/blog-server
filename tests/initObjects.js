@@ -51,6 +51,8 @@ const auth = {
     admin: 'Basic YWRtaW5AYWRtaW4uY29tOjEyMzQ1',
 };
 
+const testEmail = 'yoyef31841@izzum.com';
+
 module.exports = {
     userData: user,
     postData: post,
@@ -59,5 +61,6 @@ module.exports = {
     fileData: file,
     tagData: tag,
     confirmData: confirm,
+    testEmail,
     auth,
 };
