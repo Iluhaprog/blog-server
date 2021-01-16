@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "test": "mocha --max-old-space-size=4096 --timeout 10000 tests/**/*.test.js",
-    "dev": "nodemon src/start.js"
+    "dev": "nodemon src/start.js",
+    "start": "node src/start.js"
   },
   "repository": {
     "type": "git",
