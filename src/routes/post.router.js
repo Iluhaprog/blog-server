@@ -7,7 +7,7 @@ const router = express.Router();
 router
     .post('/create', [auth.isAuthorized, access.isAdmin], PostController.create)
     .get('/getById', PostController.getById)
-    .get('/getAll', PostController.getAll)
+    .get('/getAll/:page/:limit', PostController.getAll)
     .get('/getByUserId', PostController.getByUserId)
     .put('/update', [auth.isAuthorized, access.isAdmin], PostController.update)
     .put('/setTags', [auth.isAuthorized, access.isAdmin], PostController.setTags)
