@@ -10,11 +10,8 @@ async function getById(id) {
     }
 }
 
-async function getAll({page, desiredLimit}) {
+async function getAll({offset, limit}) {
     try {
-        const defaultLimit = +process.env.LIMIT;
-        const limit = desiredLimit <= defaultLimit ? desiredLimit : defaultLimit;
-        const offset = page * limit;
         const posts = await Post.findAll({
             offset,
             limit,

@@ -33,7 +33,7 @@ describe('Test api of post model', async function() {
         try {
             const posts = await PostApi.getAll({
                 page: 0,
-                desiredLimit: 1,
+                limit: 1,
             });
             assert.deepStrictEqual(posts, [postData]);
         } catch (error) {

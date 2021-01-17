@@ -1,4 +1,5 @@
 const { FileManager } = require('../libs/files');
+const { paginate } = require('../libs/utls');
 const { PostApi } = require('../models');
 
 async function create(req, res) {
@@ -30,8 +31,7 @@ async function getAll(req, res) {
     try {
         const { page, limit } = req.params;
         const posts = await PostApi.getAll({
-            page: +page,
-            desiredLimit: +limit,
+            ...paginate({page, limit})
         });
         res.json(posts);
     } catch (error) {
