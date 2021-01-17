@@ -38,7 +38,7 @@ describe('Test comment api', async function() {
 
     it('Should get all comments', async function() {
         try {
-            const comments = await CommentApi.getAll();
+            const comments = await CommentApi.getAll({ offset: 0, limit: 1 });
             assert.deepStrictEqual(comments, [comment]);
         } catch (error) {
             console.error(error)

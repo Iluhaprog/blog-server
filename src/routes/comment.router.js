@@ -7,7 +7,7 @@ const router = express.Router();
 router
     .post('/create', auth.isAuthorized, CommentController.create)
     .get('/getById', CommentController.getById)
-    .get('/getAll', CommentController.getAll)
+    .get('/getAll/:page/:limit', CommentController.getAll)
     .get('/getByPostId', CommentController.getByPostId)
     .get('/getByUserId', CommentController.getByUserId)
     .put('/update', auth.isAuthorized, CommentController.update)

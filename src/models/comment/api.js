@@ -19,9 +19,12 @@ async function getById(id) {
     }
 }
 
-async function getAll() {
+async function getAll({ offset, limit }) {
     try {
-        const comments = await Comment.findAll();
+        const comments = await Comment.findAll({
+            offset,
+            limit,
+        });
         return getModelsDataArray(comments);
     } catch (error) {
         console.error(error);

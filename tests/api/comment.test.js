@@ -42,7 +42,7 @@ describe('Test for comment api of app', async function() {
 
     it('Should get all comments', async function() {
         const res = await testSession
-                            .get(`/comment/getAll`)
+                            .get(`/comment/getAll/0/1`)
                             .send();
         assert.deepStrictEqual(res.body, [commentData]);
     });

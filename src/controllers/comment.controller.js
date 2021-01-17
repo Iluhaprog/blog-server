@@ -1,3 +1,4 @@
+const { paginate } = require('../libs/utls');
 const { CommentApi } = require('../models');
 
 async function create(req, res) {
@@ -46,7 +47,10 @@ async function getByUserId(req, res) {
 
 async function getAll(req, res) {
     try {
-        const comments = await CommentApi.getAll();
+        const { page, limit } = req.params;
+        const comments = await CommentApi.getAll({
+            ...paginate({page, limit}),
+        });
         res.json(comments);
     } catch (error) {
         console.error(error);
