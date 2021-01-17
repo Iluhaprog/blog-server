@@ -36,7 +36,7 @@ describe('Test for post api of app', async function() {
 
     it('Should get all posts', async function() {
         const res = await testSession
-                            .get(`/post/getAll`)
+                            .get(`/post/getAll/0/1`)
                             .send();
         assert.deepStrictEqual(res.body, [postData]);
     });
