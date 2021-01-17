@@ -26,7 +26,7 @@ In it you need to specify the following fields
 |ACCESS_TOKEN   | Access token of your app in dropbox |
 |MAIL_USER      | Mail of user from which letters will be sent |
 |MAIL_PASS      | Password of mail user |
-|LIMIT          | Max number for pagination limit |
+|MAX_LIMIT          | Max number for pagination limit |
 
 ### Example:
 ```
@@ -51,6 +51,9 @@ In it you need to specify the following fields
     # mail
     MAIL_USER=user@user.com
     MAIL_PASS=userpassword
+
+    # pagination
+    MAX_LIMIT=20
 ```
 
 ### To run you have to create a database:
