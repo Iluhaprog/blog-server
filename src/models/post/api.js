@@ -10,9 +10,15 @@ async function getById(id) {
     }
 }
 
-async function getAll() {
+async function getAll({page, desiredLimit}) {
     try {
-        const posts = await Post.findAll();
+        const defaultLimit = +process.env.LIMIT;
+        const limit = desiredLimit <= defaultLimit ? desiredLimit : defaultLimit;
+        const offset = page * limit;
+        const posts = await Post.findAll({
+            offset,
+            limit,
+        });
         return getModelsDataArray(posts);
     } catch (error) {
         console.error(error);
