@@ -4,9 +4,9 @@ const fs = require('fs');
 const { FileManager } = require('../../src/libs/files/FileManager');
 
 describe('Test lib for work with dropbox api', async function() {
-    const mainDir = '/uploads';
+    const mainDir = 'uploads';
     it('Should create directory file to dropbox', async function() {
-        const dirname1 = '/testDirectory' + Date.now();
+        const dirname1 = 'testDirectory' + Date.now();
         try {
             await FileManager.createDir(dirname1, async (err, result, response) => {
                 if (err) console.error(err);
@@ -64,7 +64,7 @@ describe('Test lib for work with dropbox api', async function() {
         }
     });
     it('Should delete directory from dropbox if folder exists', async function() {
-        const dirname2 = '/' + Date.now();
+        const dirname2 = Date.now();
         try {
             await FileManager.createDir(dirname2, async (err, result, response) => {
                 if (!err) {
