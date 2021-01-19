@@ -49,14 +49,14 @@ describe('Test for comment api of app', async function() {
 
     it('Should get comments by post id', async function() {
         const { body } = await testSession
-                                .get(`/comment/getByPostId?postId=${commentData.postId}`)
+                                .get(`/comment/getByPostId/0/1?postId=${commentData.postId}`)
                                 .send();
         assert.deepStrictEqual(body, [commentData]);
     });
 
     it('Should get comments by user id', async function() {
         const { body } = await testSession
-                                .get(`/comment/getByUserId?userId=${commentData.userId}`)
+                                .get(`/comment/getByUserId/0/1?userId=${commentData.userId}`)
                                 .send();
         assert.deepStrictEqual(body, [commentData]) ;
     });

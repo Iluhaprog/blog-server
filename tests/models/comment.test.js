@@ -47,7 +47,7 @@ describe('Test comment api', async function() {
 
     it('Should get comment by post id', async function() {
         try {
-            const commentData = await CommentApi.getByPostId(comment.postId);
+            const commentData = await CommentApi.getByPostId(comment.postId, { offset: 0, limit: 1 });
             assert.deepStrictEqual(commentData, [comment]);
         } catch (error) {
             console.error(error);
@@ -56,7 +56,7 @@ describe('Test comment api', async function() {
 
     it('Should get comment by user id', async function() {
         try {
-            const commentData = await CommentApi.getByUserId(comment.userId);
+            const commentData = await CommentApi.getByUserId(comment.userId, { offset: 0, limit: 1 });
             assert.deepStrictEqual(commentData, [comment]);
         } catch (error) {
             console.error(error);
