@@ -8,8 +8,8 @@ router
     .post('/create', auth.isAuthorized, CommentController.create)
     .get('/getById', CommentController.getById)
     .get('/getAll/:page/:limit', CommentController.getAll)
-    .get('/getByPostId', CommentController.getByPostId)
-    .get('/getByUserId', CommentController.getByUserId)
+    .get('/getByPostId/:page/:limit', CommentController.getByPostId)
+    .get('/getByUserId/:page/:limit', CommentController.getByUserId)
     .put('/update', auth.isAuthorized, CommentController.update)
     .delete('/deleteById', auth.isAuthorized, CommentController.deleteById);
 

@@ -26,7 +26,9 @@ async function getById(req, res) {
 async function getByPostId(req, res) {
     try {
         const { postId } = req.query;
-        const comments = await CommentApi.getByPostId(postId);
+        const { page, limit } = req.params;
+        const pagination = paginate({page, limit});
+        const comments = await CommentApi.getByPostId(postId, pagination);
         res.json(comments);
     } catch (error) {
         console.error(error);
@@ -37,7 +39,9 @@ async function getByPostId(req, res) {
 async function getByUserId(req, res) {
     try {
         const { userId } = req.query;
-        const comments = await CommentApi.getByUserId(userId);
+        const { page, limit } = req.params;
+        const pagination = paginate({page, limit});
+        const comments = await CommentApi.getByUserId(userId, pagination);
         res.json(comments);
     } catch (error) {
         console.error(error);

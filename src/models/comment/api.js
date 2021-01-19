@@ -31,9 +31,11 @@ async function getAll({ offset, limit }) {
     }
 }
 
-async function getByPostId(postId) {
+async function getByPostId(postId, pagination) {
     try {
+        const { offset, limit } = pagination;
         const postComments = await Comment.findAll({
+            offset, limit,
             where: {
                 postId: postId,
             },
@@ -44,9 +46,11 @@ async function getByPostId(postId) {
     }
 }
 
-async function getByUserId(userId) {
+async function getByUserId(userId, pagination) {
     try {
+        const { offset, limit } = pagination;
         const userComments = await Comment.findAll({
+            offset, limit,
             where: {
                 userId: userId,
             },
