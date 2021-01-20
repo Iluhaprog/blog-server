@@ -1,14 +1,14 @@
-const { FileApi, PostApi } = require('../models');
+const { FileApi, PostApi, DirectoryApi } = require('../models');
 const { FileManager } = require('../libs/files');
 
 async function create(req, res) {
     try {
-        const { pathname, filename } = req.file;
-        const { postId } = req.query;
+        const { pathname, filename, dirname } = req.file;
+        const dir = await DirectoryApi.getByName(dirname);
         const newFile = await FileApi.create({
             name: filename,
             path: pathname,
-            postId,
+            directoryId: dir.id,
         });
         res.json(newFile);
     } catch (error) {
