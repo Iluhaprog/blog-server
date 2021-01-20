@@ -9,6 +9,7 @@ const { LikeApi } = require('./like');
 const { CommentApi } = require('./comment');
 const { TagApi } = require('./tag');
 const { ConfirmationCodeApi } = require('./confirmation_code');
+const { DirectoryApi } = require('./directory');
 
 const sync = async () => {
     await sequelize.sync({ alter: true });
@@ -24,5 +25,6 @@ module.exports = {
     CommentApi,
     TagApi,
     ConfirmationCodeApi,
+    DirectoryApi,
     sync,
 };
