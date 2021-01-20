@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../config/db');
 const { Comment } = require('../comment/model');
-const { File } = require('../file/model');
 const { Like } = require('../like/model');
 const { Tag } = require('../tag/model');
 const { oneToMany, manyToMany } = require('../../libs/model');
@@ -62,7 +61,6 @@ const PostTag = sequelize.define('PostTag', {
         timestamps: false,
 });
 
-oneToMany(Post, File);
 oneToMany(Post, Like);
 oneToMany(Post, Comment);
 
