@@ -17,10 +17,6 @@ const Post = sequelize.define('Post', {
             type: DataTypes.STRING(150),
             allowNull: false,
         },
-        dirname: {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-        },
         description: {
             type: DataTypes.TEXT,
             allowNull: false,
