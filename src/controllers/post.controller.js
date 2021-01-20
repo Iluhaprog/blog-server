@@ -1,13 +1,15 @@
 const { FileManager } = require('../libs/files');
 const { paginate } = require('../libs/utls');
-const { PostApi } = require('../models');
+const { PostApi, DirectoryApi } = require('../models');
 
 async function create(req, res) {
     try {
         const { post } = req.body;
-        const newPost = await PostApi.create(post);
-        await FileManager.createDir(newPost.dirname, err => {
-            if (err) res.status(500).send();
+        const { title } = post;
+        const dirname = title.split(' ').join('_').toLowerCase();
+        const dir = await DirectoryApi.create(dirname);
+        await DirectoryApi.createInDropbox(dir.name, async () => {
+            const newPost = await PostApi.create({...post, directoryId: dir.id});
             res.json(newPost);
         });
     } catch (error) {
@@ -77,10 +79,12 @@ async function setTags(req, res) {
 async function deleteById(req, res) {
     try {
         const { id } = req.query;
-        const { dirname } = await PostApi.getById(id);
+        const { directoryId } = await PostApi.getById(id);
+        const { name } = await DirectoryApi.getById(directoryId);
         await PostApi.deleteById(id);
-        await FileManager.delete(dirname, '', err => console.error(err));
-        res.status(204).send();
+        await DirectoryApi.deleteInDropbox(name, () => {
+            res.status(204).send();
+        });
     } catch (error) {
         console.error(error);
         res.status(400).send(error)
