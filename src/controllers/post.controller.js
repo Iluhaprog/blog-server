@@ -80,9 +80,10 @@ async function deleteById(req, res) {
     try {
         const { id } = req.query;
         const { directoryId } = await PostApi.getById(id);
-        const { name } = await DirectoryApi.getById(directoryId);
+        const dir = await DirectoryApi.getById(directoryId);
         await PostApi.deleteById(id);
-        await DirectoryApi.deleteInDropbox(name, () => {
+        await DirectoryApi.deleteById(dir.id);
+        await DirectoryApi.deleteInDropbox(dir.name, () => {
             res.status(204).send();
         });
     } catch (error) {
