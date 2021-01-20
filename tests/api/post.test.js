@@ -23,6 +23,7 @@ describe('Test for post api of app', async function() {
                             .send({ post: postData });
         postData.id = body.id;
         postData.date = body.date;
+        postData.directoryId = body.directoryId;
         assert.deepStrictEqual(body, postData);
     });
 
