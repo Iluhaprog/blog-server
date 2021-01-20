@@ -1,4 +1,4 @@
-const { FileApi, PostApi, DirectoryApi } = require('../models');
+const { FileApi, DirectoryApi } = require('../models');
 const { FileManager } = require('../libs/files');
 
 async function create(req, res) {
@@ -33,11 +33,11 @@ async function getByName(req, res) {
         const { name } = req.params;
         const file = await FileApi.getByName(name);
         if (file) {
-            const { dirname } = await PostApi.getById(file.postId);
+            const { name: dirname } = await DirectoryApi.getById(file.directoryId);
             const { path } = file;
             await FileManager.downloadFile(res, dirname, path, err => {
                 if (err) res.status(404).send('Not found');
-                res.status(200).send();
+                else res.status(200).send();
             })
         } else {
             res.status(404).send('Not found');
