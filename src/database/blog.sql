@@ -36,6 +36,12 @@ CREATE TABLE IF NOT EXISTS `conformation_codes` (
         ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS `directories` (
+    `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
 CREATE TABLE IF NOT EXISTS `posts` (
     `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(150) NOT NULL,
@@ -46,8 +52,11 @@ CREATE TABLE IF NOT EXISTS `posts` (
     `visible` BOOLEAN NOT NULL DEFAULT 0,
     `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `userId` INT NOT NULL,
+    `directoryId` INT NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY(`userId`) REFERENCES `users`(`id`)
+        ON DELETE CASCADE,
+    FOREIGN KEY(`directoryId`) REFERENCES `directories`(`id`)
         ON DELETE CASCADE
 );
 
@@ -56,9 +65,9 @@ CREATE TABLE IF NOT EXISTS `files` (
     `name` VARCHAR(100) NOT NULL UNIQUE,
     `path` VARCHAR(100) NOT NULL,
     `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `postId` INT NOT NULL,
+    `directoryId` INT NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY(`postId`) REFERENCES `posts`(`id`)
+    FOREIGN KEY(`directoryId`) REFERENCES `directories`(`id`)
         ON DELETE CASCADE
 );
 
