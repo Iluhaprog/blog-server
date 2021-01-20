@@ -1,25 +1,31 @@
 const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
-const { UserApi, PostApi } = require('../../src/models');
+const { UserApi, PostApi, DirectoryApi } = require('../../src/models');
 const { userData, postData, commentData, auth } = require('../initObjects');
 
 describe('Test for comment api of app', async function() {
     var testSession = session(app, {
         befor: function(req) {
-            req.set('authorization', auth.header);
+            req.set('authorization', auth.admin);
         }
     });
 
     it('Should create comment', async function() {      
-        const user = await UserApi.create(userData);
+        const { body: user } = await testSession
+                            .post('/user/create')
+                            .set('Accept', 'application/json')
+                            .send({ user: userData });
         postData.userId = user.id;
         userData.roleId = user.roleId;
         commentData.userId = user.id;
         await testSession
             .post('/user/login')
-            .set('authorization', auth.header)
+            .set('authorization', auth.admin)
             .send();
+        const dir = await DirectoryApi.create('commentDir');
+        postData.directoryId = dir.id;
+
         const post = await PostApi.create(postData);
         commentData.postId = post.id;
 
@@ -76,6 +82,7 @@ describe('Test for comment api of app', async function() {
                         .send();
         await testSession.post('/user/logout').send();
         await UserApi.deleteById(commentData.userId);
+        await DirectoryApi.deleteById(postData.directoryId);
         assert.strictEqual(res.status, 204);
     });
 });

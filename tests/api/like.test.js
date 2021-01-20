@@ -1,7 +1,7 @@
 const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
-const { UserApi, PostApi } = require('../../src/models');
+const { UserApi, PostApi, DirectoryApi } = require('../../src/models');
 const { userData, postData, auth } = require('../initObjects');
 
 describe('Test for like api of app', async function() {
@@ -13,13 +13,19 @@ describe('Test for like api of app', async function() {
     });
 
     it('Should create like', async function() {
-        const user = await UserApi.create(userData);
+        const { body: user } = await testSession
+                            .post('/user/create')
+                            .set('Accept', 'application/json')
+                            .send({ user: userData });
         postData.userId = user.id;
         likeData.userId = user.id;
         await testSession
             .post('/user/login')
-            .set('authorization', auth.header)
+            .set('authorization', auth.admin)
             .send();
+
+        const dir = await DirectoryApi.create('likeDir');
+        postData.directoryId = dir.id;
 
         const post = await PostApi.create(postData);
         likeData.postId = post.id;
@@ -66,6 +72,7 @@ describe('Test for like api of app', async function() {
                         .send();
         await testSession.post('/user/logout').send();
         await UserApi.deleteById(likeData.userId);
+        await DirectoryApi.deleteById(postData.directoryId);
         assert.strictEqual(res.status, 204);
     });
 });

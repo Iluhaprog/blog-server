@@ -1,7 +1,7 @@
 const session = require('supertest-session');
 const assert = require('assert');
 const app = require('../../src/app');
-const { PostApi } = require('../../src/models');
+const { PostApi, DirectoryApi } = require('../../src/models');
 const { postData, tagData, auth } = require('../initObjects');
 
 describe('Test for tag api of app', async function() {
@@ -20,6 +20,10 @@ describe('Test for tag api of app', async function() {
                             .set('authorization', auth.admin)
                             .send();
         postData.userId = userData.body.id;
+
+        const dir = await DirectoryApi.create('commentDir');
+        postData.directoryId = dir.id;
+
         const post = await PostApi.create(postData);
         postId = post.id;
 
@@ -54,6 +58,7 @@ describe('Test for tag api of app', async function() {
                         .send();
         await testSession.post('/user/logout').send();
         await PostApi.deleteById(postId);
+        await DirectoryApi.deleteById(postData.directoryId);
         assert.strictEqual(res.status, 204);
     });
 });
