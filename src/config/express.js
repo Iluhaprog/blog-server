@@ -7,6 +7,15 @@ const passport = require('./passport');
 const session = require('express-session');
 const redis = require('redis');
 const connectRedis = require('connect-redis');
+const cors = require('cors');
+
+const corsOptions = {
+    credentials: true,
+    preflightContinue: true,
+    optionsSuccessStatus: 200,
+    methods: ["GET", "POST", "PUT", "HEAD", "PATCH", "DELETE"],
+    origin: process.env.ORIGIN_URL,
+};
 
 const app = express();
 const RedisStore = connectRedis(session);
@@ -31,8 +40,11 @@ app.use(session({
     },
 }));
 
+app.enable('trust proxy');
+
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cors(corsOptions));
 
 module.exports = {
     app,
