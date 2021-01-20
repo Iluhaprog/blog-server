@@ -53,7 +53,7 @@ describe('Test for tag api of app', async function() {
 
     it('Should delete tag by id', async function() {
         const res = await testSession
-                        .delete(`/comment/deleteById?id=${tagData.id}`)
+                        .delete(`/tag/deleteById?id=${tagData.id}`)
                         .set('authorization', auth.admin)
                         .send();
         await testSession.post('/user/logout').send();
