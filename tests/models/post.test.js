@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { TagApi, PostApi, UserApi } = require('../../src/models');
+const { TagApi, PostApi, UserApi, DirectoryApi } = require('../../src/models');
 const { postData, userData } = require('../initObjects');
 
 describe('Test api of post model', async function() {
@@ -10,6 +10,10 @@ describe('Test api of post model', async function() {
         try {
             const user = await UserApi.create(userData);
             post.userId = user.id;
+
+            const dir = await DirectoryApi.create('dirname');
+            post.directoryId = dir.id;
+
             const newPost = await PostApi.create(post);
             post.id = newPost.id;
             post.date = newPost.date;
@@ -82,7 +86,7 @@ describe('Test api of post model', async function() {
             await PostApi.deleteById(post.id);
             const postData = await PostApi.getById(post.id);
             await UserApi.deleteById(post.userId);
-
+            await DirectoryApi.deleteById(post.directoryId);
             assert.deepStrictEqual(postData, {});
         } catch(error) {
             console.error(error);

@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { FileApi, PostApi, UserApi } = require('../../src/models');
+const { FileApi, PostApi, UserApi, DirectoryApi } = require('../../src/models');
 const { postData, userData, fileData } = require('../initObjects');
 
 describe('Test file api', async function() {
@@ -10,12 +10,8 @@ describe('Test file api', async function() {
 
     it('Should create file', async function() {
         try {
-            const user = await UserApi.create(userData);
-            postData.userId = user.id;
-
-            const post = await PostApi.create(postData);
-            postId = post.id;
-            file.postId = postId;
+            const dir = await DirectoryApi.create('dirname');
+            file.directoryId = dir.id;
             
             const newFile = await FileApi.create(file);
             file.id = newFile.id;
@@ -32,15 +28,6 @@ describe('Test file api', async function() {
             const fileData = await FileApi.getById(file.id);
             file.date = fileData.date;
             assert.deepStrictEqual(fileData, file);
-        } catch (error) {
-            console.error(error);
-        }
-    });
-
-    it('Should get file by post id', async function() {
-        try {
-            const files = await FileApi.getByPostId(file.postId);
-            assert.deepStrictEqual(files, [file]);
         } catch (error) {
             console.error(error);
         }
@@ -62,7 +49,7 @@ describe('Test file api', async function() {
             await FileApi.deleteById(file.id);
 
             const fileData = await FileApi.getById(file.id);
-            await UserApi.deleteById(postData.userId);
+            await DirectoryApi.deleteById(file.directoryId);
             assert.deepStrictEqual(fileData, {});
         } catch (error) {
             console.error(error);
