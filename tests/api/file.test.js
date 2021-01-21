@@ -42,6 +42,14 @@ describe('Test for file api of app', async function() {
         assert.deepStrictEqual(body, fileData);
     });
 
+    it('Should get file by directory id', async function() {
+        const { body } = await testSession
+                            .get(`/file/getByDirectoryId?directoryId=${fileData.directoryId}`)
+                            .send();
+        assert.deepStrictEqual(body, [fileData]);
+    });
+
+
     it('Should update file', async function() {
         fileData.name = 'newName.png';
         const { body } = await testSession

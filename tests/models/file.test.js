@@ -32,6 +32,15 @@ describe('Test file api', async function() {
             console.error(error);
         }
     });
+
+    it('Should get files by directory id', async function() {
+        try {
+            const files = await FileApi.getByDirectoryId(file.directoryId);
+            assert.deepStrictEqual(files, [file]);
+        } catch (error) {
+            console.error(error);
+        }
+    });
     
     it('Should update file', async function() {
         try {
