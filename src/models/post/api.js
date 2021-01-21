@@ -84,6 +84,15 @@ async function deleteById(id) {
     }
 } 
 
+async function getCount() {
+    try {
+        const count = await Post.count();
+        return count;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 module.exports = {
     getById,
     getAll,
@@ -92,4 +101,5 @@ module.exports = {
     update,
     deleteById,
     setTags,
+    getCount,
 };

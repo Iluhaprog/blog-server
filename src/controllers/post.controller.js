@@ -92,6 +92,16 @@ async function deleteById(req, res) {
     }
 }
 
+async function getCount(req, res) {
+    try {
+        const count = await PostApi.getCount();
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error)
+    }
+}
+
 module.exports = {
     create,
     getById,
@@ -100,4 +110,5 @@ module.exports = {
     update,
     deleteById,
     setTags,
+    getCount,
 };
