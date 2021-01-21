@@ -49,6 +49,13 @@ describe('Test for post api of app', async function() {
         assert.deepStrictEqual(body, [postData]);
     });
 
+    it('Should get post total count', async function() {
+        const { body } = await testSession
+                                .get(`/post/getCount`)
+                                .send();
+        assert.strictEqual(body.count, 1);
+    });
+
     it('Should update', async function() {
         postData.visible = true;
         const { body } = await testSession

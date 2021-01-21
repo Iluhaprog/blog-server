@@ -54,6 +54,15 @@ describe('Test api of post model', async function() {
         }
     });
 
+    it('Should get post total count', async function() {
+        try {
+            const count = await PostApi.getCount();
+            assert.strictEqual(count, 1);
+        } catch(error) {
+            console.error(error);
+        }
+    });
+
     it('Should set tags to post', async function() {
         try {
             const tag = { title: 'React' };
