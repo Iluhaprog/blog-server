@@ -67,6 +67,15 @@ async function deleteById(id) {
     }
 }
 
+async function getCount() {
+    try {
+        const count = await Like.count();
+        return count;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 module.exports = { 
     create,
     getById,
@@ -74,4 +83,5 @@ module.exports = {
     getByUserId,
     getByPostId,
     deleteById,
+    getCount,
 };

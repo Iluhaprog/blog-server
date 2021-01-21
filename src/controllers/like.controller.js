@@ -64,6 +64,17 @@ async function deleteById(req, res) {
         res.status(400).send(error)
     }
 }
+
+async function getCount(req, res) {
+    try {
+        const count = await LikeApi.getCount();
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error)
+    }
+}
+
 module.exports = {
     create,
     getById,
@@ -71,4 +82,5 @@ module.exports = {
     getByUserId,
     getByPostId,
     deleteById,
+    getCount,
 };
