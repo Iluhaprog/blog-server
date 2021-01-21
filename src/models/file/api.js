@@ -32,11 +32,11 @@ async function getByName(name) {
     }
 }
 
-async function getByPostId(postId) {
+async function getByDirectoryId(directoryId) {
     try {
         const postFiles = await File.findAll({
-            where: {
-                postId: postId,
+            where: { 
+                directoryId
             },
         });
         return getModelsDataArray(postFiles);
@@ -73,7 +73,7 @@ module.exports = {
     create,
     getById,
     getByName,
-    getByPostId,
+    getByDirectoryId,
     update,
     deleteById,
 };

@@ -48,10 +48,10 @@ async function getByName(req, res) {
     }
 }
 
-async function getByPostId(req, res) {
+async function getByDirectoryId(req, res) {
     try {
-        const { postId } = req.query;
-        const files = await FileApi.getByPostId(postId);
+        const { directoryId } = req.query;
+        const files = await FileApi.getByDirectoryId(directoryId);
         res.json(files);
     } catch (error) {
         console.error(error);
@@ -90,7 +90,7 @@ module.exports = {
     create,
     getById,
     getByName,
-    getByPostId,
+    getByDirectoryId,
     update,
     deleteById,
 };
