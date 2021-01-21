@@ -27,6 +27,7 @@ In it you need to specify the following fields
 |MAIL_USER      | Mail of user from which letters will be sent |
 |MAIL_PASS      | Password of mail user |
 |MAX_LIMIT          | Max number for pagination limit |
+|ORIGIN_URL         | Allow origin url |
 
 ### Example:
 ```
@@ -37,9 +38,11 @@ In it you need to specify the following fields
     DB_HOST=localhost
     
     # app
-    PORT=3000
+    PORT=3001
     SESSION_SECRET=secret
     CONFIRM_URL=http://localhost:3000
+    ORIGIN_URL=http://localhost:3000
+
     
     # roles id
     ADMIN=1
