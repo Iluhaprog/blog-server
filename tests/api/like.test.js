@@ -59,6 +59,13 @@ describe('Test for like api of app', async function() {
         assert.deepStrictEqual(body, [likeData]);
     });
 
+    it('Should get like total count', async function() {
+        const { body } = await testSession
+                                .get(`/like/getCount`)
+                                .send();
+        assert.strictEqual(body.count, 1);
+    });
+
     it('Should get likes by user id', async function() {
         const { body } = await testSession
                                 .get(`/like/getByUserId?userId=${likeData.userId}`)

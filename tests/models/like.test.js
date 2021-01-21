@@ -56,6 +56,15 @@ describe('Test for like api', async function() {
         }
     });
 
+    it('Should get like total count', async function() {
+        try {
+            const count = await LikeApi.getCount();
+            assert.strictEqual(count, 1);
+        } catch(error) {
+            console.error(error);
+        }
+    });
+
     it('Should get likes by post id', async function() {
         try {
             const likes = await LikeApi.getByPostId(like.postId);
