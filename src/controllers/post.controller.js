@@ -102,6 +102,18 @@ async function getCount(req, res) {
     }
 }
 
+async function search(req, res) {
+    try {
+        const { title, tags } = req.query;
+        const { page, limit } = paginate(req.query);
+        const posts = await PostApi.search(title, tags, page, limit);
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send();
+    }
+}
+
 module.exports = {
     create,
     getById,
@@ -111,4 +123,5 @@ module.exports = {
     deleteById,
     setTags,
     getCount,
+    search,
 };
