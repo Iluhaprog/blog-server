@@ -77,6 +77,13 @@ describe('Test for post api of app', async function() {
         assert.strictEqual(res.status, 204);
     });
 
+    it('Should search post', async function() {
+        const { body } = await testSession
+                                .get(`/post/search?title=${postData.title}`)
+                                .send();
+        assert.deepStrictEqual(body.posts[0], postData);
+    });
+
     it('Should delete by id', async function() {
         const res = await testSession
                         .delete(`/post/deleteById?id=${postData.id}`)
