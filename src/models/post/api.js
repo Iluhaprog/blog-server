@@ -1,5 +1,8 @@
 const { Post, PostTag } = require('./model');
 const { getModelData, getModelsDataArray } = require('../../libs/model');
+const { Tag } = require('../tag/model');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 async function getById(id) {
     try {
@@ -93,6 +96,42 @@ async function getCount() {
     }
 }
 
+async function search(query, tags = [], offset = 0, limit = 10) {
+    try {
+        const params = {};
+        if (tags.length) {
+            const tagsString = tags.join('|');
+            params.include = [{
+                model: Tag,
+                where: {
+                    title: {
+                        [Op.regexp]: tagsString,
+                    }
+                },
+            }];
+        } 
+        if (query) {
+            params.where = {
+                title: {
+                    [Op.like]: `%${query}%`,
+                }
+            }
+        }
+        const posts = await Post.findAll({
+            ...params,
+            offset,
+            limit,
+        });
+        const count = await Post.count({
+            ...params,
+            group: ['id'],
+        });
+        return {posts: getModelsDataArray(posts), count: count.length};
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 module.exports = {
     getById,
     getAll,
@@ -102,4 +141,5 @@ module.exports = {
     deleteById,
     setTags,
     getCount,
+    search,
 };
