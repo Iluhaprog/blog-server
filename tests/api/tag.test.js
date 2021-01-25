@@ -51,6 +51,13 @@ describe('Test for tag api of app', async function() {
         assert.deepStrictEqual(body, [tagData]);             
     });
 
+    it('Should get all tags', async function() {
+        const { body } = await testSession
+                                .get(`/tag/getAll`)
+                                .send();
+        assert.deepStrictEqual(Array.isArray(body), true);  
+    });
+
     it('Should delete tag by id', async function() {
         const res = await testSession
                         .delete(`/tag/deleteById?id=${tagData.id}`)

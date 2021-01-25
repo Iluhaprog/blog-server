@@ -46,6 +46,15 @@ describe('Test for tag api', async function() {
         }
     });
 
+    it('Should get all tags', async function() {
+        try {
+            const tags = await TagApi.getAll();
+            assert.deepStrictEqual(Array.isArray(tags), true);
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
     it ('Should delete by id', async function() {
         try {
             await TagApi.deleteById(tagData.id);
