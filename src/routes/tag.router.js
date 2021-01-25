@@ -8,6 +8,7 @@ router
     .post('/create', [auth.isAuthorized, access.isAdmin], TagController.create)
     .get('/getById', TagController.getById)
     .get('/getByPostId', TagController.getByPostId)
+    .get('/getAll', TagController.getAll)
     .delete('/deleteById', [auth.isAuthorized, access.isAdmin], TagController.deleteById);
 
 module.exports = router;

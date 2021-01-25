@@ -1,6 +1,6 @@
 const { Tag } = require('./model');
 const { Post } = require('../post/model');
-const { getModelData } = require('../../libs/model');
+const { getModelData, getModelsDataArray } = require('../../libs/model');
 
 
 async function create(tag) {
@@ -50,9 +50,20 @@ async function deleteById(id) {
         console.error(error);
     }
 }
+
+async function getAll() {
+    try {
+        const tags = await Tag.findAll();
+        return getModelsDataArray(tags);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 module.exports = {
     create,
     getById,
     getByPostId,
     deleteById,
+    getAll,
 };

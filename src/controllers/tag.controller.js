@@ -33,6 +33,16 @@ async function getByPostId(req, res) {
     }
 }
 
+async function getAll(req, res) {
+    try {
+        const tags = await TagApi.getAll();
+        res.status(200).send(tags);
+    } catch (error) {
+        console.error(error);
+        res.status(400).send(error)
+    }
+}
+
 async function deleteById(req, res) {
     try {
         const { id } = req.query;
@@ -49,4 +59,5 @@ module.exports = {
     getById,
     getByPostId,
     deleteById,
+    getAll,
 };
