@@ -35,13 +35,6 @@ describe('Test for post api of app', async function() {
         assert.deepStrictEqual(body, postData);
     });
 
-    it('Should get all posts', async function() {
-        const res = await testSession
-                            .get(`/post/getAll/0/1`)
-                            .send();
-        assert.deepStrictEqual(res.body, [postData]);
-    });
-
     it('Should get post by user id', async function() {
         const { body } = await testSession
                             .get(`/post/getByUserId?userId=${postData.userId}`)
@@ -75,6 +68,14 @@ describe('Test for post api of app', async function() {
                             tagsId: [newTag.id],
                         });
         assert.strictEqual(res.status, 204);
+    });
+
+    it('Should get all posts', async function() {
+        const res = await testSession
+                            .get(`/post/getAll/0/1`)
+                            .send();
+        const expect = {...postData, Tags: [...res.body[0].Tags]};
+        assert.deepStrictEqual(res.body, [expect]);
     });
 
     it('Should search post', async function() {

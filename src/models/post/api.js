@@ -16,6 +16,7 @@ async function getById(id) {
 async function getAll({offset, limit}) {
     try {
         const posts = await Post.findAll({
+            include: [ Tag ],
             offset,
             limit,
         });

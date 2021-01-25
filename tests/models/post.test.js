@@ -33,18 +33,6 @@ describe('Test api of post model', async function() {
         }
     });
 
-    it('Should get all posts', async function() {
-        try {
-            const posts = await PostApi.getAll({
-                page: 0,
-                limit: 1,
-            });
-            assert.deepStrictEqual(posts, [postData]);
-        } catch (error) {
-            console.error(error)
-        }
-    });
-
     it('Should get post by user id', async function() {
         try {
             const postData = await PostApi.getByUserId(post.userId);
@@ -75,6 +63,19 @@ describe('Test api of post model', async function() {
             assert.deepStrictEqual(tags, [tag]);
         } catch (error) {
             console.error(error);
+        }
+    });
+
+    it('Should get all posts', async function() {
+        try {
+            const posts = await PostApi.getAll({
+                page: 0,
+                limit: 1,
+            });
+            const expect = {...postData, Tags: [...posts[0].Tags]};
+            assert.deepStrictEqual(posts, [expect]);
+        } catch (error) {
+            console.error(error)
         }
     });
 
