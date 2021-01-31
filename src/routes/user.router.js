@@ -1,5 +1,6 @@
 const { express, passport } = require('../config/express');
 const { UserController } = require('../controllers');
+const { uploader } = require('../libs/files');
 const { auth, access } = require('../libs/filters');
 
 const router = express.Router();
@@ -25,6 +26,7 @@ router
     .post('/create', UserController.create)
     .get('/verify/:code', UserController.verify)
     .put('/update', auth.isAuthorized, UserController.update)
+    .put('/updateAvatar', [ auth.isAuthorized, uploader ], UserController.updateAvatar)
     .delete('/remove', auth.isAuthorized, UserController.remove)
     .delete('/deleteById', [auth.isAuthorized, access.isAdmin], UserController.deleteById);
 

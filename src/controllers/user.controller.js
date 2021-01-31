@@ -1,6 +1,6 @@
 const { getPasswordHash, genRandomString } = require('../libs/crypt');
 const { mail } = require('../libs/mail');
-const { UserApi, ConfirmationCodeApi } = require('../models/');
+const { UserApi, ConfirmationCodeApi, FileApi, DirectoryApi } = require('../models/');
 
 async function login(req, res) {
     try {
@@ -119,6 +119,25 @@ async function update(req, res) {
     }
 }
 
+async function updateAvatar(req, res) {
+    try {
+        const { pathname, filename, dirname } = req.file;
+        const dir = await DirectoryApi.getByName(dirname);
+        const newFile = await FileApi.create({
+            name: filename,
+            path: pathname,
+            directoryId: dir.id,
+        });
+        const user = {...req.user, avatarImage: newFile.name};
+        await UserApi.update(user);
+        const updatedUser = await UserApi.getById(user.id);
+        res.json(updatedUser);
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error);
+    }
+}
+
 async function remove(req, res) {
     try {
         const { id } = req.user;
@@ -168,6 +187,7 @@ module.exports = {
     getByUsername,
     create,
     update,
+    updateAvatar,
     remove,
     deleteById,
     verify,
