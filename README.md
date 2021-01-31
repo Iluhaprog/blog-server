@@ -28,6 +28,8 @@ In it you need to specify the following fields
 |MAIL_PASS      | Password of mail user |
 |MAX_LIMIT          | Max number for pagination limit |
 |ORIGIN_URL         | Allow origin url |
+|AVATARS_DIR    | Directory for uploading users avatars |
+|PREVIEWS_DIR   | Direcotry for uploading posts/projects previews |
 
 ### Example:
 ```
@@ -57,6 +59,9 @@ In it you need to specify the following fields
 
     # pagination
     MAX_LIMIT=20
+
+    AVATARS_DIR=avatars
+    PREVIEWS_DIR=previews
 ```
 
 ### To run you have to create a database:
