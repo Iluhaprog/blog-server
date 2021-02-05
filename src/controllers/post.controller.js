@@ -1,6 +1,5 @@
-const { FileManager } = require('../libs/files');
 const { paginate } = require('../libs/utls');
-const { PostApi, DirectoryApi } = require('../models');
+const { PostApi, DirectoryApi, FileApi } = require('../models');
 
 async function create(req, res) {
     try {
@@ -59,6 +58,29 @@ async function update(req, res) {
         await PostApi.update(post);
         const updatedPost = await PostApi.getById(post.id);
         res.json(updatedPost);
+    } catch (error) {
+        console.error(error);
+        res.status(400).send(error)
+    }
+}
+
+async function updatePreview(req, res) {
+    try {
+        const { postId } = req.query;
+        const { pathname, filename, dirname } = req.file;
+        const post = await PostApi.getById(postId);
+        const dir = await DirectoryApi.getByName(dirname); 
+        const file = await FileApi.create({
+            name: filename,
+            path: pathname,
+            directoryId: dir.id,
+        });
+        await PostApi.update({
+            ...post,
+            preview: file.name,
+        });
+        const updatedPost = await PostApi.getById(postId);
+        res.status(200).json(updatedPost);
     } catch (error) {
         console.error(error);
         res.status(400).send(error)
@@ -124,4 +146,5 @@ module.exports = {
     setTags,
     getCount,
     search,
+    updatePreview,
 };
