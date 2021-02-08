@@ -1,4 +1,5 @@
 const { ProjectApi } = require('../models');
+const { paginate } = require('../libs/utls');
 
 async function create(req, res) {
     try {
@@ -22,7 +23,10 @@ async function getById(req, res) {
 
 async function getAll(req, res) {
     try {
-        const projects = await ProjectApi.getAll();
+        const { page, limit } = req.params;
+        const projects = await ProjectApi.getAll({
+            ...paginate({page, limit})
+        });
         res.json(projects);
     } catch (error) {
         console.error(error);

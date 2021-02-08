@@ -19,9 +19,9 @@ async function getById(id) {
     }
 }
 
-async function getAll() {
+async function getAll({offset, limit}) {
     try {
-        const projects = await Project.findAll();
+        const projects = await Project.findAll({ offset, limit });
         return getModelsDataArray(projects);
     } catch (error) {
         console.error(error);
