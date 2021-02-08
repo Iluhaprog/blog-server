@@ -64,6 +64,16 @@ async function deleteById(req, res) {
     }
 }
 
+async function getCount(req, res) {
+    try {
+        const count = await ProjectApi.getCount();
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error(error);
+        res.status(400).send(error)
+    }
+}
+
 module.exports = {
     create,
     getById,
@@ -71,4 +81,5 @@ module.exports = {
     getByUserId,
     update,
     deleteById,
+    getCount,
 };

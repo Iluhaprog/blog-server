@@ -65,6 +65,15 @@ async function deleteById(id) {
     }
 }
 
+async function getCount() {
+    try {
+        const count = await Project.count();
+        return count;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 module.exports = {
     create,
     getById,
@@ -72,4 +81,5 @@ module.exports = {
     getByUserId,
     update,
     deleteById,
+    getCount,
 };

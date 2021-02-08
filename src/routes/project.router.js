@@ -7,6 +7,7 @@ const router = express.Router();
 router
     .post('/create', [auth.isAuthorized, access.isAdmin], ProjectController.create)
     .get('/getById', ProjectController.getById)
+    .get('/getCount', ProjectController.getCount)
     .get('/getAll', ProjectController.getAll)
     .get('/getByUserId', ProjectController.getByUserId)
     .put('/update', [auth.isAuthorized, access.isAdmin], ProjectController.update)
