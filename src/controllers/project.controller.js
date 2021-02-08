@@ -1,4 +1,4 @@
-const { ProjectApi } = require('../models');
+const { ProjectApi, DirectoryApi, FileApi } = require('../models');
 const { paginate } = require('../libs/utls');
 
 async function create(req, res) {
@@ -57,6 +57,29 @@ async function update(req, res) {
     }
 }
 
+async function updatePreview(req, res) {
+    try {
+        const { projectId } = req.query;
+        const { pathname, filename, dirname } = req.file;
+        const project = await ProjectApi.getById(projectId);
+        const dir = await DirectoryApi.getByName(dirname); 
+        const file = await FileApi.create({
+            name: filename,
+            path: pathname,
+            directoryId: dir.id,
+        });
+        await ProjectApi.update({
+            ...project,
+            preview: file.name,
+        });
+        const updatedProject = await ProjectApi.getById(projectId);
+        res.status(200).json(updatedProject);
+    } catch (error) {
+        console.error(error);
+        res.status(400).send(error)
+    }
+}
+
 async function deleteById(req, res) {
     try {
         const { id } = req.query;
@@ -86,4 +109,5 @@ module.exports = {
     update,
     deleteById,
     getCount,
+    updatePreview,
 };
