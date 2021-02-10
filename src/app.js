@@ -14,5 +14,6 @@ app.use('/file', routes.FileRouter);
 app.use('/like', routes.LikeRouter);
 app.use('/tag', routes.TagRouter);
 app.use('/directory', routes.DirectoryRouter);
+app.use('/home', routes.HomeRouter);
 
 module.exports = app;

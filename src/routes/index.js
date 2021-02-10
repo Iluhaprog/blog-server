@@ -7,6 +7,7 @@ const FileRouter = require('./file.router');
 const LikeRouter = require('./like.router');
 const TagRouter = require('./tag.router');
 const DirectoryRouter = require('./directory.router');
+const HomeRouter = require('./home.router');
 
 module.exports = {
     RoleRouter,
@@ -18,4 +19,5 @@ module.exports = {
     LikeRouter,
     TagRouter,
     DirectoryRouter,
+    HomeRouter,
 };
