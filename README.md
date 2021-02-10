@@ -30,6 +30,7 @@ In it you need to specify the following fields
 |ORIGIN_URL         | Allow origin url |
 |AVATARS_DIR    | Directory for uploading users avatars |
 |PREVIEWS_DIR   | Direcotry for uploading posts/projects previews |
+|HOME_DIR       | Directory for uploading preveiw for home page |
 
 ### Example:
 ```
