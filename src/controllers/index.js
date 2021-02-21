@@ -8,6 +8,7 @@ const LikeController = require('./like.controller');
 const TagController = require('./tag.controller');
 const DirectoryController = require('./directory.controller');
 const HomeController = require('./home.controller');
+const SocialLinkController = require('./socialLink.controller');
 
 module.exports = {
     RoleController,
@@ -20,4 +21,5 @@ module.exports = {
     TagController,
     DirectoryController,
     HomeController,
+    SocialLinkController,
 };

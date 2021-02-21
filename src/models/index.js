@@ -11,6 +11,7 @@ const { TagApi } = require('./tag');
 const { ConfirmationCodeApi } = require('./confirmation_code');
 const { DirectoryApi } = require('./directory');
 const { HomeApi } = require('./home');
+const { SocialLinkApi } = require('./social_link');
 
 const sync = async () => {
     await sequelize.sync({ alter: true });
@@ -28,5 +29,6 @@ module.exports = {
     ConfirmationCodeApi,
     DirectoryApi,
     HomeApi,
+    SocialLinkApi,
     sync,
 };

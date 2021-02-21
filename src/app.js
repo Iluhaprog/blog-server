@@ -15,5 +15,6 @@ app.use('/like', routes.LikeRouter);
 app.use('/tag', routes.TagRouter);
 app.use('/directory', routes.DirectoryRouter);
 app.use('/home', routes.HomeRouter);
+app.use('/social', routes.SocialLinkRouter);
 
 module.exports = app;
