@@ -129,3 +129,13 @@ CREATE TABLE IF NOT EXISTS `home` (
     `title` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE IF NOT EXISTS `social_links` (
+    `id` INT UNIQUE NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(50) NOT NULL,
+    `link` VARCHAR(255) NOT NULL,
+    `userId` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY(`userId`) REFERENCES `users` (`id`)
+        ON delete CASCADE
+);
