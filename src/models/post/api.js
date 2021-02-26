@@ -19,6 +19,9 @@ async function getAll({offset, limit}) {
             include: [ Tag ],
             offset,
             limit,
+            order: [
+                ['id', 'DESC']
+            ]
         });
         return getModelsDataArray(posts);
     } catch (error) {
