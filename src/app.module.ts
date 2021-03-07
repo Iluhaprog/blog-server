@@ -1,19 +1,20 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { User } from './user/user.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TagModule } from './tag/tag.module';
+import { User } from './user/user.entity';
 import { Tag } from './tag/tag.entity';
+import { Social } from './social/social.entity';
+import { UserModule } from './user/user.module';
+import { TagModule } from './tag/tag.module';
+import { SocialModule } from './social/social.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    UserModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DBHOST,
@@ -21,11 +22,13 @@ import { Tag } from './tag/tag.entity';
       username: process.env.DBUSER,
       password: process.env.DBPASS,
       database: process.env.DBNAME,
-      entities: [User, Tag],
+      entities: [User, Tag, Social],
       synchronize: true,
       logging: false,
     }),
+    UserModule,
     TagModule,
+    SocialModule,
   ],
   controllers: [AppController],
   providers: [AppService],

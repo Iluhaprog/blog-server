@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany } from "typeorm";
 import { InternalServerErrorException } from '@nestjs/common';
 import { IsEmail, MinLength, validate } from 'class-validator';
 import * as bcrypt from 'bcrypt';
+import { Social } from '../social/social.entity';
 
 @Entity()
 export class User {
@@ -49,4 +50,7 @@ export class User {
       }
     }
   }
+
+  @OneToMany(() => Social, (social: Social) => social.user)
+  socials: Social[];
 }
