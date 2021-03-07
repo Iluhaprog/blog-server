@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { User } from './user/user.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { TagModule } from './tag/tag.module';
+import { Tag } from './tag/tag.entity';
 
 @Module({
   imports: [
@@ -19,10 +21,11 @@ import { AppService } from './app.service';
       username: process.env.DBUSER,
       password: process.env.DBPASS,
       database: process.env.DBNAME,
-      entities: [User],
+      entities: [User, Tag],
       synchronize: true,
       logging: false,
     }),
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],
