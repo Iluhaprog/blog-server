@@ -9,6 +9,8 @@ import { Social } from './social/social.entity';
 import { UserModule } from './user/user.module';
 import { TagModule } from './tag/tag.module';
 import { SocialModule } from './social/social.module';
+import { RefreshTokenModule } from './refresh-token/refresh-token.module';
+import { RefreshToken } from './refresh-token/refresh-token.entity';
 
 @Module({
   imports: [
@@ -22,13 +24,14 @@ import { SocialModule } from './social/social.module';
       username: process.env.DBUSER,
       password: process.env.DBPASS,
       database: process.env.DBNAME,
-      entities: [User, Tag, Social],
+      entities: [User, Tag, Social, RefreshToken],
       synchronize: true,
       logging: false,
     }),
     UserModule,
     TagModule,
     SocialModule,
+    RefreshTokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,8 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany } from "typeorm";
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  BeforeUpdate,
+  OneToMany,
+} from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import { IsEmail, MinLength, validate } from 'class-validator';
 import * as bcrypt from 'bcrypt';
 import { Social } from '../social/social.entity';
+import { RefreshToken } from '../refresh-token/refresh-token.entity';
 
 @Entity()
 export class User {
@@ -53,4 +61,7 @@ export class User {
 
   @OneToMany(() => Social, (social: Social) => social.user)
   socials: Social[];
+
+  @OneToMany(() => RefreshToken, (token: RefreshToken) => token.user)
+  refreshTokens: RefreshToken[];
 }
