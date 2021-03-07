@@ -11,6 +11,8 @@ import { TagModule } from './tag/tag.module';
 import { SocialModule } from './social/social.module';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 import { RefreshToken } from './refresh-token/refresh-token.entity';
+import { ProjectModule } from './project/project.module';
+import { Project } from './project/project.entity';
 
 @Module({
   imports: [
@@ -24,7 +26,7 @@ import { RefreshToken } from './refresh-token/refresh-token.entity';
       username: process.env.DBUSER,
       password: process.env.DBPASS,
       database: process.env.DBNAME,
-      entities: [User, Tag, Social, RefreshToken],
+      entities: [User, Tag, Social, RefreshToken, Project],
       synchronize: true,
       logging: false,
     }),
@@ -32,6 +34,7 @@ import { RefreshToken } from './refresh-token/refresh-token.entity';
     TagModule,
     SocialModule,
     RefreshTokenModule,
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],

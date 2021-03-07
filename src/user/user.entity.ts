@@ -11,6 +11,7 @@ import { IsEmail, MinLength, validate } from 'class-validator';
 import * as bcrypt from 'bcrypt';
 import { Social } from '../social/social.entity';
 import { RefreshToken } from '../refresh-token/refresh-token.entity';
+import { Project } from '../project/project.entity';
 
 @Entity()
 export class User {
@@ -64,4 +65,7 @@ export class User {
 
   @OneToMany(() => RefreshToken, (token: RefreshToken) => token.user)
   refreshTokens: RefreshToken[];
+
+  @OneToMany(() => Project, (project: Project) => project.user)
+  projects: Project[];
 }
