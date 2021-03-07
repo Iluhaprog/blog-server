@@ -19,6 +19,8 @@ import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 import { ProjectModule } from './project/project.module';
 import { PostModule } from './post/post.module';
 import { HomeModule } from './home/home.module';
+import { DirectoryModule } from './directory/directory.module';
+import { Directory } from './directory/directory.entity';
 
 @Module({
   imports: [
@@ -32,7 +34,16 @@ import { HomeModule } from './home/home.module';
       username: process.env.DBUSER,
       password: process.env.DBPASS,
       database: process.env.DBNAME,
-      entities: [User, Tag, Social, RefreshToken, Project, Post, Home],
+      entities: [
+        User,
+        Tag,
+        Social,
+        RefreshToken,
+        Project,
+        Post,
+        Home,
+        Directory,
+      ],
       synchronize: true,
       logging: false,
     }),
@@ -43,6 +54,7 @@ import { HomeModule } from './home/home.module';
     ProjectModule,
     PostModule,
     HomeModule,
+    DirectoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
