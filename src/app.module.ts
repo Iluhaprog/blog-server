@@ -11,6 +11,7 @@ import { Project } from './project/project.entity';
 import { Social } from './social/social.entity';
 import { Post } from './post/post.entity';
 import { Home } from './home/home.entity';
+import { File } from './file/file.entity';
 
 import { UserModule } from './user/user.module';
 import { TagModule } from './tag/tag.module';
@@ -21,6 +22,7 @@ import { PostModule } from './post/post.module';
 import { HomeModule } from './home/home.module';
 import { DirectoryModule } from './directory/directory.module';
 import { Directory } from './directory/directory.entity';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { Directory } from './directory/directory.entity';
         Post,
         Home,
         Directory,
+        File,
       ],
       synchronize: true,
       logging: false,
@@ -55,6 +58,7 @@ import { Directory } from './directory/directory.entity';
     PostModule,
     HomeModule,
     DirectoryModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
