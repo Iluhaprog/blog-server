@@ -1,11 +1,14 @@
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import { User } from '../user/user.entity';
+import { Tag } from '../tag/tag.entity';
 
 @Entity()
 export class Post {
@@ -29,4 +32,8 @@ export class Post {
     onDelete: 'CASCADE',
   })
   user: User;
+
+  @ManyToMany((type) => Tag, (tag) => tag.posts)
+  @JoinTable()
+  tags: Tag[];
 }
