@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { Social } from '../social/social.entity';
 import { RefreshToken } from '../refresh-token/refresh-token.entity';
 import { Project } from '../project/project.entity';
+import { Post } from '../post/post.entity';
 
 @Entity()
 export class User {
@@ -68,4 +69,7 @@ export class User {
 
   @OneToMany(() => Project, (project: Project) => project.user)
   projects: Project[];
+
+  @OneToMany(() => Post, (post: Post) => post.user)
+  posts: Post[];
 }

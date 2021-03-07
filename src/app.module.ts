@@ -3,16 +3,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
 import { User } from './user/user.entity';
 import { Tag } from './tag/tag.entity';
+import { RefreshToken } from './refresh-token/refresh-token.entity';
+import { Project } from './project/project.entity';
 import { Social } from './social/social.entity';
+import { Post } from './post/post.entity';
+
 import { UserModule } from './user/user.module';
 import { TagModule } from './tag/tag.module';
 import { SocialModule } from './social/social.module';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
-import { RefreshToken } from './refresh-token/refresh-token.entity';
 import { ProjectModule } from './project/project.module';
-import { Project } from './project/project.entity';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -26,7 +30,7 @@ import { Project } from './project/project.entity';
       username: process.env.DBUSER,
       password: process.env.DBPASS,
       database: process.env.DBNAME,
-      entities: [User, Tag, Social, RefreshToken, Project],
+      entities: [User, Tag, Social, RefreshToken, Project, Post],
       synchronize: true,
       logging: false,
     }),
@@ -35,6 +39,7 @@ import { Project } from './project/project.entity';
     SocialModule,
     RefreshTokenModule,
     ProjectModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
