@@ -63,12 +63,14 @@ describe('Project entity', () => {
 
   it('Should title unique', async () => {
     let error;
+    let p1;
     try {
-      await projectRepo.save(await projectRepo.create(project));
+      p1 = await projectRepo.save(await projectRepo.create(project));
       await projectRepo.save(await projectRepo.create(project));
     } catch (e) {
       error = e;
     }
+    projectRepo.delete(p1.id);
     expect(error instanceof Error).toBe(true);
   });
 });

@@ -4,7 +4,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { AppModule } from '../../app.module';
-import { ValidationError } from 'class-validator';
 
 describe('User entity', () => {
   const token = getRepositoryToken(User);
