@@ -23,6 +23,7 @@ import { HomeModule } from './home/home.module';
 import { DirectoryModule } from './directory/directory.module';
 import { Directory } from './directory/directory.entity';
 import { FileModule } from './file/file.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { FileModule } from './file/file.module';
     HomeModule,
     DirectoryModule,
     FileModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
