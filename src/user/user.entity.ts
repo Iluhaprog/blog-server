@@ -50,6 +50,7 @@ export class User {
   }
 
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword(): Promise<void> {
     if (this.password) {
       const saltRounds = 10;
