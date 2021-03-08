@@ -12,6 +12,14 @@ export class PostService {
     private postRepository: Repository<Post>,
   ) {}
 
+  async findAll(page, limit): Promise<any> {
+    const [data, total] = await this.postRepository.findAndCount({
+      take: limit,
+      skip: page,
+    });
+    return { data, total };
+  }
+
   async findById(id: number): Promise<Post | undefined> {
     return await this.postRepository.findOne(id);
   }

@@ -30,6 +30,19 @@ describe('PostService', () => {
     expect(service).toBeDefined();
   });
 
+  it('should find all', async () => {
+    const post = new Post();
+    jest.spyOn(postRepo, 'findAndCount').mockResolvedValueOnce([[post], 1]);
+    const { data, total } = await service.findAll(2, 1);
+    expect(data).toEqual([post]);
+    expect(total).toBe(1);
+    expect(postRepo.findAndCount).toHaveBeenCalled();
+    expect(postRepo.findAndCount).toBeCalledWith({
+      take: 1,
+      skip: 2,
+    });
+  });
+
   it('should find post by id', async () => {
     const post = new Post();
     const id = 1;
