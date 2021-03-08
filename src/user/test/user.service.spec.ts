@@ -65,6 +65,12 @@ describe('UserService', () => {
     expect(await service.findById(1)).toEqual(testUser);
   });
 
+  it('should get user by login', async () => {
+    const testUser: User = new User();
+    jest.spyOn(repo, 'findOne').mockResolvedValueOnce(testUser);
+    expect(await service.findByLogin('login')).toEqual(testUser);
+  });
+
   it('should get user by login and password', async () => {
     const testUser: User = new User();
     jest.spyOn(repo, 'findOne').mockResolvedValueOnce(testUser);
