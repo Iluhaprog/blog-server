@@ -4,7 +4,7 @@ import { RefreshToken } from './refresh-token.entity';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import * as moment from 'moment';
-import { Moment } from "moment";
+import { Moment } from 'moment';
 
 @Injectable()
 export class RefreshTokenService {
