@@ -2,15 +2,15 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { RefreshTokenService } from '../refresh-token/refresh-token.service';
-import { UserService } from '../user/user.service';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { UserModule } from '../user/user.module';
+import { RefreshTokenModule } from '../refresh-token/refresh-token.module';
 
 @Module({
   imports: [
-    UserService,
-    RefreshTokenService,
+    UserModule,
+    RefreshTokenModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.SECRET,
@@ -20,6 +20,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService, JwtModule],
+  exports: [AuthService],
 })
 export class AuthModule {}
