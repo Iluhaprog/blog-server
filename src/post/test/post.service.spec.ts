@@ -87,6 +87,7 @@ describe('PostService', () => {
 
   it('should create post', async () => {
     const post = new Post();
+    const userId = 1;
     const newPost: CreatePostDto = {
       preview: 'new preview',
       tags: [1, 2, 3],
@@ -98,10 +99,11 @@ describe('PostService', () => {
       .spyOn(postRepo, 'save')
       .mockResolvedValueOnce(Promise.resolve(undefined));
 
-    await service.create(newPost);
+    await service.create(newPost, userId);
     expect(postRepo.create).toHaveBeenCalled();
     expect(postRepo.create).toBeCalledWith({
       ...newPost,
+      user: { id: userId },
       tags: [{ id: 1 }, { id: 2 }, { id: 3 }],
     });
     expect(postRepo.save).toHaveBeenCalled();

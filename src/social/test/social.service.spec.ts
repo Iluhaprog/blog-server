@@ -40,6 +40,7 @@ describe('SocialService', () => {
 
   it('should create social', async () => {
     const social = new Social();
+    const userId = 1;
     const newSocial: CreateSocialDto = {
       link: '',
       preview: '',
@@ -49,9 +50,12 @@ describe('SocialService', () => {
     jest
       .spyOn(socRepo, 'save')
       .mockResolvedValueOnce(Promise.resolve(undefined));
-    await service.create(newSocial);
+    await service.create(newSocial, userId);
     expect(socRepo.create).toHaveBeenCalled();
-    expect(socRepo.create).toBeCalledWith(newSocial);
+    expect(socRepo.create).toBeCalledWith({
+      ...newSocial,
+      user: { id: userId },
+    });
     expect(socRepo.save).toHaveBeenCalled();
     expect(socRepo.save).toBeCalledWith(social);
   });

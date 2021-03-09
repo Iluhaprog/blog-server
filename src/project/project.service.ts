@@ -16,8 +16,13 @@ export class ProjectService {
     return this.projectRepository.find();
   }
 
-  async create(project: CreateProjectDto): Promise<void> {
-    await this.projectRepository.save(this.projectRepository.create(project));
+  async create(project: CreateProjectDto, userId: number): Promise<void> {
+    await this.projectRepository.save(
+      this.projectRepository.create({
+        ...project,
+        user: { id: userId },
+      }),
+    );
   }
 
   async update(project: UpdateProjectDto): Promise<void> {

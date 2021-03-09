@@ -16,8 +16,13 @@ export class SocialService {
     return await this.socialRepository.find();
   }
 
-  async create(social: CreateSocialDto): Promise<void> {
-    await this.socialRepository.save(this.socialRepository.create(social));
+  async create(social: CreateSocialDto, userId: number): Promise<void> {
+    await this.socialRepository.save(
+      this.socialRepository.create({
+        ...social,
+        user: { id: userId },
+      }),
+    );
   }
 
   async update(social: UpdateSocialDto): Promise<void> {

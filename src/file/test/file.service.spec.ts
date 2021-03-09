@@ -43,7 +43,10 @@ describe('FileService', () => {
   });
 
   it('should create file', async () => {
-    const newFile: CreateFileDto = { name: '' };
+    const newFile: CreateFileDto = {
+      name: '',
+      directory: { id: 1 },
+    };
     const file = new File();
     jest.spyOn(fileRepo, 'create').mockReturnValue(file);
     jest

@@ -41,10 +41,11 @@ export class PostService {
     });
   }
 
-  async create(post: CreatePostDto): Promise<void> {
+  async create(post: CreatePostDto, userId: number): Promise<void> {
     await this.postRepository.save(
       this.postRepository.create({
         ...post,
+        user: { id: userId },
         tags: post.tags.map((tag: number) => ({ id: tag })),
       }),
     );

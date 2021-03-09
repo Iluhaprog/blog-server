@@ -47,13 +47,17 @@ describe('ProjectService', () => {
       projectLink: '',
       title: '',
     };
+    const userId = 1;
     const project = new Project();
     jest.spyOn(projectRepo, 'create').mockReturnValue(new Project());
     jest.spyOn(projectRepo, 'save').mockResolvedValueOnce(project);
 
-    await service.create(newProject);
+    await service.create(newProject, userId);
     expect(projectRepo.create).toHaveBeenCalled();
-    expect(projectRepo.create).toBeCalledWith(newProject);
+    expect(projectRepo.create).toBeCalledWith({
+      ...newProject,
+      user: { id: userId },
+    });
     expect(projectRepo.save).toHaveBeenCalled();
     expect(projectRepo.save).toBeCalledWith(project);
   });
