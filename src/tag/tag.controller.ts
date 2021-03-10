@@ -6,19 +6,20 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  Post, UseGuards
-} from "@nestjs/common";
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
-  ApiTags
-} from "@nestjs/swagger";
+  ApiTags,
+} from '@nestjs/swagger';
 import { TagService } from './tag.service';
 import { User } from '../user/user.entity';
 import { CreateTagDto } from './dto/create-tag.dto';
-import { AuthGuard } from "@nestjs/passport";
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('tag')
 @Controller('tag')
