@@ -14,6 +14,7 @@ async function bootstrap() {
     .addTag('post')
     .addTag('tag')
     .addTag('home')
+    .addTag('project')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
