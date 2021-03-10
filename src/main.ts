@@ -10,6 +10,7 @@ async function bootstrap() {
     .setDescription('API for managing blog data')
     .setVersion('0.0.1')
     .addTag('user')
+    .addTag('social')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
