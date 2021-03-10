@@ -11,6 +11,7 @@ async function bootstrap() {
     .setVersion('0.0.1')
     .addTag('user')
     .addTag('social')
+    .addTag('post')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
