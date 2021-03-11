@@ -1,24 +1,28 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
-  Post, UseGuards
-} from "@nestjs/common";
+  Post,
+  Query,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
-  ApiTags
-} from "@nestjs/swagger";
+  ApiTags,
+} from '@nestjs/swagger';
 import { FileService } from './file.service';
 import { File } from './file.entity';
 import { CreateFileDto } from './dto/create-file.dto';
-import { AuthGuard } from "@nestjs/passport";
+import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('file')
 @Controller('file')
@@ -37,11 +41,19 @@ export class FileController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
+  @UseInterceptors(FileInterceptor('file'))
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ description: 'File created' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
-  async create(@Body() file: CreateFileDto): Promise<void> {
-    await this.fileService.create(file);
+  async create(
+    @Query('dir') dirId: number,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<void> {
+    const fileData: CreateFileDto = {
+      directory: { id: dirId },
+      name: file.filename,
+    };
+    await this.fileService.create(fileData);
   }
 
   @UseGuards(AuthGuard('jwt'))

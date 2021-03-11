@@ -52,13 +52,29 @@ describe('FileController', () => {
   });
 
   it('should create file', async () => {
-    const file: CreateFileDto = { directory: { id: 0 }, name: '' };
+    const file: Express.Multer.File = {
+      buffer: undefined,
+      destination: '',
+      encoding: '',
+      fieldname: '',
+      mimetype: '',
+      originalname: '',
+      path: '',
+      size: 0,
+      stream: undefined,
+      filename: '',
+    };
+    const dirId = 1;
+    const fileData: CreateFileDto = {
+      directory: { id: dirId },
+      name: file.filename,
+    };
     jest.spyOn(service, 'create').mockResolvedValueOnce(undefined);
 
-    await controller.create(file);
+    await controller.create(dirId, file);
 
     expect(service.create).toHaveBeenCalled();
-    expect(service.create).toBeCalledWith(file);
+    expect(service.create).toBeCalledWith(fileData);
   });
 
   it('should remove file', async () => {
