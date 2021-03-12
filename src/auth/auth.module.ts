@@ -7,12 +7,16 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserModule } from '../user/user.module';
 import { RefreshTokenModule } from '../refresh-token/refresh-token.module';
 import { AuthController } from './auth.controller';
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
   imports: [
     UserModule,
     RefreshTokenModule,
     PassportModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     JwtModule.register({
       secret: process.env.SECRET,
       signOptions: {
