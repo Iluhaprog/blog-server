@@ -51,7 +51,7 @@ export class FileController {
   ): Promise<void> {
     const fileData: CreateFileDto = {
       directory: { id: dirId },
-      name: file.filename,
+      name: file.originalname,
     };
     await this.fileService.create(fileData);
   }

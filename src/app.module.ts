@@ -24,11 +24,15 @@ import { DirectoryModule } from './directory/directory.module';
 import { Directory } from './directory/directory.entity';
 import { FileModule } from './file/file.module';
 import { AuthModule } from './auth/auth.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: `${__dirname}/../${process.env.STATIC_FILES}`,
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
