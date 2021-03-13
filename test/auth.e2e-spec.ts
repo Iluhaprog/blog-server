@@ -2,27 +2,13 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { CreateUserDto } from '../src/user/dto/create-user.dto';
 import { User } from '../src/user/user.entity';
 import { UserService } from '../src/user/user.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { getConnectionManager } from 'typeorm';
-import { query } from 'express';
-
-async function createUser(login, password, service: UserService) {
-  const user: CreateUserDto = {
-    about: '',
-    avatar: '',
-    email: 'TEST_EMAIL@TEST.TEST',
-    firstName: '',
-    lastName: '',
-    login,
-    password,
-  };
-  return await service.create(user);
-}
+import { createUser, createAndLoginUser } from './helpers';
 
 describe('AuthController (e2e)', () => {
   const repoToken = getRepositoryToken(User);
@@ -90,18 +76,19 @@ describe('AuthController (e2e)', () => {
     const password = 'TEST_PASSWORD';
 
     await createUser(username, password, service);
-    const user: User = await service.findByLogin(username);
-    const { body } = await request(app.getHttpServer())
-      .post('/auth/login')
-      .query({ username })
-      .query({ password });
-    const { accessToken, refreshToken } = body || {};
+    const token = await createAndLoginUser(
+      username,
+      password,
+      service,
+      request,
+      app,
+    );
     const response = await request(app.getHttpServer())
       .get('/auth/refresh-token')
-      .auth(accessToken, { type: 'bearer' })
-      .query({ token: refreshToken });
+      .auth(token.access, { type: 'bearer' })
+      .query({ token: token.refresh });
     const newTokens = response.body || {};
-    await service.remove(user.id);
+    await service.remove(token.userId);
 
     expect(typeof newTokens.accessToken).toBe('string');
     expect(typeof newTokens.refreshToken).toBe('string');
@@ -111,17 +98,17 @@ describe('AuthController (e2e)', () => {
     const username = 'TEST_LOGIN';
     const password = 'TEST_PASSWORD';
 
-    await createUser(username, password, service);
-    const user: User = await service.findByLogin(username);
-    const { body } = await request(app.getHttpServer())
-      .post('/auth/login')
-      .query({ username })
-      .query({ password });
-    const { accessToken } = body || {};
+    const token = await createAndLoginUser(
+      username,
+      password,
+      service,
+      request,
+      app,
+    );
     const { status } = await request(app.getHttpServer())
       .get('/auth/logout')
-      .auth(accessToken, { type: 'bearer' });
-    await service.remove(user.id);
+      .auth(token.access, { type: 'bearer' });
+    await service.remove(token.userId);
 
     expect(status).toBe(HttpStatus.NO_CONTENT);
   });
@@ -130,17 +117,17 @@ describe('AuthController (e2e)', () => {
     const username = 'TEST_LOGIN';
     const password = 'TEST_PASSWORD';
 
-    await createUser(username, password, service);
-    const user: User = await service.findByLogin(username);
-    const { body } = await request(app.getHttpServer())
-      .post('/auth/login')
-      .query({ username })
-      .query({ password });
-    const { accessToken } = body || {};
+    const token = await createAndLoginUser(
+      username,
+      password,
+      service,
+      request,
+      app,
+    );
     const { status } = await request(app.getHttpServer())
       .get('/auth/logoutAll')
-      .auth(accessToken, { type: 'bearer' });
-    await service.remove(user.id);
+      .auth(token.access, { type: 'bearer' });
+    await service.remove(token.userId);
 
     expect(status).toBe(HttpStatus.NO_CONTENT);
   });
