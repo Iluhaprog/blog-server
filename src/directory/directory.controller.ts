@@ -19,7 +19,6 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateDirectoryDto } from './dto/create-directory.dto';
-import { Directory } from './directory.entity';
 
 @ApiTags('directory')
 @Controller('directory')
@@ -32,8 +31,8 @@ export class DirectoryController {
   async getAll(
     @Param('page') page: number,
     @Param('limit') limit: number,
-  ): Promise<Directory[] | any[] | undefined> {
-    return await this.dirService.getAll(page, limit);
+  ): Promise<any> {
+    return await this.dirService.getAll(+page, +limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -51,6 +50,6 @@ export class DirectoryController {
   @ApiNoContentResponse({ description: 'Directory removed' })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   async remove(@Param('id') id: number): Promise<void> {
-    await this.dirService.remove(id);
+    await this.dirService.remove(+id);
   }
 }
