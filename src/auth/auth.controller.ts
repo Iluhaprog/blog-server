@@ -52,6 +52,7 @@ export class AuthController {
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   async logout(@Query('token') token: string, @Request() req): Promise<any> {
     await this.authService.logout(token, req.user.id);
+    req.logout();
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -61,5 +62,6 @@ export class AuthController {
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   async logoutAll(@Request() req): Promise<any> {
     await this.authService.logoutAll(req.user.id);
+    req.logout();
   }
 }
