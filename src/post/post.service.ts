@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './post.entity';
-import { Repository } from 'typeorm';
+import { getManager, In, Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
@@ -25,11 +25,10 @@ export class PostService {
   }
 
   async findByTags(tags: number[]): Promise<Post[] | [] | undefined> {
-    return await this.postRepository.find({
-      where: {
-        tags: tags.map((tag: number) => ({ id: tag })),
-      },
-    });
+    return await this.postRepository
+      .createQueryBuilder('post')
+      .innerJoinAndSelect('post.tags', 'tag', 'tag.id IN (:...tags)', { tags })
+      .getMany();
   }
 
   async findLast(): Promise<Post[] | [] | undefined> {
@@ -45,6 +44,7 @@ export class PostService {
     await this.postRepository.save(
       this.postRepository.create({
         ...post,
+        creationDate: new Date(),
         user: { id: userId },
         tags: post.tags.map((tag: number) => ({ id: tag })),
       }),
@@ -52,7 +52,7 @@ export class PostService {
   }
 
   async update(post: UpdatePostDto): Promise<void> {
-    await this.postRepository.update(post.id, {
+    await this.postRepository.save({
       ...post,
       tags: post.tags.map((tag: number) => ({ id: tag })),
     });

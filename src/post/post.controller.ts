@@ -29,6 +29,13 @@ import { AuthGuard } from '@nestjs/passport';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @Get('/by-tags')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'Return posts' })
+  async findByTags(@Body('tags') tags: number[]): Promise<any> {
+    return await this.postService.findByTags(tags);
+  }
+
   @Get(':page/:limit')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return posts' })
@@ -37,7 +44,7 @@ export class PostController {
     @Param('page') page: number,
     @Param('limit') limit: number,
   ): Promise<any> {
-    return await this.postService.findAll(page, limit);
+    return await this.postService.findAll(+page, +limit);
   }
 
   @Get(':id')
@@ -53,16 +60,6 @@ export class PostController {
   @ApiOkResponse({ description: 'Return last posts' })
   async findLast(): Promise<PostEntity[] | [] | undefined> {
     return await this.postService.findLast();
-  }
-
-  @Get('/byTags')
-  @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return posts by tags' })
-  @ApiBadRequestResponse({ description: 'An uncorrected tags' })
-  async findByTags(
-    @Body() tags: number[],
-  ): Promise<PostEntity[] | [] | undefined> {
-    return await this.postService.findByTags(tags);
   }
 
   @UseGuards(AuthGuard('jwt'))
