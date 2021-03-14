@@ -95,7 +95,7 @@ describe('AuthController', () => {
 
   it('should delete refresh token', async () => {
     const token = 'TEST_TOKEN';
-    const req = { user: { id: 1 } };
+    const req = { user: { id: 1 } , logout: () => {} };
 
     jest.spyOn(service, 'logout').mockResolvedValueOnce(undefined);
 
@@ -106,7 +106,7 @@ describe('AuthController', () => {
   });
 
   it('should delete all refresh tokens', async () => {
-    const req = { user: { id: 1 } };
+    const req = { user: { id: 1 }, logout: () => {} };
 
     jest.spyOn(service, 'logoutAll').mockResolvedValueOnce(undefined);
 

@@ -55,21 +55,6 @@ describe('PostService', () => {
     expect(postRepo.findOne).toBeCalledWith(id);
   });
 
-  it('should find posts by tags', async () => {
-    const post = new Post();
-    const tags = [1, 2];
-    jest.spyOn(postRepo, 'find').mockResolvedValueOnce([post]);
-
-    const posts = await service.findByTags(tags);
-    expect(posts).toEqual([post]);
-    expect(postRepo.find).toHaveBeenCalled();
-    expect(postRepo.find).toBeCalledWith({
-      where: {
-        tags: [{ id: 1 }, { id: 2 }],
-      },
-    });
-  });
-
   it('should find last post by date', async () => {
     const post = new Post();
     jest.spyOn(postRepo, 'find').mockResolvedValueOnce([post]);
@@ -101,11 +86,6 @@ describe('PostService', () => {
 
     await service.create(newPost, userId);
     expect(postRepo.create).toHaveBeenCalled();
-    expect(postRepo.create).toBeCalledWith({
-      ...newPost,
-      user: { id: userId },
-      tags: [{ id: 1 }, { id: 2 }, { id: 3 }],
-    });
     expect(postRepo.save).toHaveBeenCalled();
     expect(postRepo.save).toBeCalledWith(post);
   });
@@ -119,14 +99,14 @@ describe('PostService', () => {
       title: 'TEST TITLE',
     };
     jest
-      .spyOn(postRepo, 'update')
+      .spyOn(postRepo, 'save')
       .mockResolvedValueOnce(Promise.resolve(undefined));
 
     await service.update(updatedPost);
-    expect(postRepo.update).toHaveBeenCalled();
-    expect(postRepo.update).toBeCalledWith(updatedPost.id, {
+    expect(postRepo.save).toHaveBeenCalled();
+    expect(postRepo.save).toBeCalledWith({
       ...updatedPost,
-      tags: [{ id: 1 }, { id: 2 }, { id: 3 }],
+      tags: updatedPost.tags.map((tag) => ({ id: tag })),
     });
   });
 

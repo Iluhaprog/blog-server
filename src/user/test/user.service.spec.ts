@@ -109,28 +109,21 @@ describe('UserService', () => {
       lastName: '',
       login: '',
     };
-    jest
-      .spyOn(repo, 'update')
-      .mockResolvedValueOnce(Promise.resolve(undefined));
+    jest.spyOn(repo, 'update').mockResolvedValueOnce(Promise.resolve(undefined));
     await service.update(dto);
     expect(repo.update).toHaveBeenCalled();
     expect(repo.update).toBeCalledWith(dto.id, dto);
   });
 
   it('should update user password', async () => {
-    jest
-      .spyOn(repo, 'update')
-      .mockResolvedValueOnce(Promise.resolve(undefined));
+    jest.spyOn(repo, 'save').mockResolvedValueOnce(Promise.resolve(undefined));
     jest.spyOn(repo, 'findOne').mockResolvedValueOnce(oldUser);
 
     await service.updatePassword(newCred);
 
     expect(repo.findOne).toHaveBeenCalled();
     expect(repo.findOne).toBeCalledWith(newCred.id);
-    expect(repo.update).toHaveBeenCalled();
-    expect(repo.update).toBeCalledWith(newCred.id, {
-      password: newCred.newPassword,
-    });
+    expect(repo.save).toHaveBeenCalled();
   });
 
   it('should throw MismatchPasswordException when old password mismatch with current user password', async () => {

@@ -72,15 +72,12 @@ describe('ProjectService', () => {
       title: '',
     };
     jest
-      .spyOn(projectRepo, 'update')
+      .spyOn(projectRepo, 'save')
       .mockResolvedValueOnce(Promise.resolve(undefined));
 
     await service.update(updatedProject);
-    expect(projectRepo.update).toHaveBeenCalled();
-    expect(projectRepo.update).toBeCalledWith(
-      updatedProject.id,
-      updatedProject,
-    );
+    expect(projectRepo.save).toHaveBeenCalled();
+    expect(projectRepo.save).toBeCalledWith(updatedProject);
   });
 
   it('should remove project', async () => {
