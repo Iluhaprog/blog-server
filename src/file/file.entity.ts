@@ -18,6 +18,7 @@ export class File {
 
   @ManyToOne(() => Directory, (dir: Directory) => dir.files, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   directory: Directory;
 }

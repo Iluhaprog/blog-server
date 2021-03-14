@@ -24,6 +24,7 @@ export class Project {
 
   @ManyToOne(() => User, (user: User) => user.projects, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   user: User;
 }

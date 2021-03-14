@@ -14,6 +14,7 @@ export class RefreshToken {
 
   @ManyToOne(() => User, (user: User) => user.refreshTokens, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   user: User;
 }

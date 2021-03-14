@@ -11,6 +11,7 @@ export class Tag {
 
   @ManyToMany((type) => Post, (post) => post.tags, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   posts: Post[];
 }
