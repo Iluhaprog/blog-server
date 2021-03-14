@@ -35,8 +35,8 @@ export class FileController {
   async getAll(
     @Param('page') page: number,
     @Param('limit') limit: number,
-  ): Promise<File[] | any[] | undefined> {
-    return await this.fileService.getAll(page, limit);
+  ): Promise<any> {
+    return await this.fileService.getAll(+page, +limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
