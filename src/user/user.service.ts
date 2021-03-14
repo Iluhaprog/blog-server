@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { compareSync } from 'bcrypt';
+import { compareSync, hashSync } from 'bcrypt';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -50,7 +50,10 @@ export class UserService {
     ) {
       throw new MismatchPasswordException();
     }
-    await this.userRepository.update(user.id, { password: user.newPassword });
+    await this.userRepository.save({
+      id: user.id,
+      password: hashSync(user.newPassword, 10),
+    });
   }
 
   async remove(id: number): Promise<void> {
