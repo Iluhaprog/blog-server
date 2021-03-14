@@ -18,6 +18,7 @@ describe('FileController (e2e)', () => {
   const dirRepoToken = getRepositoryToken(Directory);
   let fileService: FileService;
   let userService: UserService;
+  let userRepo: Repository<User>;
   let fileRepo: Repository<File>;
   let dirRepo: Repository<Directory>;
   let app: INestApplication;
@@ -54,6 +55,7 @@ describe('FileController (e2e)', () => {
     fileService = moduleFixture.get<FileService>(FileService);
     fileRepo = moduleFixture.get(fileRepoToken);
     dirRepo = moduleFixture.get(dirRepoToken);
+    userRepo = moduleFixture.get(userRepoToken);
     await app.init();
   });
 
@@ -107,6 +109,7 @@ describe('FileController (e2e)', () => {
     const file = await fileRepo.findOne({ where: { name: 'file.txt' } });
 
     await dirRepo.delete(dir.id);
+    await userRepo.delete(token.userId);
 
     expect(status).toBe(HttpStatus.CREATED);
     expect(!!file).toBe(true);
@@ -137,5 +140,6 @@ describe('FileController (e2e)', () => {
     expect(await fileRepo.findOne(file.id)).toBe(undefined);
 
     await dirRepo.delete(dir.id);
+    await userRepo.delete(token.userId);
   });
 });

@@ -183,6 +183,7 @@ describe('PostController (e2e)', () => {
     await postRepo.delete(post2.id);
     await tagRepo.delete(tag1.id);
     await tagRepo.delete(tag2.id);
+    await userRepo.delete(userId);
 
     expect(res1.status).toBe(HttpStatus.OK);
     expect(res2.status).toBe(HttpStatus.OK);

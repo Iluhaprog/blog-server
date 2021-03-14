@@ -42,6 +42,7 @@ describe('HomeController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     homeRepo = moduleFixture.get(homeRepoToken);
+    userRepo = moduleFixture.get(userRepoToken);
     userService = moduleFixture.get<UserService>(UserService);
     await app.init();
   });
@@ -104,6 +105,7 @@ describe('HomeController (e2e)', () => {
       });
     const home = await homeRepo.findOne();
     await homeRepo.delete(home.id);
+    await userRepo.delete(token.userId);
     expect(status).toBe(HttpStatus.CREATED);
     expect(!!home).toBe(true);
   });
@@ -139,6 +141,7 @@ describe('HomeController (e2e)', () => {
 
     const updatedHome = await homeRepo.findOne(home.id);
     await homeRepo.delete(home.id);
+    await userRepo.delete(token.userId);
 
     expect(status).toBe(HttpStatus.NO_CONTENT);
     expect(updatedHome).toEqual(update);
@@ -164,6 +167,8 @@ describe('HomeController (e2e)', () => {
     const { status } = await request(app.getHttpServer())
       .delete(`/home/${home.id}`)
       .auth(token.access, { type: 'bearer' });
+
+    await userRepo.delete(token.userId);
 
     expect(status).toBe(HttpStatus.NO_CONTENT);
     expect(await homeRepo.findOne(home.id)).toBe(undefined);
