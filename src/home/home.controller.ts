@@ -12,10 +12,10 @@ import {
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { HomeService } from './home.service';
 import { Home } from './home.entity';
@@ -46,7 +46,7 @@ export class HomeController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ description: 'Create home' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(@Body() home: CreateHomeDto): Promise<void> {
     await this.homeService.create(home);
   }
@@ -55,7 +55,7 @@ export class HomeController {
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Home has been updated' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async update(@Body() home: UpdateHomeDto): Promise<void> {
     await this.homeService.update(home);
   }
@@ -64,7 +64,7 @@ export class HomeController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Home has been removed' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async remove(@Param('id') id: number): Promise<void> {
     await this.homeService.remove(id);
   }

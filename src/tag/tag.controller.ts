@@ -11,10 +11,10 @@ import {
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { TagService } from './tag.service';
 import { User } from '../user/user.entity';
@@ -37,7 +37,7 @@ export class TagController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ description: 'Tag has been created' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(@Body() tag: CreateTagDto): Promise<void> {
     await this.tagService.create(tag);
   }
@@ -45,7 +45,7 @@ export class TagController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Tag has been removed' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async remove(@Param('id') id: number): Promise<void> {
     await this.tagService.remove(id);
   }

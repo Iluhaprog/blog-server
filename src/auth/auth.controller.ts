@@ -9,10 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 import {
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -26,7 +26,7 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return refresh and access tokens' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async login(@Request() req): Promise<any> {
     return this.authService.login(req.user);
   }
@@ -37,7 +37,7 @@ export class AuthController {
   @ApiOkResponse({
     description: 'Return new pair of refresh and access tokens',
   })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async refreshToken(
     @Query('token') token: string,
     @Request() req,
@@ -49,7 +49,7 @@ export class AuthController {
   @Get('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Deleted refresh token from query' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async logout(@Query('token') token: string, @Request() req): Promise<any> {
     await this.authService.logout(token, req.user.id);
     req.logout();
@@ -59,7 +59,7 @@ export class AuthController {
   @Get('logoutAll')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Deleted all refresh tokens of user' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async logoutAll(@Request() req): Promise<any> {
     await this.authService.logoutAll(req.user.id);
     req.logout();

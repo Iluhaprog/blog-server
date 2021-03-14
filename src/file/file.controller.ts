@@ -13,10 +13,10 @@ import {
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { FileService } from './file.service';
 import { File } from './file.entity';
@@ -44,7 +44,7 @@ export class FileController {
   @UseInterceptors(FileInterceptor('file'))
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ description: 'File created' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(
     @Query('dir') dirId: number,
     @UploadedFile() file: Express.Multer.File,
@@ -60,7 +60,7 @@ export class FileController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'File removed' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async remove(@Param('id') id: number): Promise<void> {
     await this.fileService.remove(id);
   }

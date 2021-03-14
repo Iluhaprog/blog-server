@@ -18,10 +18,10 @@ import { CreateSocialDto } from './dto/create-social.dto';
 import { UpdateSocialDto } from './dto/update-social.dto';
 import {
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('social')
@@ -39,7 +39,7 @@ export class SocialController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ description: 'Social has been created' })
-  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(@Request() req, @Body() social: CreateSocialDto): Promise<void> {
     const userId = req.user.id;
     await this.socialService.create(social, userId);
@@ -49,7 +49,7 @@ export class SocialController {
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Social has been updated' })
-  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async update(@Body() social: UpdateSocialDto): Promise<void> {
     await this.socialService.update(social);
   }
@@ -58,7 +58,7 @@ export class SocialController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Social has been removed' })
-  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async remove(@Param() id: number): Promise<void> {
     await this.socialService.remove(id);
   }

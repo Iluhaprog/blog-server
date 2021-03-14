@@ -19,10 +19,10 @@ import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('user')
@@ -49,7 +49,7 @@ export class UserController {
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'User has been updated' })
-  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async update(@Body() user: UpdateUserDto): Promise<void> {
     await this.userService.update(user);
   }
@@ -58,7 +58,7 @@ export class UserController {
   @Put('/password')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'User password has been updated' })
-  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async updatePassword(@Body() user: UpdateUserPasswordDto): Promise<void> {
     await this.userService.updatePassword(user);
   }
@@ -67,7 +67,7 @@ export class UserController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'User has been deleted' })
-  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async remove(@Param() id: number): Promise<void> {
     await this.userService.remove(id);
   }

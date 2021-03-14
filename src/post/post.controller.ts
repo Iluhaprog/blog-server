@@ -13,10 +13,10 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { PostService } from './post.service';
 import { Post as PostEntity } from './post.entity';
@@ -66,7 +66,7 @@ export class PostController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiNoContentResponse({ description: 'Post has been created' })
-  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(@Request() req, @Body() post: CreatePostDto): Promise<void> {
     const userId = req.user.id;
     await this.postService.create(post, userId);
@@ -76,7 +76,7 @@ export class PostController {
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Post has been updated' })
-  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async update(@Body() post: UpdatePostDto): Promise<void> {
     await this.postService.update(post);
   }
@@ -85,7 +85,7 @@ export class PostController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Post has been removed' })
-  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async remove(@Param('id') id: number): Promise<void> {
     await this.postService.remove(id);
   }

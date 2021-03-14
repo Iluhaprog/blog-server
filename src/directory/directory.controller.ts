@@ -12,10 +12,10 @@ import {
 import { DirectoryService } from './directory.service';
 import {
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateDirectoryDto } from './dto/create-directory.dto';
@@ -39,7 +39,7 @@ export class DirectoryController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ description: 'Directory created' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(@Body() dir: CreateDirectoryDto): Promise<void> {
     await this.dirService.create(dir);
   }
@@ -48,7 +48,7 @@ export class DirectoryController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Directory removed' })
-  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async remove(@Param('id') id: number): Promise<void> {
     await this.dirService.remove(+id);
   }
