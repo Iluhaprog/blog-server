@@ -75,7 +75,6 @@ describe('AuthController (e2e)', () => {
     const username = 'TEST_LOGIN';
     const password = 'TEST_PASSWORD';
 
-    await createUser(username, password, service);
     const token = await createAndLoginUser(
       username,
       password,
