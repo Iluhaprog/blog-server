@@ -26,7 +26,7 @@ export class ProjectService {
   }
 
   async update(project: UpdateProjectDto): Promise<void> {
-    await this.projectRepository.update(project.id, project);
+    await this.projectRepository.save(project);
   }
 
   async remove(id: number): Promise<void> {
