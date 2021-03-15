@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -17,9 +18,9 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { TagService } from './tag.service';
-import { User } from '../user/user.entity';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Tag } from './tag.entity';
 
 @ApiTags('tag')
 @Controller('tag')
@@ -28,11 +29,12 @@ export class TagController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return array of tags' })
-  async getAll(): Promise<User[] | any[] | undefined> {
+  @ApiOkResponse({ description: 'Return array of tags', type: [Tag] })
+  async getAll(): Promise<Tag[] | any[] | undefined> {
     return this.tagService.getAll();
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -42,6 +44,7 @@ export class TagController {
     await this.tagService.create(tag);
   }
 
+  @ApiBearerAuth()
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Tag has been removed' })

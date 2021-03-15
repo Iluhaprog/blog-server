@@ -11,6 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -30,18 +31,19 @@ export class HomeController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return all homes' })
+  @ApiOkResponse({ description: 'Return all homes', type: [Home] })
   async getAll(): Promise<Home[] | any[] | undefined> {
     return await this.homeService.getAll();
   }
 
   @Get('/one')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return last home' })
+  @ApiOkResponse({ description: 'Return last home', type: Home })
   async get(): Promise<Home | undefined> {
     return await this.homeService.get();
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -51,6 +53,7 @@ export class HomeController {
     await this.homeService.create(home);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -60,6 +63,7 @@ export class HomeController {
     await this.homeService.update(home);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

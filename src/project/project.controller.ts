@@ -17,6 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -31,11 +32,12 @@ export class ProjectController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return all projects' })
+  @ApiOkResponse({ description: 'Return all projects', type: [Project] })
   async findAll(): Promise<Project[] | any[] | undefined> {
     return this.projectService.findAll();
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -49,6 +51,7 @@ export class ProjectController {
     await this.projectService.create(project, userId);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -58,6 +61,7 @@ export class ProjectController {
     await this.projectService.update(project);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

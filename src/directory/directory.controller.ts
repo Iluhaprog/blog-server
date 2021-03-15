@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { DirectoryService } from './directory.service';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -19,6 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateDirectoryDto } from './dto/create-directory.dto';
+import { Directory } from './directory.entity';
 
 @ApiTags('directory')
 @Controller('directory')
@@ -27,7 +29,7 @@ export class DirectoryController {
 
   @Get(':page/:limit')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return all directories' })
+  @ApiOkResponse({ description: 'Return all directories', type: [Directory] })
   async getAll(
     @Param('page') page: number,
     @Param('limit') limit: number,
@@ -35,6 +37,7 @@ export class DirectoryController {
     return await this.dirService.getAll(+page, +limit);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -44,6 +47,7 @@ export class DirectoryController {
     await this.dirService.create(dir);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

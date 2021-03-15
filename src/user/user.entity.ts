@@ -13,32 +13,41 @@ import { Social } from '../social/social.entity';
 import { RefreshToken } from '../refresh-token/refresh-token.entity';
 import { Project } from '../project/project.entity';
 import { Post } from '../post/post.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class User {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   login: string;
 
+  @ApiProperty()
   @Column()
   @MinLength(8, { message: 'Password is short' })
   password: string;
 
+  @ApiProperty()
   @Column('text')
   about: string;
 
+  @ApiProperty()
   @Column()
   firstName: string;
 
+  @ApiProperty()
   @Column()
   lastName: string;
 
+  @ApiProperty()
   @Column()
   @IsEmail()
   email: string;
 
+  @ApiProperty()
   @Column()
   avatar: string;
 

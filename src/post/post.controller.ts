@@ -12,12 +12,12 @@ import {
   Delete,
 } from '@nestjs/common';
 import {
-  ApiBadRequestResponse,
+  ApiBadRequestResponse, ApiBearerAuth,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+  ApiUnauthorizedResponse
+} from "@nestjs/swagger";
 import { PostService } from './post.service';
 import { Post as PostEntity } from './post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -31,14 +31,14 @@ export class PostController {
 
   @Get('/by-tags')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return posts' })
+  @ApiOkResponse({ description: 'Return posts', type: [PostEntity] })
   async findByTags(@Body('tags') tags: number[]): Promise<any> {
     return await this.postService.findByTags(tags);
   }
 
   @Get(':page/:limit')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return posts' })
+  @ApiOkResponse({ description: 'Return posts', type: [PostEntity] })
   @ApiBadRequestResponse({ description: 'An uncorrected page or limit' })
   async findAll(
     @Param('page') page: number,
@@ -49,7 +49,7 @@ export class PostController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return post by id' })
+  @ApiOkResponse({ description: 'Return post by id', type: PostEntity })
   @ApiBadRequestResponse({ description: 'An uncorrected id' })
   async findById(@Param('id') id: number): Promise<PostEntity | undefined> {
     return await this.postService.findById(id);
@@ -57,11 +57,12 @@ export class PostController {
 
   @Get('')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return last posts' })
+  @ApiOkResponse({ description: 'Return last posts', type: [PostEntity] })
   async findLast(): Promise<PostEntity[] | [] | undefined> {
     return await this.postService.findLast();
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -72,6 +73,7 @@ export class PostController {
     await this.postService.create(post, userId);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -81,6 +83,7 @@ export class PostController {
     await this.postService.update(post);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

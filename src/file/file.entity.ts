@@ -6,12 +6,15 @@ import {
   Unique,
 } from 'typeorm';
 import { Directory } from '../directory/directory.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class File {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   @Unique(['name'])
   name: string;

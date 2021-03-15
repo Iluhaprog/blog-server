@@ -18,6 +18,7 @@ import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -31,7 +32,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get(':id')
-  @ApiOkResponse({ description: 'Return user' })
+  @ApiOkResponse({ description: 'Return user', type: User })
   @ApiBadRequestResponse({ description: 'Uncorrected id' })
   async findById(@Param('id') id: number): Promise<User> {
     return await this.userService.findById(id);
@@ -45,6 +46,7 @@ export class UserController {
     await this.userService.create(user);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -54,6 +56,7 @@ export class UserController {
     await this.userService.update(user);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Put('/password')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -63,6 +66,7 @@ export class UserController {
     await this.userService.updatePassword(user);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

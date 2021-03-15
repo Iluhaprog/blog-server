@@ -17,6 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreateSocialDto } from './dto/create-social.dto';
 import { UpdateSocialDto } from './dto/update-social.dto';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -30,11 +31,12 @@ export class SocialController {
   constructor(private readonly socialService: SocialService) {}
 
   @Get()
-  @ApiOkResponse({ description: 'Returned all socials' })
+  @ApiOkResponse({ description: 'Returned all socials', type: Social })
   async getAll(): Promise<Social[] | any[] | undefined> {
     return await this.socialService.getAll();
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -45,6 +47,7 @@ export class SocialController {
     await this.socialService.create(social, userId);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Put()
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -54,6 +57,7 @@ export class SocialController {
     await this.socialService.update(social);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
