@@ -25,7 +25,7 @@ import { File } from './file.entity';
 import { CreateFileDto } from './dto/create-file.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiFile } from 'src/decorators/api-file.decorator';
+import { ApiFile } from '../decorators/api-file.decorator';
 
 @ApiTags('file')
 @Controller('file')
