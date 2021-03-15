@@ -36,8 +36,7 @@ export async function createAndLoginUser(
   const user = await service.findByLogin(username);
   const { body } = await request(app.getHttpServer())
     .post('/auth/login')
-    .query({ username })
-    .query({ password });
+    .auth(username, password);
   return {
     userId: user.id,
     refresh: body.refreshToken,

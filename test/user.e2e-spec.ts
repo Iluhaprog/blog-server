@@ -143,8 +143,7 @@ describe('UserController (e2e)', () => {
 
     const response = await request(app.getHttpServer())
       .post('/auth/login')
-      .query({ username: user.login })
-      .query({ password: newPassword });
+      .auth(user.login, newPassword);
 
     await userRepo.delete(token.userId);
 

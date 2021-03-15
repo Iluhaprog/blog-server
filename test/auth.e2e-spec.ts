@@ -52,8 +52,7 @@ describe('AuthController (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/auth/login')
-      .query({ username })
-      .query({ password })
+      .auth(username, password)
       .expect(HttpStatus.OK)
       .then(async (response) => {
         const { accessToken, refreshToken } = response.body;

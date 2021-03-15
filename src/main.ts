@@ -10,6 +10,7 @@ async function bootstrap() {
     .setDescription('API for managing blog data')
     .setVersion('0.0.1')
     .addBearerAuth()
+    .addBasicAuth()
     .addTag('user')
     .addTag('social')
     .addTag('post')
