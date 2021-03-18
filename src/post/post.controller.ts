@@ -29,7 +29,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @Get('/by-tags')
+  @Post('/by-tags')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return posts', type: [PostEntity] })
   async findByTags(@Body('tags') tags: number[]): Promise<any> {

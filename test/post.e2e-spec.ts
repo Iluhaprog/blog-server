@@ -137,7 +137,7 @@ describe('PostController (e2e)', () => {
     expect(body[1].id).toBe(post1.id);
   });
 
-  it('/post/by-tags (GET)', async () => {
+  it('/post/by-tags (POST)', async () => {
     const login = 'TEST_LOGIN';
     const password = 'TEST_PASSWORD';
     const { userId } = await createAndLoginUser(
@@ -167,13 +167,13 @@ describe('PostController (e2e)', () => {
     });
 
     const res1 = await request(app.getHttpServer())
-      .get('/post/by-tags')
+      .post('/post/by-tags')
       .set('Content-Type', 'application/json')
       .send({
         tags: [tag1.id],
       });
     const res2 = await request(app.getHttpServer())
-      .get('/post/by-tags')
+      .post('/post/by-tags')
       .set('Content-Type', 'application/json')
       .send({
         tags: [tag2.id],
