@@ -37,6 +37,8 @@ describe('DirectoryService', () => {
     expect(total).toBe(1);
     expect(dirRepo.findAndCount).toHaveBeenCalled();
     expect(dirRepo.findAndCount).toBeCalledWith({
+      order: { id: 'DESC' },
+      relations: ['files'],
       take: 1,
       skip: 2,
     });

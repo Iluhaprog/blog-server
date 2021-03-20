@@ -13,6 +13,8 @@ export class DirectoryService {
 
   async getAll(page, limit): Promise<any> {
     const [data, total] = await this.directoryRepository.findAndCount({
+      order: { id: 'DESC' },
+      relations: ['files'],
       take: limit,
       skip: page,
     });
