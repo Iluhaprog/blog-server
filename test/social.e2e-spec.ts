@@ -82,7 +82,7 @@ describe('SocialController (e2e)', () => {
       app,
     );
 
-    const { status } = await request(app.getHttpServer())
+    const { status, body } = await request(app.getHttpServer())
       .post('/social')
       .auth(token.access, { type: 'bearer' })
       .set('Content-Type', 'application/json')
@@ -92,6 +92,7 @@ describe('SocialController (e2e)', () => {
     await socialRepo.delete(createdSocial.id);
     await userRepo.delete(token.userId);
 
+    expect(!!body.id).toBe(true);
     expect(status).toBe(HttpStatus.CREATED);
     expect(!!createdSocial).toBe(true);
   });

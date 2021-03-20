@@ -66,11 +66,11 @@ export class PostController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiNoContentResponse({ description: 'Post has been created' })
+  @ApiNoContentResponse({ description: 'Post has been created', type: PostEntity })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(@Request() req, @Body() post: CreatePostDto): Promise<void> {
     const userId = req.user.id;
-    await this.postService.create(post, userId);
+    return await this.postService.create(post, userId);
   }
 
   @ApiBearerAuth()

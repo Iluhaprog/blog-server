@@ -89,15 +89,16 @@ describe('DirectoryController (e2e)', () => {
     const dir: CreateDirectoryDto = {
       name: 'TEST_DIR',
     };
-    jest.spyOn(dirService, 'create').mockResolvedValueOnce(undefined);
+    jest.spyOn(dirService, 'create').mockResolvedValueOnce({ id: 1 });
 
-    const { status } = await request(app.getHttpServer())
+    const { status, body } = await request(app.getHttpServer())
       .post('/directory')
       .auth(token.access, { type: 'bearer' })
       .send(dir);
 
     await userService.remove(token.userId);
 
+    expect(!!body.id).toBe(true);
     expect(status).toBe(HttpStatus.CREATED);
     expect(dirService.create).toHaveBeenCalled();
     expect(dirService.create).toBeCalledWith(dir);

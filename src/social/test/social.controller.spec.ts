@@ -53,10 +53,12 @@ describe('SocialController', () => {
       title: '',
     };
     const req = { user: { id: 1 } };
-    jest.spyOn(service, 'create').mockResolvedValueOnce(undefined);
+    const expectedValue = new Social();
+    jest.spyOn(service, 'create').mockResolvedValueOnce(expectedValue);
 
-    await controller.create(req, social);
+    const result = await controller.create(req, social);
 
+    expect(result).toEqual(expectedValue);
     expect(service.create).toHaveBeenCalled();
     expect(service.create).toBeCalledWith(social, req.user.id);
   });

@@ -90,10 +90,12 @@ describe('PostController', () => {
   it('should create post', async () => {
     const post: CreatePostDto = { preview: '', tags: [], text: '', title: '' };
     const req = { user: { id: 1 } };
-    jest.spyOn(service, 'create').mockResolvedValueOnce(undefined);
+    const expectedValue = new Post();
+    jest.spyOn(service, 'create').mockResolvedValueOnce(expectedValue);
 
-    await controller.create(req, post);
+    const result = await controller.create(req, post);
 
+    expect(result).toEqual(expectedValue);
     expect(service.create).toHaveBeenCalled();
     expect(service.create).toBeCalledWith(post, req.user.id);
   });

@@ -41,14 +41,14 @@ export class ProjectController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'Project has been created' })
+  @ApiCreatedResponse({ description: 'Project has been created', type: Project })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(
     @Request() req,
     @Body() project: CreateProjectDto,
   ): Promise<void> {
     const userId = req.user.id;
-    await this.projectService.create(project, userId);
+    return await this.projectService.create(project, userId);
   }
 
   @ApiBearerAuth()

@@ -53,10 +53,12 @@ describe('DirectoryController', () => {
 
   it('should create directory', async () => {
     const dir: CreateDirectoryDto = { name: '' };
-    jest.spyOn(service, 'create').mockResolvedValueOnce(undefined);
+    const expectedValue = new Directory();
+    jest.spyOn(service, 'create').mockResolvedValueOnce(expectedValue);
 
-    await controller.create(dir);
+    const result = await controller.create(dir);
 
+    expect(result).toEqual(expectedValue);
     expect(service.create).toHaveBeenCalled();
     expect(service.create).toBeCalledWith(dir);
   });

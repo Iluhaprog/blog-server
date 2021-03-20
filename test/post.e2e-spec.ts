@@ -215,7 +215,7 @@ describe('PostController (e2e)', () => {
       title: 'TEST_TITLE',
     };
 
-    const { status } = await request(app.getHttpServer())
+    const { status, body } = await request(app.getHttpServer())
       .post('/post')
       .auth(token.access, { type: 'bearer' })
       .set('Content-Type', 'application/json')
@@ -228,6 +228,7 @@ describe('PostController (e2e)', () => {
     await userRepo.delete(token.userId);
     await postRepo.delete(createdPost.id);
 
+    expect(!!body.id).toBe(true);
     expect(status).toBe(HttpStatus.CREATED);
     expect(!!createdPost).toBe(true);
   });

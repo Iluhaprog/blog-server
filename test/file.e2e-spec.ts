@@ -94,6 +94,7 @@ describe('FileController (e2e)', () => {
     const dir = await dirRepo.save({ name: 'test' });
 
     let status;
+    let body;
 
     try {
       const response = await request(app.getHttpServer())
@@ -103,6 +104,7 @@ describe('FileController (e2e)', () => {
         .auth(token.access, { type: 'bearer' });
 
       status = response.status;
+      body = response.body;
     } catch (e) {
       console.error(e);
     }
@@ -111,6 +113,7 @@ describe('FileController (e2e)', () => {
     await dirRepo.delete(dir.id);
     await userRepo.delete(token.userId);
 
+    expect(!!body.id).toBe(true);
     expect(status).toBe(HttpStatus.CREATED);
     expect(!!file).toBe(true);
   });

@@ -52,7 +52,8 @@ describe('ProjectService', () => {
     jest.spyOn(projectRepo, 'create').mockReturnValue(new Project());
     jest.spyOn(projectRepo, 'save').mockResolvedValueOnce(project);
 
-    await service.create(newProject, userId);
+    const result = await service.create(newProject, userId);
+    expect(result).toEqual(project);
     expect(projectRepo.create).toHaveBeenCalled();
     expect(projectRepo.create).toBeCalledWith({
       ...newProject,

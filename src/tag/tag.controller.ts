@@ -38,10 +38,10 @@ export class TagController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'Tag has been created' })
+  @ApiCreatedResponse({ description: 'Tag has been created', type: Tag })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  async create(@Body() tag: CreateTagDto): Promise<void> {
-    await this.tagService.create(tag);
+  async create(@Body() tag: CreateTagDto): Promise<any> {
+    return await this.tagService.create(tag);
   }
 
   @ApiBearerAuth()

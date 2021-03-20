@@ -47,10 +47,10 @@ describe('SocialService', () => {
       title: '',
     };
     jest.spyOn(socRepo, 'create').mockReturnValue(social);
-    jest
-      .spyOn(socRepo, 'save')
-      .mockResolvedValueOnce(Promise.resolve(undefined));
-    await service.create(newSocial, userId);
+    jest.spyOn(socRepo, 'save').mockResolvedValueOnce(Promise.resolve(social));
+    const result = await service.create(newSocial, userId);
+
+    expect(result).toEqual(social);
     expect(socRepo.create).toHaveBeenCalled();
     expect(socRepo.create).toBeCalledWith({
       ...newSocial,

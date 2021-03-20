@@ -41,10 +41,10 @@ export class DirectoryController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'Directory created' })
+  @ApiCreatedResponse({ description: 'Directory created', type: Directory })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  async create(@Body() dir: CreateDirectoryDto): Promise<void> {
-    await this.dirService.create(dir);
+  async create(@Body() dir: CreateDirectoryDto): Promise<any> {
+    return await this.dirService.create(dir);
   }
 
   @ApiBearerAuth()

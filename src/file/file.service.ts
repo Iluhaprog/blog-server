@@ -19,8 +19,8 @@ export class FileService {
     return { data, total };
   }
 
-  async create(file: CreateFileDto): Promise<void> {
-    await this.fileRepository.save(this.fileRepository.create(file));
+  async create(file: CreateFileDto): Promise<any> {
+    return await this.fileRepository.save(this.fileRepository.create(file));
   }
 
   async remove(id: number): Promise<void> {

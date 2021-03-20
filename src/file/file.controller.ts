@@ -49,7 +49,7 @@ export class FileController {
   @HttpCode(HttpStatus.CREATED)
   @ApiFile('file')
   @ApiConsumes('multipart/form-data')
-  @ApiCreatedResponse({ description: 'File created' })
+  @ApiCreatedResponse({ description: 'File created', type: File })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(
     @Query('dir') dirId: number,
@@ -59,7 +59,7 @@ export class FileController {
       directory: { id: dirId },
       name: file.originalname,
     };
-    await this.fileService.create(fileData);
+    return await this.fileService.create(fileData);
   }
 
   @ApiBearerAuth()

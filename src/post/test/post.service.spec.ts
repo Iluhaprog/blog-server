@@ -79,12 +79,14 @@ describe('PostService', () => {
       text: 'TEST TEXT',
       title: 'TEST TITLE',
     };
+    const expectedValue = new Post();
     jest.spyOn(postRepo, 'create').mockReturnValue(post);
     jest
       .spyOn(postRepo, 'save')
-      .mockResolvedValueOnce(Promise.resolve(undefined));
+      .mockResolvedValueOnce(Promise.resolve(expectedValue));
 
-    await service.create(newPost, userId);
+    const result = await service.create(newPost, userId);
+    expect(result).toEqual(expectedValue);
     expect(postRepo.create).toHaveBeenCalled();
     expect(postRepo.save).toHaveBeenCalled();
     expect(postRepo.save).toBeCalledWith(post);

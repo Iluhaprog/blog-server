@@ -22,7 +22,7 @@ export class DirectoryService {
   }
 
   async create(directory: CreateDirectoryDto): Promise<any> {
-    await this.directoryRepository.save(
+    return await this.directoryRepository.save(
       this.directoryRepository.create(directory),
     );
   }

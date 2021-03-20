@@ -15,8 +15,8 @@ export class TagService {
     return await this.tagRepository.find();
   }
 
-  async create(tag: CreateTagDto): Promise<void> {
-    await this.tagRepository.save(this.tagRepository.create(tag));
+  async create(tag: CreateTagDto): Promise<any> {
+    return await this.tagRepository.save(this.tagRepository.create(tag));
   }
 
   async remove(id: number) {

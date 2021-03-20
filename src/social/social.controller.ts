@@ -40,11 +40,11 @@ export class SocialController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'Social has been created' })
+  @ApiCreatedResponse({ description: 'Social has been created', type: Social })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  async create(@Request() req, @Body() social: CreateSocialDto): Promise<void> {
+  async create(@Request() req, @Body() social: CreateSocialDto): Promise<any> {
     const userId = req.user.id;
-    await this.socialService.create(social, userId);
+    return await this.socialService.create(social, userId);
   }
 
   @ApiBearerAuth()

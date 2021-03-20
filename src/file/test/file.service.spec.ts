@@ -49,10 +49,10 @@ describe('FileService', () => {
     };
     const file = new File();
     jest.spyOn(fileRepo, 'create').mockReturnValue(file);
-    jest
-      .spyOn(fileRepo, 'save')
-      .mockResolvedValueOnce(Promise.resolve(undefined));
-    await service.create(newFile);
+    jest.spyOn(fileRepo, 'save').mockResolvedValueOnce(Promise.resolve(file));
+    const result = await service.create(newFile);
+
+    expect(result).toEqual(file);
     expect(fileRepo.create).toHaveBeenCalled();
     expect(fileRepo.create).toBeCalledWith(newFile);
     expect(fileRepo.save).toHaveBeenCalled();

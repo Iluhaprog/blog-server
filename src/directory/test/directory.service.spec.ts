@@ -48,10 +48,10 @@ describe('DirectoryService', () => {
     const newFile: CreateDirectoryDto = { name: '' };
     const dir = new Directory();
     jest.spyOn(dirRepo, 'create').mockReturnValue(dir);
-    jest
-      .spyOn(dirRepo, 'save')
-      .mockResolvedValueOnce(Promise.resolve(undefined));
-    await service.create(newFile);
+    jest.spyOn(dirRepo, 'save').mockResolvedValueOnce(Promise.resolve(dir));
+    const result = await service.create(newFile);
+
+    expect(result).toEqual(dir);
     expect(dirRepo.create).toHaveBeenCalled();
     expect(dirRepo.create).toBeCalledWith(newFile);
     expect(dirRepo.save).toHaveBeenCalled();

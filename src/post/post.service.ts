@@ -40,8 +40,8 @@ export class PostService {
     });
   }
 
-  async create(post: CreatePostDto, userId: number): Promise<void> {
-    await this.postRepository.save(
+  async create(post: CreatePostDto, userId: number): Promise<any> {
+    return await this.postRepository.save(
       this.postRepository.create({
         ...post,
         creationDate: new Date(),

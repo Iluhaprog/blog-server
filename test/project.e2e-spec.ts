@@ -84,7 +84,7 @@ describe('ProjectController (e2e)', () => {
       app,
     );
 
-    const { status } = await request(app.getHttpServer())
+    const { status, body } = await request(app.getHttpServer())
       .post('/project')
       .auth(token.access, { type: 'bearer' })
       .set('Content-Type', 'application/json')
@@ -94,6 +94,7 @@ describe('ProjectController (e2e)', () => {
     await projectRepo.delete(createdProject.id);
     await userRepo.delete(token.userId);
 
+    expect(!!body.id).toBe(true);
     expect(status).toBe(HttpStatus.CREATED);
     expect(!!createdProject).toBe(true);
   });

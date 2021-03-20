@@ -69,10 +69,13 @@ describe('FileController', () => {
       directory: { id: dirId },
       name: file.filename,
     };
-    jest.spyOn(service, 'create').mockResolvedValueOnce(undefined);
+    const expectedValue = new File();
 
-    await controller.create(dirId, file);
+    jest.spyOn(service, 'create').mockResolvedValueOnce(expectedValue);
 
+    const result = await controller.create(dirId, file);
+
+    expect(result).toEqual(expectedValue);
     expect(service.create).toHaveBeenCalled();
     expect(service.create).toBeCalledWith(fileData);
   });

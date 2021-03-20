@@ -43,10 +43,10 @@ describe('TagService', () => {
       title: '',
     };
     jest.spyOn(tagRepo, 'create').mockReturnValue(tag);
-    jest
-      .spyOn(tagRepo, 'save')
-      .mockResolvedValueOnce(Promise.resolve(undefined));
-    await service.create(newTag);
+    jest.spyOn(tagRepo, 'save').mockResolvedValueOnce(Promise.resolve(tag));
+    const result = await service.create(newTag);
+
+    expect(result).toEqual(tag);
     expect(tagRepo.create).toHaveBeenCalled();
     expect(tagRepo.create).toBeCalledWith(newTag);
     expect(tagRepo.save).toHaveBeenCalled();
