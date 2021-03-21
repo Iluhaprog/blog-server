@@ -79,6 +79,26 @@ describe('FileController (e2e)', () => {
     expect(fileService.getAll).toBeCalledWith(0, 1, 'DESC');
   });
 
+  it('/file/by-dir/:dirId/:order (GET)', async () => {
+    const dir = await dirRepo.save({ name: 'test' });
+    const file = await fileRepo.save({
+      name: 'test',
+      directory: { id: dir.id },
+    });
+    const response = {
+      data: [{ id: file.id, name: file.name }],
+      total: 1,
+    };
+
+    const { body } = await request(app.getHttpServer()).get(
+      '/file/by-dir/1/DESC',
+    );
+
+    await dirRepo.delete(dir.id);
+
+    expect(body).toEqual(response);
+  });
+
   it('/file (POST)', async () => {
     const username = 'TEST_LOGIN';
     const password = 'TEST_PASSWORD';

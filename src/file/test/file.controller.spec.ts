@@ -52,6 +52,19 @@ describe('FileController', () => {
     expect(service.getAll).toBeCalledWith(page, limit, 'DESC');
   });
 
+  it('should get files by dir id', async () => {
+    const file = new File();
+    const response = [file];
+    const dirId = 1;
+    jest.spyOn(service, 'getByDirId').mockResolvedValueOnce(response);
+
+    const data = await controller.getByDirId(dirId, 'DESC');
+
+    expect(data).toEqual(response);
+    expect(service.getByDirId).toHaveBeenCalled();
+    expect(service.getByDirId).toBeCalledWith(dirId, 'DESC');
+  });
+
   it('should create file', async () => {
     const file: Express.Multer.File = {
       buffer: undefined,

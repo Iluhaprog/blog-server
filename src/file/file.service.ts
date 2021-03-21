@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { File } from './file.entity';
 import { Repository } from 'typeorm';
 import { CreateFileDto } from './dto/create-file.dto';
-import { Order } from "../types/order.type";
+import { Order } from '../types/order.type';
 
 @Injectable()
 export class FileService {
@@ -19,6 +19,15 @@ export class FileService {
       skip: page,
     });
     return { data, total };
+  }
+
+  async getByDirId(dirId: number, order: Order = 'ASC'): Promise<any> {
+    return await this.fileRepository.find({
+      order: { id: order },
+      where: {
+        directory: { id: dirId },
+      },
+    });
   }
 
   async create(file: CreateFileDto): Promise<any> {

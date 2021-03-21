@@ -43,6 +43,21 @@ describe('FileService', () => {
     });
   });
 
+  it('should get files by dir id', async () => {
+    const file = new File();
+    const dirId = 1;
+    jest.spyOn(fileRepo, 'find').mockResolvedValueOnce([file]);
+    const data = await service.getByDirId(dirId, 'DESC');
+    expect(data).toEqual([file]);
+    expect(fileRepo.find).toHaveBeenCalled();
+    expect(fileRepo.find).toBeCalledWith({
+      order: { id: 'DESC' },
+      where: {
+        directory: { id: dirId },
+      },
+    });
+  });
+
   it('should create file', async () => {
     const newFile: CreateFileDto = {
       name: '',

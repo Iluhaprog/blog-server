@@ -45,6 +45,15 @@ export class FileController {
     return await this.fileService.getAll(+page, +limit, order);
   }
 
+  @Get('/by-dir/:dirId/:order')
+  @HttpCode(HttpStatus.OK)
+  async getByDirId(
+    @Param('dirId') dirId: number,
+    @Param('order') order: Order,
+  ): Promise<any> {
+    return await this.fileService.getByDirId(+dirId, order);
+  }
+
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()
