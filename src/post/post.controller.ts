@@ -23,6 +23,7 @@ import { Post as PostEntity } from './post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { PostPagination } from './dto/pagination-post.dto';
 
 @ApiTags('post')
 @Controller('post')
@@ -38,7 +39,7 @@ export class PostController {
 
   @Get(':page/:limit')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return posts', type: [PostEntity] })
+  @ApiOkResponse({ description: 'Return posts', type: PostPagination })
   @ApiBadRequestResponse({ description: 'An uncorrected page or limit' })
   async findAll(
     @Param('page') page: number,

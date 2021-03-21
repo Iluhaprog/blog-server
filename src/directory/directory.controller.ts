@@ -21,6 +21,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { CreateDirectoryDto } from './dto/create-directory.dto';
 import { Directory } from './directory.entity';
+import { DirPagination } from './dto/pagination-dir.dto';
 
 @ApiTags('directory')
 @Controller('directory')
@@ -29,7 +30,7 @@ export class DirectoryController {
 
   @Get(':page/:limit')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return all directories', type: [Directory] })
+  @ApiOkResponse({ description: 'Return all directories', type: DirPagination })
   async getAll(
     @Param('page') page: number,
     @Param('limit') limit: number,

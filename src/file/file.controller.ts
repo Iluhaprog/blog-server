@@ -26,6 +26,7 @@ import { CreateFileDto } from './dto/create-file.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiFile } from '../decorators/api-file.decorator';
+import { FilePagination } from './dto/pagination-file.dto';
 
 @ApiTags('file')
 @Controller('file')
@@ -34,7 +35,7 @@ export class FileController {
 
   @Get(':page/:limit')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return all files', type: [File] })
+  @ApiOkResponse({ description: 'Return all files', type: FilePagination })
   async getAll(
     @Param('page') page: number,
     @Param('limit') limit: number,
