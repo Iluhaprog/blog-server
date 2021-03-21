@@ -64,7 +64,7 @@ describe('FileController (e2e)', () => {
     await defaultConnection.close();
   });
 
-  it('/file/0/1 (GET)', async () => {
+  it('/file/:page/:limit/:order (GET)', async () => {
     const file = new File();
     const response = {
       data: [file],
@@ -72,11 +72,11 @@ describe('FileController (e2e)', () => {
     };
     jest.spyOn(fileService, 'getAll').mockResolvedValueOnce(response);
 
-    const { body } = await request(app.getHttpServer()).get('/file/0/1');
+    const { body } = await request(app.getHttpServer()).get('/file/0/1/DESC');
 
     expect(body).toEqual(response);
     expect(fileService.getAll).toHaveBeenCalled();
-    expect(fileService.getAll).toBeCalledWith(0, 1);
+    expect(fileService.getAll).toBeCalledWith(0, 1, 'DESC');
   });
 
   it('/file (POST)', async () => {

@@ -39,10 +39,11 @@ describe('TagController', () => {
     const tag = new Tag();
     jest.spyOn(service, 'getAll').mockResolvedValueOnce([tag]);
 
-    const tags = await controller.getAll();
+    const tags = await controller.getAll('DESC');
 
     expect(tags).toEqual([tag]);
     expect(service.getAll).toHaveBeenCalled();
+    expect(service.getAll).toBeCalledWith('DESC');
   });
 
   it('should create tag', async () => {

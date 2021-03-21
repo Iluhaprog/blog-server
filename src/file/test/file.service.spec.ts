@@ -32,11 +32,12 @@ describe('FileService', () => {
   it('should get all files', async () => {
     const file = new File();
     jest.spyOn(fileRepo, 'findAndCount').mockResolvedValueOnce([[file], 1]);
-    const { data, total } = await service.getAll(2, 1);
+    const { data, total } = await service.getAll(2, 1, 'DESC');
     expect(data).toEqual([file]);
     expect(total).toBe(1);
     expect(fileRepo.findAndCount).toHaveBeenCalled();
     expect(fileRepo.findAndCount).toBeCalledWith({
+      order: { id: 'DESC' },
       take: 1,
       skip: 2,
     });

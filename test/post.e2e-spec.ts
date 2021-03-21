@@ -65,7 +65,7 @@ describe('PostController (e2e)', () => {
     await defaultConnection.close();
   });
 
-  it('/post/:page/:limit (GET)', async () => {
+  it('/post/:page/:limit/:order (GET)', async () => {
     const post = await postRepo.save({
       title: 'TEST_TILE',
       text: 'TEST_TEXT',
@@ -75,7 +75,7 @@ describe('PostController (e2e)', () => {
     });
 
     const { status, body } = await request(app.getHttpServer()).get(
-      '/post/0/1',
+      '/post/0/1/DESC',
     );
 
     await postRepo.delete(post.id);

@@ -33,9 +33,12 @@ describe('SocialService', () => {
   it('should get all socials', async () => {
     const social = new Social();
     jest.spyOn(socRepo, 'find').mockResolvedValueOnce([social]);
-    const socials = await service.getAll();
+    const socials = await service.getAll('DESC');
     expect(socials).toEqual([social]);
     expect(socRepo.find).toHaveBeenCalled();
+    expect(socRepo.find).toBeCalledWith({
+      order: { id: 'DESC' },
+    });
   });
 
   it('should create social', async () => {

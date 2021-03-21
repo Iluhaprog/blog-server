@@ -24,17 +24,20 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Order } from '../types/order.type';
 
 @ApiTags('project')
 @Controller('project')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Get()
+  @Get(':order')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return all projects', type: [Project] })
-  async findAll(): Promise<Project[] | any[] | undefined> {
-    return this.projectService.findAll();
+  async findAll(
+    @Param('order') order: Order,
+  ): Promise<Project[] | any[] | undefined> {
+    return this.projectService.findAll(order);
   }
 
   @ApiBearerAuth()

@@ -32,9 +32,12 @@ describe('TagService', () => {
   it('should get all tags', async () => {
     const tag = new Tag();
     jest.spyOn(tagRepo, 'find').mockResolvedValueOnce([tag]);
-    const tags = await service.getAll();
+    const tags = await service.getAll('DESC');
     expect(tags).toEqual([tag]);
     expect(tagRepo.find).toHaveBeenCalled();
+    expect(tagRepo.find).toBeCalledWith({
+      order: { id: 'DESC' },
+    });
   });
 
   it('should create tag', async () => {

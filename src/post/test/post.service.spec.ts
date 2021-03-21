@@ -33,11 +33,12 @@ describe('PostService', () => {
   it('should find all', async () => {
     const post = new Post();
     jest.spyOn(postRepo, 'findAndCount').mockResolvedValueOnce([[post], 1]);
-    const { data, total } = await service.findAll(2, 1);
+    const { data, total } = await service.findAll(2, 1, 'DESC');
     expect(data).toEqual([post]);
     expect(total).toBe(1);
     expect(postRepo.findAndCount).toHaveBeenCalled();
     expect(postRepo.findAndCount).toBeCalledWith({
+      order: { id: 'DESC' },
       take: 1,
       skip: 2,
     });

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { File } from './file.entity';
 import { Repository } from 'typeorm';
 import { CreateFileDto } from './dto/create-file.dto';
+import { Order } from "../types/order.type";
 
 @Injectable()
 export class FileService {
@@ -11,8 +12,9 @@ export class FileService {
     private fileRepository: Repository<File>,
   ) {}
 
-  async getAll(page, limit): Promise<any> {
+  async getAll(page, limit, order: Order = 'ASC'): Promise<any> {
     const [data, total] = await this.fileRepository.findAndCount({
+      order: { id: order },
       take: limit,
       skip: page,
     });

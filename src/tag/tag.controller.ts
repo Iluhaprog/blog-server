@@ -21,17 +21,20 @@ import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Tag } from './tag.entity';
+import { Order } from '../types/order.type';
 
 @ApiTags('tag')
 @Controller('tag')
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
-  @Get()
+  @Get(':order')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return array of tags', type: [Tag] })
-  async getAll(): Promise<Tag[] | any[] | undefined> {
-    return this.tagService.getAll();
+  async getAll(
+    @Param('order') order: Order,
+  ): Promise<Tag[] | any[] | undefined> {
+    return this.tagService.getAll(order);
   }
 
   @ApiBearerAuth()

@@ -27,20 +27,22 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiFile } from '../decorators/api-file.decorator';
 import { FilePagination } from './dto/pagination-file.dto';
+import { Order } from '../types/order.type';
 
 @ApiTags('file')
 @Controller('file')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @Get(':page/:limit')
+  @Get(':page/:limit/:order')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return all files', type: FilePagination })
   async getAll(
     @Param('page') page: number,
     @Param('limit') limit: number,
+    @Param('order') order: Order,
   ): Promise<any> {
-    return await this.fileService.getAll(+page, +limit);
+    return await this.fileService.getAll(+page, +limit, order);
   }
 
   @ApiBearerAuth()

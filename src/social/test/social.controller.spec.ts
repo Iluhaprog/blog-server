@@ -40,10 +40,11 @@ describe('SocialController', () => {
     const social = new Social();
     jest.spyOn(service, 'getAll').mockResolvedValueOnce([social]);
 
-    const socials = await controller.getAll();
+    const socials = await controller.getAll('DESC');
 
     expect(socials).toEqual([social]);
     expect(service.getAll).toHaveBeenCalled();
+    expect(service.getAll).toBeCalledWith('DESC');
   });
 
   it('should create social', async () => {

@@ -40,10 +40,11 @@ describe('ProjectController', () => {
     const project = new Project();
     jest.spyOn(service, 'findAll').mockResolvedValueOnce([project]);
 
-    const projects = await controller.findAll();
+    const projects = await controller.findAll('DESC');
 
     expect(projects).toEqual([project]);
     expect(service.findAll).toHaveBeenCalled();
+    expect(service.findAll).toBeCalledWith('DESC');
   });
 
   it('should create project', async () => {

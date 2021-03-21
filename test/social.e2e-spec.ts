@@ -61,9 +61,9 @@ describe('SocialController (e2e)', () => {
     await defaultConnection.close();
   });
 
-  it('/social (GET)', async () => {
+  it('/social/:order (GET)', async () => {
     const newSocial = await socialRepo.save(social);
-    const { status, body } = await request(app.getHttpServer()).get('/social');
+    const { status, body } = await request(app.getHttpServer()).get('/social/DESC');
 
     await socialRepo.delete(newSocial.id);
 
@@ -97,7 +97,7 @@ describe('SocialController (e2e)', () => {
     expect(!!createdSocial).toBe(true);
   });
 
-  it('/project (PUT)', async () => {
+  it('/social (PUT)', async () => {
     const login = 'TEST_LOGIN';
     const password = 'TEST_PASSWORD';
     const token = await createAndLoginUser(

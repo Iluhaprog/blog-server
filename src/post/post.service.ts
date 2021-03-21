@@ -4,6 +4,7 @@ import { Post } from './post.entity';
 import { getManager, In, Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { Order } from '../types/order.type';
 
 @Injectable()
 export class PostService {
@@ -12,8 +13,9 @@ export class PostService {
     private postRepository: Repository<Post>,
   ) {}
 
-  async findAll(page, limit): Promise<any> {
+  async findAll(page, limit, order: Order = 'ASC'): Promise<any> {
     const [data, total] = await this.postRepository.findAndCount({
+      order: { id: order },
       take: limit,
       skip: page,
     });

@@ -46,11 +46,11 @@ describe('PostController', () => {
     const limit = 1;
     jest.spyOn(service, 'findAll').mockResolvedValueOnce(responce);
 
-    const data = await controller.findAll(page, limit);
+    const data = await controller.findAll(page, limit, 'DESC');
 
     expect(data).toEqual(responce);
     expect(service.findAll).toHaveBeenCalled();
-    expect(service.findAll).toBeCalledWith(page, limit);
+    expect(service.findAll).toBeCalledWith(page, limit, 'DESC');
   });
 
   it('should find post by id', async () => {

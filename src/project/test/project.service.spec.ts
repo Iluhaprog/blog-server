@@ -33,10 +33,13 @@ describe('ProjectService', () => {
   it('should find all projects', async () => {
     const project = new Project();
     jest.spyOn(projectRepo, 'find').mockResolvedValueOnce([project]);
-    const projects = await service.findAll();
+    const projects = await service.findAll('DESC');
 
     expect(projects).toEqual([project]);
     expect(projectRepo.find).toHaveBeenCalled();
+    expect(projectRepo.find).toBeCalledWith({
+      order: { id: 'DESC' },
+    });
   });
 
   it('should create project', async () => {

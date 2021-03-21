@@ -4,6 +4,7 @@ import { Project } from './project.entity';
 import { Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { Order } from '../types/order.type';
 
 @Injectable()
 export class ProjectService {
@@ -12,8 +13,10 @@ export class ProjectService {
     private projectRepository: Repository<Project>,
   ) {}
 
-  async findAll(): Promise<Project[] | any[] | undefined> {
-    return this.projectRepository.find();
+  async findAll(order: Order = 'ASC'): Promise<Project[] | any[] | undefined> {
+    return this.projectRepository.find({
+      order: { id: order },
+    });
   }
 
   async create(project: CreateProjectDto, userId: number): Promise<any> {

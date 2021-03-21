@@ -12,18 +12,20 @@ import {
   Delete,
 } from '@nestjs/common';
 import {
-  ApiBadRequestResponse, ApiBearerAuth,
+  ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
-  ApiUnauthorizedResponse
-} from "@nestjs/swagger";
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { PostService } from './post.service';
 import { Post as PostEntity } from './post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { PostPagination } from './dto/pagination-post.dto';
+import { Order } from '../types/order.type';
 
 @ApiTags('post')
 @Controller('post')
@@ -37,15 +39,16 @@ export class PostController {
     return await this.postService.findByTags(tags);
   }
 
-  @Get(':page/:limit')
+  @Get(':page/:limit/:order')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return posts', type: PostPagination })
   @ApiBadRequestResponse({ description: 'An uncorrected page or limit' })
   async findAll(
     @Param('page') page: number,
     @Param('limit') limit: number,
+    @Param('order') order: Order,
   ): Promise<any> {
-    return await this.postService.findAll(+page, +limit);
+    return await this.postService.findAll(+page, +limit, order);
   }
 
   @Get(':id')
@@ -67,7 +70,10 @@ export class PostController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiNoContentResponse({ description: 'Post has been created', type: PostEntity })
+  @ApiNoContentResponse({
+    description: 'Post has been created',
+    type: PostEntity,
+  })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(@Request() req, @Body() post: CreatePostDto): Promise<void> {
     const userId = req.user.id;

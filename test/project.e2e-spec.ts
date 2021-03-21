@@ -63,9 +63,11 @@ describe('ProjectController (e2e)', () => {
     await defaultConnection.close();
   });
 
-  it('/project (GET)', async () => {
+  it('/project/:order (GET)', async () => {
     const newProject = await projectRepo.save(project);
-    const { status, body } = await request(app.getHttpServer()).get('/project');
+    const { status, body } = await request(app.getHttpServer()).get(
+      '/project/DESC',
+    );
 
     await projectRepo.delete(newProject.id);
 

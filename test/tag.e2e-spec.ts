@@ -59,9 +59,9 @@ describe('SocialController (e2e)', () => {
     await defaultConnection.close();
   });
 
-  it('/tag (GET)', async () => {
+  it('/tag/:order (GET)', async () => {
     const newTag = await tagRepo.save(tag);
-    const { status, body } = await request(app.getHttpServer()).get('/tag');
+    const { status, body } = await request(app.getHttpServer()).get('/tag/DESC');
 
     await tagRepo.delete(newTag.id);
 

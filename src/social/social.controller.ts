@@ -24,16 +24,19 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Order } from '../types/order.type';
 
 @ApiTags('social')
 @Controller('social')
 export class SocialController {
   constructor(private readonly socialService: SocialService) {}
 
-  @Get()
+  @Get(':order')
   @ApiOkResponse({ description: 'Returned all socials', type: Social })
-  async getAll(): Promise<Social[] | any[] | undefined> {
-    return await this.socialService.getAll();
+  async getAll(
+    @Param('order') order: Order,
+  ): Promise<Social[] | any[] | undefined> {
+    return await this.socialService.getAll(order);
   }
 
   @ApiBearerAuth()

@@ -45,10 +45,11 @@ describe('FileController', () => {
     const limit = 1;
     jest.spyOn(service, 'getAll').mockResolvedValueOnce(response);
 
-    const data = await controller.getAll(page, limit);
+    const data = await controller.getAll(page, limit, 'DESC');
 
     expect(data).toEqual(response);
     expect(service.getAll).toHaveBeenCalled();
+    expect(service.getAll).toBeCalledWith(page, limit, 'DESC');
   });
 
   it('should create file', async () => {
