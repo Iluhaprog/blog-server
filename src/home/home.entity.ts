@@ -12,6 +12,10 @@ export class Home {
   title: string;
 
   @ApiProperty()
+  @Column({ default: false })
+  selected: boolean;
+
+  @ApiProperty()
   @Column('text')
   description: string;
 }

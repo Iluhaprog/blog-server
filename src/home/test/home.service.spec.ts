@@ -37,6 +37,11 @@ describe('HomeService', () => {
 
     expect(findedHome).toEqual(home);
     expect(homeRepo.findOne).toHaveBeenCalled();
+    expect(homeRepo.findOne).toBeCalledWith({
+      where: {
+        selected: true,
+      },
+    });
   });
 
   it('should get all homes', async () => {

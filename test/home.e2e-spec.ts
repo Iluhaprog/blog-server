@@ -71,6 +71,7 @@ describe('HomeController (e2e)', () => {
     const home = await homeRepo.save({
       title: 'TEST_TITLE',
       description: 'TEST_DESCRIPTION',
+      selected: true,
     });
 
     const { status, body } = await request(app.getHttpServer()).get(
@@ -131,6 +132,7 @@ describe('HomeController (e2e)', () => {
       id: home.id,
       title: 'TEST_TITLE_NEW',
       description: 'TEST_DESCRIPTION_NEW',
+      selected: true,
     };
 
     const { status } = await request(app.getHttpServer())

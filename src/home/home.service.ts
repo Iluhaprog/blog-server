@@ -17,7 +17,11 @@ export class HomeService {
   }
 
   async get(): Promise<Home | undefined> {
-    return await this.homeRepository.findOne();
+    return await this.homeRepository.findOne({
+      where: {
+        selected: true,
+      },
+    });
   }
 
   async create(home: CreateHomeDto): Promise<void> {

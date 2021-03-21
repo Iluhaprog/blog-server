@@ -38,7 +38,7 @@ export class HomeController {
 
   @Get('/one')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return last home', type: Home })
+  @ApiOkResponse({ description: 'Return one selected home', type: Home })
   async get(): Promise<Home | undefined> {
     return await this.homeService.get();
   }
