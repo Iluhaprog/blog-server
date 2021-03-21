@@ -69,14 +69,24 @@ describe('UserController (e2e)', () => {
   });
 
   it('/user (POST)', async () => {
+    const token = await createAndLoginUser(
+      user.login,
+      user.password,
+      userService,
+      request,
+      app,
+    );
+
     const { status } = await request(app.getHttpServer())
       .post('/user')
+      .auth(token.access, { type: 'bearer' })
       .set('Content-Type', 'application/json')
       .send(user);
 
     const createdUser = await userRepo.findOne();
 
     await userRepo.delete(createdUser.id);
+    await userRepo.delete(token.userId);
 
     expect(status).toBe(HttpStatus.CREATED);
     expect(!!createdUser).toBe(true);
