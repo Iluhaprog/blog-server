@@ -23,6 +23,7 @@ import {
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
+  ApiParam,
 } from '@nestjs/swagger';
 import { Order } from '../types/order.type';
 
@@ -33,6 +34,7 @@ export class SocialController {
 
   @Get(':order')
   @ApiOkResponse({ description: 'Returned all socials', type: Social })
+  @ApiParam({ name: 'order', enum: ['ASC', 'DESC'] })
   async getAll(
     @Param('order') order: Order,
   ): Promise<Social[] | any[] | undefined> {

@@ -17,6 +17,7 @@ import {
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -37,6 +38,7 @@ export class FileController {
   @Get(':page/:limit/:order')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return all files', type: FilePagination })
+  @ApiParam({ name: 'order', enum: ['ASC', 'DESC'] })
   async getAll(
     @Param('page') page: number,
     @Param('limit') limit: number,
@@ -47,6 +49,11 @@ export class FileController {
 
   @Get('/by-dir/:dirId/:order')
   @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description: 'Return files by dir id',
+    type: FilePagination,
+  })
+  @ApiParam({ name: 'order', enum: ['ASC', 'DESC'] })
   async getByDirId(
     @Param('dirId') dirId: number,
     @Param('order') order: Order,

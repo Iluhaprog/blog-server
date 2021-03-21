@@ -21,6 +21,7 @@ import {
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -34,6 +35,7 @@ export class ProjectController {
   @Get(':order')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return all projects', type: [Project] })
+  @ApiParam({ name: 'order', enum: ['ASC', 'DESC'] })
   async findAll(
     @Param('order') order: Order,
   ): Promise<Project[] | any[] | undefined> {
@@ -44,7 +46,10 @@ export class ProjectController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'Project has been created', type: Project })
+  @ApiCreatedResponse({
+    description: 'Project has been created',
+    type: Project,
+  })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(
     @Request() req,

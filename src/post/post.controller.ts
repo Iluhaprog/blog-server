@@ -16,6 +16,7 @@ import {
   ApiBearerAuth,
   ApiNoContentResponse,
   ApiOkResponse,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -43,6 +44,7 @@ export class PostController {
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return posts', type: PostPagination })
   @ApiBadRequestResponse({ description: 'An uncorrected page or limit' })
+  @ApiParam({ name: 'order', enum: ['ASC', 'DESC'] })
   async findAll(
     @Param('page') page: number,
     @Param('limit') limit: number,

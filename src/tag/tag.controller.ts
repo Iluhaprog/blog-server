@@ -14,6 +14,7 @@ import {
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -31,6 +32,7 @@ export class TagController {
   @Get(':order')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return array of tags', type: [Tag] })
+  @ApiParam({ name: 'order', enum: ['ASC', 'DESC'] })
   async getAll(
     @Param('order') order: Order,
   ): Promise<Tag[] | any[] | undefined> {
