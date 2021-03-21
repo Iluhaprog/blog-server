@@ -96,7 +96,7 @@ describe('HomeController (e2e)', () => {
       app,
     );
 
-    const { status } = await request(app.getHttpServer())
+    const { status, body } = await request(app.getHttpServer())
       .post('/home')
       .auth(token.access, { type: 'bearer' })
       .set('Content-Type', 'application/json')
@@ -107,6 +107,8 @@ describe('HomeController (e2e)', () => {
     const home = await homeRepo.findOne();
     await homeRepo.delete(home.id);
     await userRepo.delete(token.userId);
+
+    expect(!!body.id).toBe(true);
     expect(status).toBe(HttpStatus.CREATED);
     expect(!!home).toBe(true);
   });

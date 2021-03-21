@@ -47,10 +47,10 @@ export class HomeController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'Create home' })
+  @ApiCreatedResponse({ description: 'Create home', type: Home })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  async create(@Body() home: CreateHomeDto): Promise<void> {
-    await this.homeService.create(home);
+  async create(@Body() home: CreateHomeDto): Promise<any> {
+    return await this.homeService.create(home);
   }
 
   @ApiBearerAuth()

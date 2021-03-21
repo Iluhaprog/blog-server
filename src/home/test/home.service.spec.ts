@@ -60,11 +60,11 @@ describe('HomeService', () => {
     };
     const home = new Home();
     jest.spyOn(homeRepo, 'create').mockReturnValue(home);
-    jest
-      .spyOn(homeRepo, 'save')
-      .mockResolvedValueOnce(Promise.resolve(undefined));
+    jest.spyOn(homeRepo, 'save').mockResolvedValueOnce(Promise.resolve(home));
 
-    await service.create(newHome);
+    const result = await service.create(newHome);
+
+    expect(result).toEqual(home);
     expect(homeRepo.create).toHaveBeenCalled();
     expect(homeRepo.create).toBeCalledWith(newHome);
     expect(homeRepo.save).toHaveBeenCalled();

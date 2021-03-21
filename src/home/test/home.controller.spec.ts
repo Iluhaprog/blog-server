@@ -58,10 +58,11 @@ describe('HomeController', () => {
 
   it('should create home', async () => {
     const home: CreateHomeDto = { description: '', title: '' };
-    jest.spyOn(service, 'create').mockResolvedValueOnce(undefined);
+    jest.spyOn(service, 'create').mockResolvedValueOnce(home);
 
-    await controller.create(home);
+    const result = await controller.create(home);
 
+    expect(result).toEqual(home);
     expect(service.create).toHaveBeenCalled();
     expect(service.create).toBeCalledWith(home);
   });
