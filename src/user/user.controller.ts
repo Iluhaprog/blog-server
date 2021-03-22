@@ -38,6 +38,13 @@ export class UserController {
     return await this.userService.findById(id);
   }
 
+  @Get()
+  @ApiOkResponse({ description: 'Return user', type: User })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  async findAll(): Promise<any> {
+    return await this.userService.findAll();
+  }
+
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()

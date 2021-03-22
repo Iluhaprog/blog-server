@@ -59,6 +59,12 @@ describe('UserService', () => {
     expect(service).toBeDefined();
   });
 
+  it('should get all users', async () => {
+    const testUser: User = new User();
+    jest.spyOn(repo, 'find').mockResolvedValueOnce([testUser]);
+    expect(await service.findAll()).toEqual([testUser]);
+  });
+
   it('should get user by id', async () => {
     const testUser: User = new User();
     jest.spyOn(repo, 'findOne').mockResolvedValueOnce(testUser);

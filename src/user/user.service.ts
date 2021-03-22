@@ -14,6 +14,10 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
+  async findAll(): Promise<any> {
+    return await this.userRepository.find();
+  }
+
   async findById(id: number): Promise<User> {
     return this.userRepository.findOne(id);
   }

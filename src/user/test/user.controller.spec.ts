@@ -36,6 +36,16 @@ describe('UserController', () => {
     expect(service).toBeDefined();
   });
 
+  it('should find all users', async () => {
+    const user = new User();
+    jest.spyOn(service, 'findAll').mockImplementation(async () => [user]);
+
+    const result = await controller.findAll();
+
+    expect(result).toEqual([user]);
+    expect(service.findAll).toHaveBeenCalled();
+  });
+
   it('should find user by id', async () => {
     const id = 1;
     const user = new User();

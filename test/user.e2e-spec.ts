@@ -56,6 +56,15 @@ describe('UserController (e2e)', () => {
     await defaultConnection.close();
   });
 
+  it('/user (GET)', async () => {
+    const newUser = await userRepo.save(user);
+    const { status, body } = await request(app.getHttpServer()).get('/user');
+    await userRepo.delete(newUser.id);
+
+    expect(status).toBe(HttpStatus.OK);
+    expect(body).toEqual([newUser]);
+  });
+
   it('/user/:id (GET)', async () => {
     const newUser = await userRepo.save(user);
     const { status, body } = await request(app.getHttpServer()).get(
