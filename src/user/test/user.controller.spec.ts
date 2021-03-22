@@ -68,11 +68,11 @@ describe('UserController', () => {
       login: '',
       password: '',
     };
-    jest.spyOn(service, 'create').mockResolvedValueOnce(undefined);
+    jest.spyOn(service, 'create').mockResolvedValueOnce(new User());
 
     const val = await controller.create(user);
 
-    expect(val).toBe(undefined);
+    expect(val).toEqual(new User());
     expect(service.create).toHaveBeenCalled();
     expect(service.create).toBeCalledWith(user);
   });

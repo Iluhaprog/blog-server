@@ -86,7 +86,7 @@ describe('UserController (e2e)', () => {
       app,
     );
 
-    const { status } = await request(app.getHttpServer())
+    const { status, body } = await request(app.getHttpServer())
       .post('/user')
       .auth(token.access, { type: 'bearer' })
       .set('Content-Type', 'application/json')
@@ -97,6 +97,7 @@ describe('UserController (e2e)', () => {
     await userRepo.delete(createdUser.id);
     await userRepo.delete(token.userId);
 
+    expect(body).toEqual(createdUser);
     expect(status).toBe(HttpStatus.CREATED);
     expect(!!createdUser).toBe(true);
   });

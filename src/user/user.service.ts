@@ -38,8 +38,8 @@ export class UserService {
     });
   }
 
-  async create(user: CreateUserDto): Promise<void> {
-    await this.userRepository.save(this.userRepository.create(user));
+  async create(user: CreateUserDto): Promise<any> {
+    return await this.userRepository.save(this.userRepository.create(user));
   }
 
   async update(user: UpdateUserDto): Promise<void> {

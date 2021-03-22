@@ -98,8 +98,9 @@ describe('UserService', () => {
     };
     jest.spyOn(repo, 'create').mockReturnValue(testUser);
     jest.spyOn(repo, 'save').mockResolvedValueOnce(new User());
-    await service.create(dto);
+    const result = await service.create(dto);
 
+    expect(result).toEqual(new User());
     expect(repo.create).toHaveBeenCalled();
     expect(repo.create).toBeCalledWith(dto);
     expect(repo.save).toHaveBeenCalled();

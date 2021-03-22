@@ -49,10 +49,10 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'User has been created' })
+  @ApiCreatedResponse({ description: 'User has been created', type: User })
   @ApiBadRequestResponse({ description: 'Uncorrected user data' })
-  async create(@Body() user: CreateUserDto): Promise<void> {
-    await this.userService.create(user);
+  async create(@Body() user: CreateUserDto): Promise<any> {
+    return await this.userService.create(user);
   }
 
   @ApiBearerAuth()
