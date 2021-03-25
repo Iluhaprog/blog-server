@@ -4,7 +4,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors({
+    origin: process.env.ORIGIN || true,
+    methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
+    preflightContinue: false,
+    optionsSuccessStatus: 200,
+    credentials: true,
+    allowedHeaders: 'Authorization, Content-Type, Accept',
+  });
   const config = new DocumentBuilder()
     .setTitle('Blog server')
     .setDescription('API for managing blog data')
