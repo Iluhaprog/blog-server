@@ -77,6 +77,24 @@ describe('UserController (e2e)', () => {
     expect(body).toEqual(newUser);
   });
 
+  it('/user/current (GET)', async () => {
+    const token = await createAndLoginUser(
+      user.login,
+      user.password,
+      userService,
+      request,
+      app,
+    );
+    const { status, body } = await request(app.getHttpServer())
+      .get(`/user/current`)
+      .auth(token.access, { type: 'bearer' });
+
+    await userRepo.delete(token.userId);
+
+    expect(status).toBe(HttpStatus.OK);
+    expect(body.id).toEqual(token.userId);
+  });
+
   it('/user (POST)', async () => {
     const token = await createAndLoginUser(
       user.login,

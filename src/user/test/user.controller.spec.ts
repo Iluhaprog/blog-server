@@ -46,6 +46,18 @@ describe('UserController', () => {
     expect(service.findAll).toHaveBeenCalled();
   });
 
+  it('should get current user', async () => {
+    const req = { user: { id: 1 } };
+    const user = new User();
+    jest.spyOn(service, 'findById').mockImplementation(async () => user);
+
+    const returnedUser = await controller.getCurrent(req);
+
+    expect(returnedUser).toEqual(user);
+    expect(service.findById).toHaveBeenCalled();
+    expect(service.findById).toBeCalledWith(req);
+  });
+
   it('should find user by id', async () => {
     const id = 1;
     const user = new User();

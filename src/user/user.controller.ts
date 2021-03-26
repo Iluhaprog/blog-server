@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
@@ -30,6 +31,15 @@ import {
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/current')
+  @ApiOkResponse({ description: 'Return user', type: User })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  async getCurrent(@Req() req): Promise<User> {
+    return await this.userService.findById(req.user.id);
+  }
 
   @Get(':id')
   @ApiOkResponse({ description: 'Return user', type: User })
