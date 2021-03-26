@@ -51,6 +51,10 @@ export class User {
   @Column()
   avatar: string;
 
+  @ApiProperty()
+  @Column({ default: '' })
+  skills: string;
+
   @BeforeInsert()
   @BeforeUpdate()
   async validate() {

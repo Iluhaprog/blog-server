@@ -21,6 +21,7 @@ describe('AuthService', () => {
   const user: User = {
     about: '',
     avatar: '',
+    skills: '',
     email: '',
     firstName: '',
     id: 0,

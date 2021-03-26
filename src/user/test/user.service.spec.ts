@@ -24,6 +24,7 @@ describe('UserService', () => {
     id: 1,
     lastName: '',
     login: '',
+    skills:'',
     password: hashSync('12345678', 10),
     posts: [],
     projects: [],

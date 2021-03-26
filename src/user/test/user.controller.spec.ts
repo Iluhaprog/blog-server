@@ -55,7 +55,7 @@ describe('UserController', () => {
 
     expect(returnedUser).toEqual(user);
     expect(service.findById).toHaveBeenCalled();
-    expect(service.findById).toBeCalledWith(req);
+    expect(service.findById).toBeCalledWith(req.user.id);
   });
 
   it('should find user by id', async () => {
