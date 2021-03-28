@@ -39,6 +39,7 @@ describe('PostService', () => {
     expect(postRepo.findAndCount).toHaveBeenCalled();
     expect(postRepo.findAndCount).toBeCalledWith({
       order: { id: 'DESC' },
+      relations: ['tags'],
       take: 1,
       skip: 2,
     });

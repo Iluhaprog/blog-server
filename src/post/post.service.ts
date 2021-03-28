@@ -16,6 +16,7 @@ export class PostService {
   async findAll(page, limit, order: Order = 'ASC'): Promise<any> {
     const [data, total] = await this.postRepository.findAndCount({
       order: { id: order },
+      relations: ['tags'],
       take: limit,
       skip: page,
     });
