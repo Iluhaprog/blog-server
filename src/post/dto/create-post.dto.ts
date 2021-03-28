@@ -14,4 +14,10 @@ export class CreatePostDto {
 
   @ApiProperty({ type: [Number] })
   tags: TagsId;
+
+  @ApiProperty()
+  description: string;
+
+  @ApiProperty()
+  isVisible: boolean;
 }

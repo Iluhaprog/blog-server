@@ -79,6 +79,8 @@ describe('PostService', () => {
       tags: [1, 2, 3],
       text: 'TEST TEXT',
       title: 'TEST TITLE',
+      description: '',
+      isVisible: false,
     };
     const expectedValue = new Post();
     jest.spyOn(postRepo, 'create').mockReturnValue(post);
@@ -100,6 +102,8 @@ describe('PostService', () => {
       tags: [1, 2, 3],
       text: 'TEST TEXT',
       title: 'TEST TITLE',
+      description: '',
+      isVisible: false,
     };
     jest
       .spyOn(postRepo, 'save')

@@ -23,6 +23,8 @@ describe('Post entity', () => {
     title: 'test',
     text: 'test text',
     preview: '',
+    description: '',
+    isVisible: false,
     creationDate: new Date(),
   };
   let postRepo: Repository<Post>;

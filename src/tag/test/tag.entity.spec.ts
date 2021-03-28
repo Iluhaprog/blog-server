@@ -11,6 +11,8 @@ describe('Tag entity', () => {
     title: 'test',
     text: 'test text',
     preview: '',
+    description: '',
+    isVisible: false,
     creationDate: new Date(),
   };
   const token = getRepositoryToken(Tag);

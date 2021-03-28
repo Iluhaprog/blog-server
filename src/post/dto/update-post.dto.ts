@@ -17,4 +17,10 @@ export class UpdatePostDto {
 
   @ApiProperty({ type: [Number] })
   tags: TagsId;
+
+  @ApiProperty()
+  description: string;
+
+  @ApiProperty()
+  isVisible: boolean;
 }

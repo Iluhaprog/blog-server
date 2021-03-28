@@ -23,6 +23,14 @@ export class Post {
   title: string;
 
   @ApiProperty()
+  @Column({ type: 'text' })
+  description: string;
+
+  @ApiProperty()
+  @Column({ type: 'bool', default: false})
+  isVisible: boolean;
+
+  @ApiProperty()
   @Column('text')
   text: string;
 

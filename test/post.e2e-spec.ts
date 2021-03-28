@@ -70,6 +70,8 @@ describe('PostController (e2e)', () => {
       title: 'TEST_TILE',
       text: 'TEST_TEXT',
       preview: '',
+      description: '',
+      isVisible: false,
       creationDate: new Date(),
       tags: [],
     });
@@ -91,6 +93,8 @@ describe('PostController (e2e)', () => {
       title: 'TEST_TILE',
       text: 'TEST_TEXT',
       preview: '',
+      description: '',
+      isVisible: false,
       creationDate: new Date(),
       tags: [],
     });
@@ -110,6 +114,8 @@ describe('PostController (e2e)', () => {
       title: 'TEST_TILE_1',
       text: 'TEST_TEXT_1',
       preview: '',
+      description: '',
+      isVisible: false,
       creationDate: new Date(),
       tags: [],
     });
@@ -120,6 +126,8 @@ describe('PostController (e2e)', () => {
           title: 'TEST_TILE_2',
           text: 'TEST_TEXT_2',
           preview: '',
+          description: '',
+          isVisible: false,
           creationDate: new Date(),
           tags: [],
         }),
@@ -153,6 +161,8 @@ describe('PostController (e2e)', () => {
       title: 'TEST_TILE_1',
       text: 'TEST_TEXT_1',
       preview: '',
+      description: '',
+      isVisible: false,
       creationDate: new Date(),
       user: { id: userId },
       tags: [{ id: tag1.id }],
@@ -161,6 +171,8 @@ describe('PostController (e2e)', () => {
       title: 'TEST_TILE_2',
       text: 'TEST_TEXT_2',
       preview: '',
+      description: '',
+      isVisible: false,
       creationDate: new Date(),
       user: { id: userId },
       tags: [{ id: tag2.id }],
@@ -211,6 +223,8 @@ describe('PostController (e2e)', () => {
     const post: CreatePostDto = {
       preview: 'TEST.IMG',
       tags: [],
+      description: '',
+      isVisible: false,
       text: 'TEST_TEXT',
       title: 'TEST_TITLE',
     };
@@ -247,6 +261,8 @@ describe('PostController (e2e)', () => {
       preview: 'TEST.IMG',
       tags: [],
       text: 'TEST_TEXT',
+      description: '',
+      isVisible: false,
       creationDate: new Date(),
       title: 'TEST_TITLE',
     });
@@ -260,6 +276,8 @@ describe('PostController (e2e)', () => {
         id: newPost.id,
         preview: newPost.preview,
         text: newPost.text,
+        description: '',
+        isVisible: false,
         title: newTitle,
         tags: [],
       });
@@ -286,6 +304,8 @@ describe('PostController (e2e)', () => {
       preview: 'TEST.IMG',
       tags: [],
       text: 'TEST_TEXT',
+      description: '',
+      isVisible: false,
       creationDate: new Date(),
       title: 'TEST_TITLE',
     });

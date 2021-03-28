@@ -88,7 +88,14 @@ describe('PostController', () => {
   });
 
   it('should create post', async () => {
-    const post: CreatePostDto = { preview: '', tags: [], text: '', title: '' };
+    const post: CreatePostDto = {
+      preview: '',
+      tags: [],
+      text: '',
+      title: '',
+      description: '',
+      isVisible: false,
+    };
     const req = { user: { id: 1 } };
     const expectedValue = new Post();
     jest.spyOn(service, 'create').mockResolvedValueOnce(expectedValue);
@@ -107,6 +114,8 @@ describe('PostController', () => {
       tags: [],
       text: '',
       title: '',
+      description: '',
+      isVisible: false,
     };
     jest.spyOn(service, 'update').mockResolvedValueOnce(undefined);
 
