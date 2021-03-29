@@ -54,7 +54,9 @@ describe('PostService', () => {
 
     expect(findedPost).toEqual(post);
     expect(postRepo.findOne).toHaveBeenCalled();
-    expect(postRepo.findOne).toBeCalledWith(id);
+    expect(postRepo.findOne).toBeCalledWith(id, {
+      relations: ['tags'],
+    });
   });
 
   it('should find last post by date', async () => {

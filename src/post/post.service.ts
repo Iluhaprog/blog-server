@@ -24,7 +24,9 @@ export class PostService {
   }
 
   async findById(id: number): Promise<Post | undefined> {
-    return await this.postRepository.findOne(id);
+    return await this.postRepository.findOne(id, {
+      relations: ['tags'],
+    });
   }
 
   async findByTags(tags: number[]): Promise<Post[] | [] | undefined> {
