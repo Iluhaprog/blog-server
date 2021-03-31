@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-
-type TagsId = number[];
+import { Tag } from '../../tag/tag.entity';
 
 export class UpdatePostDto {
   @ApiProperty()
@@ -15,8 +14,8 @@ export class UpdatePostDto {
   @ApiProperty()
   preview: string;
 
-  @ApiProperty({ type: [Number] })
-  tags: TagsId;
+  @ApiProperty({ type: [Tag] })
+  tags: Tag[];
 
   @ApiProperty()
   description: string;

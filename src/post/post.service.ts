@@ -59,7 +59,7 @@ export class PostService {
   async update(post: UpdatePostDto): Promise<void> {
     await this.postRepository.save({
       ...post,
-      tags: post.tags.map((tag: number) => ({ id: tag })),
+      tags: post.tags,
     });
   }
 

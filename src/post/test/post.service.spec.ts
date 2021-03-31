@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
+import { Tag } from '../../tag/tag.entity';
 
 describe('PostService', () => {
   const postRepoToken = getRepositoryToken(Post);
@@ -102,7 +103,7 @@ describe('PostService', () => {
     const updatedPost: UpdatePostDto = {
       id: 1,
       preview: 'new preview',
-      tags: [1, 2, 3],
+      tags: [new Tag(), new Tag(), new Tag()],
       text: 'TEST TEXT',
       title: 'TEST TITLE',
       description: '',
@@ -116,7 +117,6 @@ describe('PostService', () => {
     expect(postRepo.save).toHaveBeenCalled();
     expect(postRepo.save).toBeCalledWith({
       ...updatedPost,
-      tags: updatedPost.tags.map((tag) => ({ id: tag })),
     });
   });
 
