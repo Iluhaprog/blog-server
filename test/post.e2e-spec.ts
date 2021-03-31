@@ -88,6 +88,29 @@ describe('PostController (e2e)', () => {
     expect(body.data[0].id).toEqual(post.id);
   });
 
+  it('/post/visible/:page/:limit/:order (GET)', async () => {
+    const post = await postRepo.save({
+      title: 'TEST_TILE',
+      text: 'TEST_TEXT',
+      preview: '',
+      description: '',
+      isVisible: true,
+      creationDate: new Date(),
+      tags: [],
+    });
+
+    const { status, body } = await request(app.getHttpServer()).get(
+      '/post/visible/0/1/DESC',
+    );
+
+    await postRepo.delete(post.id);
+
+    expect(status).toBe(HttpStatus.OK);
+    expect(Array.isArray(body.data)).toBe(true);
+    expect(body.total).toBe(1);
+    expect(body.data[0].id).toEqual(post.id);
+  });
+
   it('/post/:id (GET)', async () => {
     const post = await postRepo.save({
       title: 'TEST_TILE',

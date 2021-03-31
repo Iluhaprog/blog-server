@@ -53,6 +53,23 @@ describe('PostController', () => {
     expect(service.findAll).toBeCalledWith(page, limit, 'DESC');
   });
 
+  it('should find visible posts', async () => {
+    const post = new Post();
+    const responce = {
+      data: [post],
+      total: 1,
+    };
+    const page = 2;
+    const limit = 1;
+    jest.spyOn(service, 'findVisible').mockResolvedValueOnce(responce);
+
+    const data = await controller.findVisible(page, limit, 'DESC');
+
+    expect(data).toEqual(responce);
+    expect(service.findVisible).toHaveBeenCalled();
+    expect(service.findVisible).toBeCalledWith(page, limit, 'DESC');
+  });
+
   it('should find post by id', async () => {
     const post = new Post();
     const id = 1;

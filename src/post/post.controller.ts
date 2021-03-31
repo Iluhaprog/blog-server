@@ -53,6 +53,19 @@ export class PostController {
     return await this.postService.findAll(+page, +limit, order);
   }
 
+  @Get('visible/:page/:limit/:order')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'Return posts', type: PostPagination })
+  @ApiBadRequestResponse({ description: 'An uncorrected page or limit' })
+  @ApiParam({ name: 'order', enum: ['ASC', 'DESC'] })
+  async findVisible(
+    @Param('page') page: number,
+    @Param('limit') limit: number,
+    @Param('order') order: Order,
+  ): Promise<any> {
+    return await this.postService.findVisible(+page, +limit, order);
+  }
+
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return post by id', type: PostEntity })
