@@ -46,6 +46,7 @@ export class PostService {
     return await this.postRepository
       .createQueryBuilder('post')
       .innerJoinAndSelect('post.tags', 'tag', 'tag.id IN (:...tags)', { tags })
+      .where('post.isVisible = :isVisible', { isVisible: true })
       .take(page)
       .limit(limit)
       .getManyAndCount();

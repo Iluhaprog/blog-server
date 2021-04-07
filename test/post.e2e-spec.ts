@@ -12,6 +12,7 @@ import * as request from 'supertest';
 import { createAndLoginUser, createUser, sleep } from './helpers';
 import { Tag } from '../src/tag/tag.entity';
 import { CreatePostDto } from '../src/post/dto/create-post.dto';
+import { truncateSync } from 'node:fs';
 
 describe('PostController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
@@ -185,7 +186,7 @@ describe('PostController (e2e)', () => {
       text: 'TEST_TEXT_1',
       preview: '',
       description: '',
-      isVisible: false,
+      isVisible: true,
       creationDate: new Date(),
       user: { id: userId },
       tags: [{ id: tag1.id }],
@@ -195,7 +196,7 @@ describe('PostController (e2e)', () => {
       text: 'TEST_TEXT_2',
       preview: '',
       description: '',
-      isVisible: false,
+      isVisible: true,
       creationDate: new Date(),
       user: { id: userId },
       tags: [{ id: tag2.id }],
