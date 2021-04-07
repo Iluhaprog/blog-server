@@ -95,13 +95,15 @@ describe('PostController', () => {
   it('should find posts by tags', async () => {
     const post = new Post();
     const tags = [1, 2, 3];
+    const page = 1;
+    const limit = 10;
     jest.spyOn(service, 'findByTags').mockResolvedValueOnce([post]);
 
-    const data = await controller.findByTags(tags);
+    const data = await controller.findByTags(tags, page, limit);
 
     expect(data).toEqual([post]);
     expect(service.findByTags).toHaveBeenCalled();
-    expect(service.findByTags).toBeCalledWith(tags);
+    expect(service.findByTags).toBeCalledWith(tags, page, limit);
   });
 
   it('should create post', async () => {

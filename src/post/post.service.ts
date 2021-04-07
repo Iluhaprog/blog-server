@@ -42,11 +42,13 @@ export class PostService {
     });
   }
 
-  async findByTags(tags: number[]): Promise<Post[] | [] | undefined> {
+  async findByTags(tags: number[], page, limit): Promise<any> {
     return await this.postRepository
       .createQueryBuilder('post')
       .innerJoinAndSelect('post.tags', 'tag', 'tag.id IN (:...tags)', { tags })
-      .getMany();
+      .take(page)
+      .limit(limit)
+      .getManyAndCount();
   }
 
   async findLast(): Promise<Post[] | [] | undefined> {

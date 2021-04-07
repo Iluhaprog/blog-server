@@ -10,6 +10,7 @@ import {
   Put,
   UseGuards,
   Delete,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -33,11 +34,15 @@ import { Order } from '../types/order.type';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @Post('/by-tags')
+  @Post('/by-tags/:page/:limit')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Return posts', type: [PostEntity] })
-  async findByTags(@Body('tags') tags: number[]): Promise<any> {
-    return await this.postService.findByTags(tags);
+  async findByTags(
+    @Body() tags: number[],
+    @Param('page') page: number,
+    @Param('limit') limit: number,
+  ): Promise<any> {
+    return await this.postService.findByTags(tags, +page, +limit);
   }
 
   @Get(':page/:limit/:order')

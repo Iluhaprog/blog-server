@@ -202,17 +202,13 @@ describe('PostController (e2e)', () => {
     });
 
     const res1 = await request(app.getHttpServer())
-      .post('/post/by-tags')
+      .post('/post/by-tags/0/1')
       .set('Content-Type', 'application/json')
-      .send({
-        tags: [tag1.id],
-      });
+      .send([tag1.id]);
     const res2 = await request(app.getHttpServer())
-      .post('/post/by-tags')
+      .post('/post/by-tags/0/1')
       .set('Content-Type', 'application/json')
-      .send({
-        tags: [tag2.id],
-      });
+      .send([tag2.id]);
 
     await postRepo.delete(post1.id);
     await postRepo.delete(post2.id);
@@ -226,11 +222,13 @@ describe('PostController (e2e)', () => {
     expect(Array.isArray(res1.body)).toBe(true);
     expect(Array.isArray(res2.body)).toBe(true);
 
-    expect(res1.body.length).toBe(1);
-    expect(res2.body.length).toBe(1);
+    expect(res1.body.length).toBe(2);
+    expect(res2.body.length).toBe(2);
 
-    expect(res1.body[0].id).toBe(post1.id);
-    expect(res2.body[0].id).toBe(post2.id);
+    expect(res1.body[0][0].id).toBe(post1.id);
+    expect(res1.body[1]).toBe(1);
+    expect(res2.body[0][0].id).toBe(post2.id);
+    expect(res2.body[1]).toBe(1);
   });
 
   it('/post (POST)', async () => {
