@@ -44,6 +44,7 @@ export class LocaleController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: 'Delete locale' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async remove(@Param('id') id: number): Promise<any> {
