@@ -12,6 +12,7 @@ import { Social } from './social/social.entity';
 import { Post } from './post/post.entity';
 import { Home } from './home/home.entity';
 import { File } from './file/file.entity';
+import { Locale } from './locale/locale.entity';
 
 import { UserModule } from './user/user.module';
 import { TagModule } from './tag/tag.module';
@@ -25,6 +26,7 @@ import { Directory } from './directory/directory.entity';
 import { FileModule } from './file/file.module';
 import { AuthModule } from './auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { LocaleModule } from './locale/locale.module';
 
 @Module({
   imports: [
@@ -51,6 +53,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
         Home,
         Directory,
         File,
+        Locale,
       ],
       synchronize: true,
       logging: false,
@@ -65,6 +68,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     DirectoryModule,
     FileModule,
     AuthModule,
+    LocaleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
