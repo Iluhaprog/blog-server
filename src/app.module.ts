@@ -27,7 +27,8 @@ import { FileModule } from './file/file.module';
 import { AuthModule } from './auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { LocaleModule } from './locale/locale.module';
-import { PostData } from "./post/post.data.entity";
+import { PostData } from './post/post.data.entity';
+import { ProjectData } from './project/project.data.entity';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { PostData } from "./post/post.data.entity";
         File,
         Locale,
         PostData,
+        ProjectData,
       ],
       synchronize: true,
       logging: false,
