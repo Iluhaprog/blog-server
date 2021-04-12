@@ -1,15 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Tag } from '../../tag/tag.entity';
+import { PostData } from '../post.data.entity';
 
 export class UpdatePostDto {
   @ApiProperty()
   id: number;
-
-  @ApiProperty()
-  title: string;
-
-  @ApiProperty()
-  text: string;
 
   @ApiProperty()
   preview: string;
@@ -18,8 +13,8 @@ export class UpdatePostDto {
   tags: Tag[];
 
   @ApiProperty()
-  description: string;
-
-  @ApiProperty()
   isVisible: boolean;
+
+  @ApiProperty({ type: [PostData] })
+  postData: PostData[];
 }

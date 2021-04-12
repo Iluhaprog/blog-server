@@ -24,6 +24,7 @@ export class PostData {
   @ManyToOne((type) => Post, (post) => post.postData, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
+    cascade: true,
   })
   post: Post;
 

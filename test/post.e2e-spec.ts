@@ -13,16 +13,22 @@ import { createAndLoginUser, createUser, sleep } from './helpers';
 import { Tag } from '../src/tag/tag.entity';
 import { CreatePostDto } from '../src/post/dto/create-post.dto';
 import { truncateSync } from 'node:fs';
+import { PostData } from '../dist/post/post.data.entity';
+import { Locale } from '../dist/locale/locale.entity';
 
 describe('PostController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
   const postRepoToken = getRepositoryToken(Post);
   const tagRepoToken = getRepositoryToken(Tag);
+  const postDataRepoToken = getRepositoryToken(PostData);
+  const localeRepoToken = getRepositoryToken(Locale);
   let userService: UserService;
   let postService: PostService;
   let userRepo: Repository<User>;
   let postRepo: Repository<Post>;
   let tagRepo: Repository<Tag>;
+  let postDataRepo: Repository<PostData>;
+  let localeRepo: Repository<Locale>;
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -49,6 +55,14 @@ describe('PostController (e2e)', () => {
           provide: tagRepoToken,
           useClass: Repository,
         },
+        {
+          provide: postDataRepoToken,
+          useClass: Repository,
+        },
+        {
+          provide: localeRepoToken,
+          useClass: Repository,
+        }
       ],
     }).compile();
 
@@ -56,6 +70,8 @@ describe('PostController (e2e)', () => {
     postRepo = moduleFixture.get(postRepoToken);
     userRepo = moduleFixture.get(userRepoToken);
     tagRepo = moduleFixture.get(tagRepoToken);
+    localeRepo = moduleFixture.get(localeRepoToken);
+    postDataRepo = moduleFixture.get(postDataRepoToken);
     userService = moduleFixture.get<UserService>(UserService);
     postService = moduleFixture.get<PostService>(PostService);
     await app.init();
@@ -67,13 +83,18 @@ describe('PostController (e2e)', () => {
   });
 
   it('/post/:page/:limit/:order (GET)', async () => {
+    const locale = await localeRepo.save({ name: 'TEST_LOCALE' });
+    const postData1 = await postDataRepo.save({
+      title: 'TEST1',
+      description: 'TEST1',
+      text: 'TEST1',
+      locale,
+    });
     const post = await postRepo.save({
-      title: 'TEST_TILE',
-      text: 'TEST_TEXT',
       preview: '',
-      description: '',
-      isVisible: false,
+      isVisible: true,
       creationDate: new Date(),
+      postData: [postData1],
       tags: [],
     });
 
@@ -82,6 +103,7 @@ describe('PostController (e2e)', () => {
     );
 
     await postRepo.delete(post.id);
+    await localeRepo.delete(locale.id);
 
     expect(status).toBe(HttpStatus.OK);
     expect(Array.isArray(body.data)).toBe(true);
@@ -90,13 +112,18 @@ describe('PostController (e2e)', () => {
   });
 
   it('/post/visible/:page/:limit/:order (GET)', async () => {
+    const locale = await localeRepo.save({ name: 'TEST_LOCALE' });
+    const postData1 = await postDataRepo.save({
+      title: 'TEST1',
+      description: 'TEST1',
+      text: 'TEST1',
+      locale,
+    });
     const post = await postRepo.save({
-      title: 'TEST_TILE',
-      text: 'TEST_TEXT',
       preview: '',
-      description: '',
       isVisible: true,
       creationDate: new Date(),
+      postData: [postData1],
       tags: [],
     });
 
@@ -105,6 +132,7 @@ describe('PostController (e2e)', () => {
     );
 
     await postRepo.delete(post.id);
+    await localeRepo.delete(locale.id);
 
     expect(status).toBe(HttpStatus.OK);
     expect(Array.isArray(body.data)).toBe(true);
@@ -113,13 +141,18 @@ describe('PostController (e2e)', () => {
   });
 
   it('/post/:id (GET)', async () => {
+    const locale = await localeRepo.save({ name: 'TEST_LOCALE' });
+    const postData1 = await postDataRepo.save({
+      title: 'TEST1',
+      description: 'TEST1',
+      text: 'TEST1',
+      locale,
+    });
     const post = await postRepo.save({
-      title: 'TEST_TILE',
-      text: 'TEST_TEXT',
       preview: '',
-      description: '',
       isVisible: false,
       creationDate: new Date(),
+      postData: [postData1],
       tags: [],
     });
 
@@ -128,29 +161,32 @@ describe('PostController (e2e)', () => {
     );
 
     await postRepo.delete(post.id);
+    await localeRepo.delete(locale.id);
 
     expect(status).toBe(HttpStatus.OK);
     expect(body.id).toBe(post.id);
   });
 
   it('/post (GET)', async () => {
+    const locale = await localeRepo.save({ name: 'TEST_LOCALE' });
+    const postData1 = await postDataRepo.save({
+      title: 'TEST1',
+      description: 'TEST1',
+      text: 'TEST1',
+      locale,
+    });
     const post1 = await postRepo.save({
-      title: 'TEST_TILE_1',
-      text: 'TEST_TEXT_1',
       preview: '',
-      description: '',
       isVisible: false,
       creationDate: new Date(),
+      postData: [postData1],
       tags: [],
     });
 
     const post2 = await sleep(
       async () =>
         await postRepo.save({
-          title: 'TEST_TILE_2',
-          text: 'TEST_TEXT_2',
           preview: '',
-          description: '',
           isVisible: false,
           creationDate: new Date(),
           tags: [],
@@ -162,6 +198,7 @@ describe('PostController (e2e)', () => {
 
     await postRepo.delete(post1.id);
     await postRepo.delete(post2.id);
+    await localeRepo.delete(locale.id);
 
     expect(status).toBe(HttpStatus.OK);
     expect(Array.isArray(body)).toBe(true);
@@ -179,27 +216,36 @@ describe('PostController (e2e)', () => {
       request,
       app,
     );
+    const locale = await localeRepo.save({ name: 'TEST_LOCALE' });
+    const postData1 = await postDataRepo.save({
+      title: 'TEST1',
+      description: 'TEST1',
+      text: 'TEST1',
+      locale,
+    });
+    const postData2 = await postDataRepo.save({
+      title: 'TEST2',
+      description: 'TEST2',
+      text: 'TEST2',
+      locale,
+    });
     const tag1 = await tagRepo.save({ title: 'test_tag_1' });
     const tag2 = await tagRepo.save({ title: 'test_tag_2' });
     const post1 = await postRepo.save({
-      title: 'TEST_TILE_1',
-      text: 'TEST_TEXT_1',
       preview: '',
-      description: '',
       isVisible: true,
       creationDate: new Date(),
       user: { id: userId },
       tags: [{ id: tag1.id }],
+      postData: [postData1],
     });
     const post2 = await postRepo.save({
-      title: 'TEST_TILE_2',
-      text: 'TEST_TEXT_2',
       preview: '',
-      description: '',
       isVisible: true,
       creationDate: new Date(),
       user: { id: userId },
       tags: [{ id: tag2.id }],
+      postData: [postData2],
     });
 
     const res1 = await request(app.getHttpServer())
@@ -216,6 +262,7 @@ describe('PostController (e2e)', () => {
     await tagRepo.delete(tag1.id);
     await tagRepo.delete(tag2.id);
     await userRepo.delete(userId);
+    await localeRepo.delete(locale.id);
 
     expect(res1.status).toBe(HttpStatus.OK);
     expect(res2.status).toBe(HttpStatus.OK);
@@ -245,10 +292,8 @@ describe('PostController (e2e)', () => {
     const post: CreatePostDto = {
       preview: 'TEST.IMG',
       tags: [],
-      description: '',
       isVisible: false,
-      text: 'TEST_TEXT',
-      title: 'TEST_TITLE',
+      postData: [],
     };
 
     const { status, body } = await request(app.getHttpServer())
@@ -279,16 +324,21 @@ describe('PostController (e2e)', () => {
       request,
       app,
     );
+    const locale = await localeRepo.save({ name: 'TEST_LOCALE' });
+    const postData1 = await postDataRepo.save({
+      title: 'TEST1',
+      description: 'TEST1',
+      text: 'TEST1',
+      locale,
+    });
     const newPost = await postRepo.save({
       preview: 'TEST.IMG',
       tags: [],
-      text: 'TEST_TEXT',
-      description: '',
+      postData: [postData1],
       isVisible: false,
       creationDate: new Date(),
-      title: 'TEST_TITLE',
     });
-    const newTitle = newPost.title + '_U';
+    const newTitle = newPost.postData[0].title + '_U';
 
     const { status } = await request(app.getHttpServer())
       .put('/post')
@@ -297,19 +347,27 @@ describe('PostController (e2e)', () => {
       .send({
         id: newPost.id,
         preview: newPost.preview,
-        text: newPost.text,
-        description: '',
         isVisible: false,
-        title: newTitle,
+        postData: [
+          {
+            id: postData1.id,
+            title: newTitle,
+            text: newPost.postData[0].text,
+            description: '',
+          },
+        ],
         tags: [],
       });
 
-    const post = await postRepo.findOne(newPost.id);
+    const post = await postRepo.findOne(newPost.id, {
+      relations: ['postData', 'postData.locale'],
+    });
     await userRepo.delete(token.userId);
     await postRepo.delete(post.id);
+    await localeRepo.delete(locale.id);
 
     expect(status).toBe(HttpStatus.NO_CONTENT);
-    expect(post.title).toBe(newTitle);
+    expect(post.postData[0].title).toBe(newTitle);
   });
 
   it('/post (DELETE)', async () => {

@@ -5,12 +5,15 @@ import { getManager, In, Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Order } from '../types/order.type';
+import { PostData } from './post.data.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post)
     private postRepository: Repository<Post>,
+    @InjectRepository(PostData)
+    private postDataRepository: Repository<PostData>,
   ) {}
 
   async findVisible(page, limit, order: Order = 'ASC'): Promise<any> {
@@ -47,6 +50,7 @@ export class PostService {
     return await this.postRepository
       .createQueryBuilder('post')
       .innerJoinAndSelect('post.tags', 'tag', 'tag.id IN (:...tags)', { tags })
+      .innerJoinAndSelect('post.postData', 'postData')
       .innerJoinAndSelect('postData.locale', 'locale')
       .where('post.isVisible = :isVisible', { isVisible: true })
       .take(page)
@@ -76,10 +80,19 @@ export class PostService {
   }
 
   async update(post: UpdatePostDto): Promise<void> {
-    await this.postRepository.save({
-      ...post,
-      tags: post.tags,
-    });
+    await Promise.all(
+      post.postData.map(async (postData) => {
+        return await this.postDataRepository.save(
+          this.postDataRepository.create(postData),
+        );
+      }),
+    );
+    await this.postRepository.save(
+      this.postRepository.create({
+        ...post,
+        tags: post.tags,
+      }),
+    );
   }
 
   async remove(id: number): Promise<void> {

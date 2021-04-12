@@ -6,9 +6,11 @@ import { Post } from '../post.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
+import { PostData } from "../post.data.entity";
 
 describe('PostController', () => {
   const repoToken = getRepositoryToken(Post);
+  const postDataToken = getRepositoryToken(PostData);
   let controller: PostController;
   let service: PostService;
   let repo: Repository<Post>;
@@ -20,6 +22,10 @@ describe('PostController', () => {
         PostService,
         {
           provide: repoToken,
+          useClass: Repository,
+        },
+        {
+          provide: postDataToken,
           useClass: Repository,
         },
       ],
@@ -110,9 +116,6 @@ describe('PostController', () => {
     const post: CreatePostDto = {
       preview: '',
       tags: [],
-      text: '',
-      title: '',
-      description: '',
       isVisible: false,
       postData: [],
     };
@@ -132,9 +135,7 @@ describe('PostController', () => {
       id: 1,
       preview: '',
       tags: [],
-      text: '',
-      title: '',
-      description: '',
+      postData: [],
       isVisible: false,
     };
     jest.spyOn(service, 'update').mockResolvedValueOnce(undefined);

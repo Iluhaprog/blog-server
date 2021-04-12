@@ -6,11 +6,14 @@ import { Post } from '../post.entity';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { Tag } from '../../tag/tag.entity';
+import { PostData } from '../post.data.entity';
 
 describe('PostService', () => {
   const postRepoToken = getRepositoryToken(Post);
+  const postDataRepoToken = getRepositoryToken(PostData);
   let service: PostService;
   let postRepo: Repository<Post>;
+  let postDataRepo: Repository<PostData>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,11 +23,16 @@ describe('PostService', () => {
           provide: postRepoToken,
           useClass: Repository,
         },
+        {
+          provide: postDataRepoToken,
+          useClass: Repository,
+        },
       ],
     }).compile();
 
     service = module.get<PostService>(PostService);
     postRepo = module.get(postRepoToken);
+    postDataRepo = module.get(postDataRepoToken);
   });
 
   it('should be defined', () => {
@@ -117,24 +125,33 @@ describe('PostService', () => {
   });
 
   it('should update post', async () => {
+    const post = new Post();
     const updatedPost: UpdatePostDto = {
       id: 1,
       preview: 'new preview',
       tags: [new Tag(), new Tag(), new Tag()],
-      text: 'TEST TEXT',
-      title: 'TEST TITLE',
-      description: '',
+      postData: [new PostData()],
       isVisible: false,
     };
     jest
       .spyOn(postRepo, 'save')
       .mockResolvedValueOnce(Promise.resolve(undefined));
+    jest.spyOn(postRepo, 'create').mockReturnValue(post);
+
+    jest
+      .spyOn(postDataRepo, 'save')
+      .mockResolvedValueOnce(Promise.resolve(undefined));
+    jest.spyOn(postDataRepo, 'create').mockReturnValue(updatedPost.postData[0]);
 
     await service.update(updatedPost);
     expect(postRepo.save).toHaveBeenCalled();
-    expect(postRepo.save).toBeCalledWith({
-      ...updatedPost,
-    });
+    expect(postRepo.create).toHaveBeenCalled();
+    expect(postRepo.save).toBeCalledWith(post);
+    expect(postRepo.create).toBeCalledWith(updatedPost);
+    expect(postDataRepo.save).toHaveBeenCalled();
+    expect(postDataRepo.create).toHaveBeenCalled();
+    expect(postDataRepo.save).toBeCalledWith(updatedPost.postData[0]);
+    expect(postDataRepo.create).toBeCalledWith(updatedPost.postData[0]);
   });
 
   it('Should remove post', async () => {
