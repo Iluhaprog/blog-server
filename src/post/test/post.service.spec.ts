@@ -40,7 +40,7 @@ describe('PostService', () => {
     expect(postRepo.findAndCount).toHaveBeenCalled();
     expect(postRepo.findAndCount).toBeCalledWith({
       order: { id: 'DESC' },
-      relations: ['tags'],
+      relations: ['tags', 'postData', 'postData.locale'],
       take: 1,
       skip: 2,
       where: {
@@ -58,7 +58,7 @@ describe('PostService', () => {
     expect(postRepo.findAndCount).toHaveBeenCalled();
     expect(postRepo.findAndCount).toBeCalledWith({
       order: { id: 'DESC' },
-      relations: ['tags'],
+      relations: ['tags', 'postData', 'postData.locale'],
       take: 1,
       skip: 2,
     });
@@ -74,7 +74,7 @@ describe('PostService', () => {
     expect(findedPost).toEqual(post);
     expect(postRepo.findOne).toHaveBeenCalled();
     expect(postRepo.findOne).toBeCalledWith(id, {
-      relations: ['tags'],
+      relations: ['tags', 'postData', 'postData.locale'],
     });
   });
 
@@ -86,6 +86,7 @@ describe('PostService', () => {
     expect(posts).toEqual([post]);
     expect(postRepo.find).toHaveBeenCalled();
     expect(postRepo.find).toBeCalledWith({
+      relations: ['postData', 'postData.locale'],
       order: {
         creationDate: 'DESC',
       },
@@ -99,10 +100,8 @@ describe('PostService', () => {
     const newPost: CreatePostDto = {
       preview: 'new preview',
       tags: [1, 2, 3],
-      text: 'TEST TEXT',
-      title: 'TEST TITLE',
-      description: '',
       isVisible: false,
+      postData: [],
     };
     const expectedValue = new Post();
     jest.spyOn(postRepo, 'create').mockReturnValue(post);

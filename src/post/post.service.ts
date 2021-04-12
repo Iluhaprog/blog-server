@@ -16,20 +16,21 @@ export class PostService {
   async findVisible(page, limit, order: Order = 'ASC'): Promise<any> {
     const [data, total] = await this.postRepository.findAndCount({
       order: { id: order },
-      relations: ['tags'],
+      relations: ['tags', 'postData', 'postData.locale'],
       take: limit,
       skip: page,
       where: {
         isVisible: true,
       },
     });
+
     return { data, total };
   }
 
   async findAll(page, limit, order: Order = 'ASC'): Promise<any> {
     const [data, total] = await this.postRepository.findAndCount({
       order: { id: order },
-      relations: ['tags'],
+      relations: ['tags', 'postData', 'postData.locale'],
       take: limit,
       skip: page,
     });
@@ -38,7 +39,7 @@ export class PostService {
 
   async findById(id: number): Promise<Post | undefined> {
     return await this.postRepository.findOne(id, {
-      relations: ['tags'],
+      relations: ['tags', 'postData', 'postData.locale'],
     });
   }
 
@@ -46,6 +47,7 @@ export class PostService {
     return await this.postRepository
       .createQueryBuilder('post')
       .innerJoinAndSelect('post.tags', 'tag', 'tag.id IN (:...tags)', { tags })
+      .innerJoinAndSelect('postData.locale', 'locale')
       .where('post.isVisible = :isVisible', { isVisible: true })
       .take(page)
       .limit(limit)
@@ -54,6 +56,7 @@ export class PostService {
 
   async findLast(): Promise<Post[] | [] | undefined> {
     return await this.postRepository.find({
+      relations: ['postData', 'postData.locale'],
       order: {
         creationDate: 'DESC',
       },

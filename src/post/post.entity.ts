@@ -4,12 +4,13 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
-  Unique,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Tag } from '../tag/tag.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { PostData } from './post.data.entity';
 
 @Entity()
 export class Post {
@@ -18,21 +19,8 @@ export class Post {
   id: number;
 
   @ApiProperty()
-  @Column()
-  @Unique(['title'])
-  title: string;
-
-  @ApiProperty()
-  @Column({ type: 'text' })
-  description: string;
-
-  @ApiProperty()
-  @Column({ type: 'bool', default: false})
+  @Column({ type: 'bool', default: false })
   isVisible: boolean;
-
-  @ApiProperty()
-  @Column('text')
-  text: string;
 
   @ApiProperty()
   @Column()
@@ -51,4 +39,8 @@ export class Post {
   @ManyToMany((type) => Tag, (tag) => tag.posts)
   @JoinTable()
   tags: Tag[];
+
+  @ApiProperty({ name: 'postData', type: [PostData] })
+  @OneToMany((type) => PostData, (postData) => postData.post)
+  postData: PostData[];
 }

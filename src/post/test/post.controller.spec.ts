@@ -114,6 +114,7 @@ describe('PostController', () => {
       title: '',
       description: '',
       isVisible: false,
+      postData: [],
     };
     const req = { user: { id: 1 } };
     const expectedValue = new Post();

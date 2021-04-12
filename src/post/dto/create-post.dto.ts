@@ -1,14 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Locale } from '../../locale/locale.entity';
 
 type TagsId = number[];
 
-export class CreatePostDto {
+class PostData {
   @ApiProperty()
   title: string;
 
   @ApiProperty()
+  description: string;
+
+  @ApiProperty()
   text: string;
 
+  @ApiProperty()
+  locale: Locale;
+}
+
+export class CreatePostDto {
   @ApiProperty()
   preview: string;
 
@@ -16,8 +25,8 @@ export class CreatePostDto {
   tags: TagsId;
 
   @ApiProperty()
-  description: string;
-
-  @ApiProperty()
   isVisible: boolean;
+
+  @ApiProperty({ type: [PostData] })
+  postData;
 }

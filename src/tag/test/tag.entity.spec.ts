@@ -49,7 +49,7 @@ describe('Tag entity', () => {
   it('Should return tag with posts', async () => {
     const savedPost1 = await postRepo.save(await postRepo.create(post));
     const savedPost2 = await postRepo.save(
-      await postRepo.create({ ...post, title: 't2' }),
+      await postRepo.create({ ...post, postData: [] }),
     );
     const savedTag = await tagRepo.save(
       await tagRepo.create({
