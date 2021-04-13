@@ -29,6 +29,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { LocaleModule } from './locale/locale.module';
 import { PostData } from './post/post.data.entity';
 import { ProjectData } from './project/project.data.entity';
+import { HomeData } from './home/home.data.entity';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { ProjectData } from './project/project.data.entity';
         Locale,
         PostData,
         ProjectData,
+        HomeData,
       ],
       synchronize: true,
       logging: false,
