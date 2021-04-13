@@ -30,6 +30,7 @@ import { LocaleModule } from './locale/locale.module';
 import { PostData } from './post/post.data.entity';
 import { ProjectData } from './project/project.data.entity';
 import { HomeData } from './home/home.data.entity';
+import { UserData } from './user/user.data.entity';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { HomeData } from './home/home.data.entity';
         PostData,
         ProjectData,
         HomeData,
+        UserData,
       ],
       synchronize: true,
       logging: false,

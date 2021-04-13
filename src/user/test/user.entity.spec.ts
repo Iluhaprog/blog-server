@@ -10,9 +10,7 @@ describe('User entity', () => {
   const user = {
     login: 'test',
     password: 'test1234',
-    about: '',
-    firstName: 'testFN',
-    lastName: 'testLN',
+    userData: [],
     email: 'test@email.com',
     avatar: '',
   };

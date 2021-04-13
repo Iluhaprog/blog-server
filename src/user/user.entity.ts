@@ -14,6 +14,7 @@ import { RefreshToken } from '../refresh-token/refresh-token.entity';
 import { Project } from '../project/project.entity';
 import { Post } from '../post/post.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserData } from './user.data.entity';
 
 @Entity()
 export class User {
@@ -29,18 +30,6 @@ export class User {
   @Column()
   @MinLength(8, { message: 'Password is short' })
   password: string;
-
-  @ApiProperty()
-  @Column('text')
-  about: string;
-
-  @ApiProperty()
-  @Column()
-  firstName: string;
-
-  @ApiProperty()
-  @Column()
-  lastName: string;
 
   @ApiProperty()
   @Column()
@@ -86,4 +75,7 @@ export class User {
 
   @OneToMany(() => Post, (post: Post) => post.user)
   posts: Post[];
+
+  @OneToMany(() => UserData, (userData: UserData) => userData.user)
+  userData: UserData[];
 }

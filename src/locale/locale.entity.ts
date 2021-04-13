@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { PostData } from '../post/post.data.entity';
 import { ProjectData } from '../project/project.data.entity';
 import { HomeData } from '../home/home.data.entity';
+import { UserData } from '../user/user.data.entity';
 
 @Entity()
 export class Locale {
@@ -22,4 +23,7 @@ export class Locale {
 
   @OneToMany(() => HomeData, (homeData) => homeData.home)
   homeData: HomeData[];
+
+  @OneToMany(() => UserData, (userData: UserData) => userData.locale)
+  userData: UserData[];
 }
