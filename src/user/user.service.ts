@@ -60,7 +60,7 @@ export class UserService {
         );
       }),
     );
-    await this.userRepository.update(user.id, user);
+    await this.userRepository.save(user);
   }
 
   async updatePassword(user: UpdateUserPasswordDto): Promise<void> {

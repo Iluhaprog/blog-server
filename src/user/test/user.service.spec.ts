@@ -127,13 +127,13 @@ describe('UserService', () => {
       login: '',
     };
     jest
-      .spyOn(repo, 'update')
+      .spyOn(repo, 'save')
       .mockResolvedValueOnce(Promise.resolve(undefined));
     jest.spyOn(userDataRepo, 'create').mockReturnValue(undefined);
     jest.spyOn(userDataRepo, 'save').mockResolvedValueOnce(undefined);
     await service.update(dto);
-    expect(repo.update).toHaveBeenCalled();
-    expect(repo.update).toBeCalledWith(dto.id, dto);
+    expect(repo.save).toHaveBeenCalled();
+    expect(repo.save).toBeCalledWith(dto);
     expect(userDataRepo.create).toBeCalledWith(userData);
     expect(userDataRepo.save).toHaveBeenCalled();
   });
