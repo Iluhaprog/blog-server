@@ -11,10 +11,12 @@ import { UserService } from '../src/user/user.service';
 import { User } from '../src/user/user.entity';
 import { Locale } from '../dist/locale/locale.entity';
 import { HomeData } from '../src/home/home.data.entity';
+import { UserData } from '../src/user/user.data.entity';
 
 describe('HomeController (e2e)', () => {
   const homeRepoToken = getRepositoryToken(Home);
   const userRepoToken = getRepositoryToken(User);
+  const userDataRepoToken = getRepositoryToken(UserData);
   const localeRepoToken = getRepositoryToken(Locale);
   const homeDataRepoToken = getRepositoryToken(HomeData);
   const locale = { name: 'TEST_LOCALE' };
@@ -54,6 +56,10 @@ describe('HomeController (e2e)', () => {
         },
         {
           provide: localeRepoToken,
+          useClass: Repository,
+        },
+        {
+          provide: userDataRepoToken,
           useClass: Repository,
         },
       ],

@@ -11,19 +11,28 @@ import * as request from 'supertest';
 import { createAndLoginUser } from './helpers';
 import { UpdateUserDto } from '../src/user/dto/update-user.dto';
 import { UpdateUserPasswordDto } from '../src/user/dto/update-user-password.dto';
+import { UserData } from '../src/user/user.data.entity';
+import { Locale } from '../dist/locale/locale.entity';
 
 describe('UserController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
-  const user: CreateUserDto = {
-    about: 'TEST_ABOUT',
+  const localeToken = getRepositoryToken(Locale);
+  const userDataRepoToken = getRepositoryToken(UserData);
+  const user = {
     avatar: 'TEST_AVATAR',
     email: 'TEST_EMAIL@TEST.TEST',
-    firstName: 'TEST_FIRST_NAME',
-    lastName: 'TEST_LAST_NAME',
     login: 'TEST_LOGIN',
     password: 'TEST_PASSWORD',
   };
+  const userData = {
+    about: 'TEST_ABOUT',
+    firstName: 'TEST_FIRST_NAME',
+    lastName: 'TEST_LAST_NAME',
+  };
+  const locale = { name: 'TEST_LOCALE' };
   let userRepo: Repository<User>;
+  let userDataRepo: Repository<UserData>;
+  let localeRepo: Repository<Locale>;
   let userService: UserService;
   let app: INestApplication;
 
@@ -42,11 +51,21 @@ describe('UserController (e2e)', () => {
           provide: userRepoToken,
           useClass: Repository,
         },
+        {
+          provide: userDataRepoToken,
+          useClass: Repository,
+        },
+        {
+          provide: localeToken,
+          useClass: Repository,
+        },
       ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     userRepo = moduleFixture.get(userRepoToken);
+    userDataRepo = moduleFixture.get(userDataRepoToken);
+    localeRepo = moduleFixture.get(localeToken);
     userService = moduleFixture.get<UserService>(UserService);
     await app.init();
   });
@@ -57,21 +76,39 @@ describe('UserController (e2e)', () => {
   });
 
   it('/user (GET)', async () => {
-    const newUser = await userRepo.save(user);
+    const newLocale = await localeRepo.save(locale);
+    const newUserData = await userDataRepo.save({
+      ...userData,
+      locale: newLocale,
+    });
+    const newUser = await userRepo.save({
+      ...user,
+      userData: [newUserData],
+    });
     const { status, body } = await request(app.getHttpServer()).get('/user');
     await userRepo.delete(newUser.id);
+    await localeRepo.delete(newLocale.id);
 
     expect(status).toBe(HttpStatus.OK);
     expect(body).toEqual([newUser]);
   });
 
   it('/user/:id (GET)', async () => {
-    const newUser = await userRepo.save(user);
+    const newLocale = await localeRepo.save(locale);
+    const newUserData = await userDataRepo.save({
+      ...userData,
+      locale: newLocale,
+    });
+    const newUser = await userRepo.save({
+      ...user,
+      userData: [newUserData],
+    });
     const { status, body } = await request(app.getHttpServer()).get(
       `/user/${newUser.id}`,
     );
 
     await userRepo.delete(newUser.id);
+    await localeRepo.delete(newLocale.id);
 
     expect(status).toBe(HttpStatus.OK);
     expect(body).toEqual(newUser);
@@ -97,7 +134,7 @@ describe('UserController (e2e)', () => {
 
   it('/user (POST)', async () => {
     const token = await createAndLoginUser(
-      user.login,
+      user.login + 'U',
       user.password,
       userService,
       request,
@@ -108,9 +145,15 @@ describe('UserController (e2e)', () => {
       .post('/user')
       .auth(token.access, { type: 'bearer' })
       .set('Content-Type', 'application/json')
-      .send(user);
+      .send({
+        ...user,
+        password: '123456789',
+        userData: [],
+      });
 
-    const createdUser = await userRepo.findOne();
+    const createdUser = await userRepo.findOne(body.id, {
+      relations: ['userData'],
+    });
 
     await userRepo.delete(createdUser.id);
     await userRepo.delete(token.userId);
@@ -129,16 +172,32 @@ describe('UserController (e2e)', () => {
       app,
     );
 
-    const newLN = user.lastName + '_U';
+    const newFN = 'FN';
+    const newLocale = await localeRepo.save(locale);
+    const newUserData = await userDataRepo.save({
+      ...userData,
+      locale: newLocale,
+    });
+    const newUser = await userRepo.save({
+      ...user,
+      userData: [
+        {
+          ...newUserData,
+        },
+      ],
+    });
 
     const updatedUser: UpdateUserDto = {
-      about: user.about,
       avatar: user.avatar,
       email: user.email,
-      firstName: user.firstName,
       id: token.userId,
-      lastName: newLN,
       login: user.login,
+      userData: [
+        {
+          ...newUserData,
+          firstName: newFN,
+        },
+      ],
     };
 
     const { status } = await request(app.getHttpServer())
@@ -147,12 +206,16 @@ describe('UserController (e2e)', () => {
       .set('Content-Type', 'application/json')
       .send(updatedUser);
 
-    const updated = await userRepo.findOne(updatedUser.id);
+    const updated = await userRepo.findOne(updatedUser.id, {
+      relations: ['userData'],
+    });
 
     await userRepo.delete(token.userId);
+    await userRepo.delete(newUser.id);
+    await localeRepo.delete(newLocale.id);
 
     expect(status).toBe(HttpStatus.NO_CONTENT);
-    expect(updated.lastName).toBe(newLN);
+    expect(updated.userData[0].firstName).toBe(newFN);
   });
 
   it('/user/password (PUT)', async () => {

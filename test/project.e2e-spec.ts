@@ -14,9 +14,11 @@ import { createAndLoginUser } from './helpers';
 import { UpdateProjectDto } from '../src/project/dto/update-project.dto';
 import { ProjectData } from '../src/project/project.data.entity';
 import { Locale } from '../dist/locale/locale.entity';
+import { UserData } from '../src/user/user.data.entity';
 
 describe('ProjectController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
+  const userDataRepoToken = getRepositoryToken(UserData);
   const projectRepoToken = getRepositoryToken(Project);
   const projectDataRepoToken = getRepositoryToken(ProjectData);
   const localeRepoToken = getRepositoryToken(Locale);
@@ -64,6 +66,10 @@ describe('ProjectController (e2e)', () => {
         },
         {
           provide: localeRepoToken,
+          useClass: Repository,
+        },
+        {
+          provide: userDataRepoToken,
           useClass: Repository,
         },
       ],

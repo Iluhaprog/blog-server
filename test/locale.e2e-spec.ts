@@ -11,9 +11,11 @@ import { AppModule } from '../src/app.module';
 import { LocaleService } from '../dist/locale/locale.service';
 import * as request from 'supertest';
 import { createAndLoginUser } from './helpers';
+import { UserData } from "../src/user/user.data.entity";
 
 describe('SocialController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
+  const userDataRepoToken = getRepositoryToken(UserData);
   const localeRepoToken = getRepositoryToken(Locale);
   const locale: CreateLocaleDto = { name: 'TEST_LOCALE' };
   let userService: UserService;
@@ -39,6 +41,10 @@ describe('SocialController (e2e)', () => {
         },
         {
           provide: userRepoToken,
+          useClass: Repository,
+        },
+        {
+          provide: userDataRepoToken,
           useClass: Repository,
         },
       ],

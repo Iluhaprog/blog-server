@@ -12,9 +12,11 @@ import * as request from 'supertest';
 import { CreateSocialDto } from '../src/social/dto/create-social.dto';
 import { createAndLoginUser } from './helpers';
 import { UpdateSocialDto } from '../src/social/dto/update-social.dto';
+import { UserData } from '../src/user/user.data.entity';
 
 describe('SocialController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
+  const userDataRepoToken = getRepositoryToken(UserData);
   const socialRepoToken = getRepositoryToken(Social);
   const social: CreateSocialDto = {
     link: 'TEST_LINK',
@@ -46,6 +48,10 @@ describe('SocialController (e2e)', () => {
           provide: userRepoToken,
           useClass: Repository,
         },
+        {
+          provide: userDataRepoToken,
+          useClass: Repository,
+        },
       ],
     }).compile();
 
@@ -63,7 +69,9 @@ describe('SocialController (e2e)', () => {
 
   it('/social/:order (GET)', async () => {
     const newSocial = await socialRepo.save(social);
-    const { status, body } = await request(app.getHttpServer()).get('/social/DESC');
+    const { status, body } = await request(app.getHttpServer()).get(
+      '/social/DESC',
+    );
 
     await socialRepo.delete(newSocial.id);
 

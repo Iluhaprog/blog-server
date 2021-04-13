@@ -14,11 +14,9 @@ export async function createUser(
   service: UserService,
 ): Promise<void> {
   const user: CreateUserDto = {
-    about: '',
     avatar: '',
     email: 'TEST_EMAIL@TEST.TEST',
-    firstName: '',
-    lastName: '',
+    userData: [],
     login,
     password,
   };

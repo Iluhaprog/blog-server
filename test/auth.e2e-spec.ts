@@ -9,9 +9,11 @@ import { Repository } from 'typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { getConnectionManager } from 'typeorm';
 import { createUser, createAndLoginUser } from './helpers';
+import { UserData } from "../src/user/user.data.entity";
 
 describe('AuthController (e2e)', () => {
   const repoToken = getRepositoryToken(User);
+  const userDataRepoToken = getRepositoryToken(UserData);
   let app: INestApplication;
   let service: UserService;
 
@@ -28,6 +30,10 @@ describe('AuthController (e2e)', () => {
         UserService,
         {
           provide: repoToken,
+          useClass: Repository,
+        },
+        {
+          provide: userDataRepoToken,
           useClass: Repository,
         },
       ],

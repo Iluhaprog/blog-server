@@ -11,10 +11,12 @@ import { Directory } from '../src/directory/directory.entity';
 import * as request from 'supertest';
 import { createAndLoginUser } from './helpers';
 import { CreateDirectoryDto } from '../src/directory/dto/create-directory.dto';
+import { UserData } from '../src/user/user.data.entity';
 
 describe('DirectoryController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
   const dirRepoToken = getRepositoryToken(Directory);
+  const userDataRepoToken = getRepositoryToken(UserData);
   let app: INestApplication;
   let userService: UserService;
   let dirService: DirectoryService;
@@ -37,6 +39,10 @@ describe('DirectoryController (e2e)', () => {
         },
         {
           provide: dirRepoToken,
+          useClass: Repository,
+        },
+        {
+          provide: userDataRepoToken,
           useClass: Repository,
         },
       ],

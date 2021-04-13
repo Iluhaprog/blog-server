@@ -11,9 +11,11 @@ import { File } from '../src/file/file.entity';
 import * as request from 'supertest';
 import { createAndLoginUser } from './helpers';
 import { Directory } from '../src/directory/directory.entity';
+import { UserData } from '../src/user/user.data.entity';
 
 describe('FileController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
+  const userDataRepoToken = getRepositoryToken(UserData);
   const fileRepoToken = getRepositoryToken(File);
   const dirRepoToken = getRepositoryToken(Directory);
   let fileService: FileService;
@@ -45,6 +47,10 @@ describe('FileController (e2e)', () => {
         },
         {
           provide: dirRepoToken,
+          useClass: Repository,
+        },
+        {
+          provide: userDataRepoToken,
           useClass: Repository,
         },
       ],

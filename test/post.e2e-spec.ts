@@ -15,9 +15,11 @@ import { CreatePostDto } from '../src/post/dto/create-post.dto';
 import { truncateSync } from 'node:fs';
 import { PostData } from '../dist/post/post.data.entity';
 import { Locale } from '../dist/locale/locale.entity';
+import { UserData } from '../src/user/user.data.entity';
 
 describe('PostController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
+  const userDataRepoToken = getRepositoryToken(UserData);
   const postRepoToken = getRepositoryToken(Post);
   const tagRepoToken = getRepositoryToken(Tag);
   const postDataRepoToken = getRepositoryToken(PostData);
@@ -62,7 +64,11 @@ describe('PostController (e2e)', () => {
         {
           provide: localeRepoToken,
           useClass: Repository,
-        }
+        },
+        {
+          provide: userDataRepoToken,
+          useClass: Repository,
+        },
       ],
     }).compile();
 

@@ -12,9 +12,11 @@ import { createAndLoginUser } from './helpers';
 import { Tag } from '../src/tag/tag.entity';
 import { TagService } from '../src/tag/tag.service';
 import { CreateTagDto } from '../src/tag/dto/create-tag.dto';
+import { UserData } from '../src/user/user.data.entity';
 
 describe('SocialController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
+  const userDataRepoToken = getRepositoryToken(UserData);
   const tagRepoToken = getRepositoryToken(Tag);
   const tag: CreateTagDto = {
     title: 'TEST_TITLE',
@@ -44,6 +46,10 @@ describe('SocialController (e2e)', () => {
           provide: userRepoToken,
           useClass: Repository,
         },
+        {
+          provide: userDataRepoToken,
+          useClass: Repository,
+        },
       ],
     }).compile();
 
@@ -61,7 +67,9 @@ describe('SocialController (e2e)', () => {
 
   it('/tag/:order (GET)', async () => {
     const newTag = await tagRepo.save(tag);
-    const { status, body } = await request(app.getHttpServer()).get('/tag/DESC');
+    const { status, body } = await request(app.getHttpServer()).get(
+      '/tag/DESC',
+    );
 
     await tagRepo.delete(newTag.id);
 
