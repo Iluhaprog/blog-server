@@ -9,9 +9,11 @@ import { Repository } from 'typeorm';
 import { AuthService } from '../auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { UserData } from "../../user/user.data.entity";
 
 describe('AuthController', () => {
   const usRepoToken = getRepositoryToken(User);
+  const userDataToken = getRepositoryToken(UserData);
   const rtRepoToken = getRepositoryToken(RefreshToken);
   let controller: AuthController;
   let service: AuthService;
@@ -40,6 +42,10 @@ describe('AuthController', () => {
         },
         {
           provide: rtRepoToken,
+          useClass: Repository,
+        },
+        {
+          provide: userDataToken,
           useClass: Repository,
         },
       ],

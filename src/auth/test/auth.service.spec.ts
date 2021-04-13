@@ -12,20 +12,20 @@ import { v4 as uuid } from 'uuid';
 import { ConfigModule } from '@nestjs/config';
 import * as moment from 'moment';
 import { UnauthorizedException } from '@nestjs/common';
+import { UserData } from '../../user/user.data.entity';
 
 describe('AuthService', () => {
   const userToken = getRepositoryToken(User);
+  const userDataToken = getRepositoryToken(UserData);
   const rtToken = getRepositoryToken(RefreshToken);
   const pass = '12345678';
   const passHash = hashSync(pass, 10);
   const user: User = {
-    about: '',
     avatar: '',
     skills: '',
     email: '',
-    firstName: '',
     id: 0,
-    lastName: '',
+    userData: [],
     login: 'test',
     password: passHash,
     posts: [],
@@ -70,6 +70,10 @@ describe('AuthService', () => {
         },
         {
           provide: rtToken,
+          useClass: Repository,
+        },
+        {
+          provide: userDataToken,
           useClass: Repository,
         },
       ],
