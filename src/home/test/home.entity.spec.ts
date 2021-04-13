@@ -7,8 +7,12 @@ import { AppModule } from '../../app.module';
 describe('Home entity', () => {
   const homeToken = getRepositoryToken(Home);
   const home = {
-    title: 'test',
-    description: 'test',
+    homeData: [
+      {
+        title: 'test',
+        description: 'test',
+      },
+    ],
   };
   let homeRepo: Repository<Home>;
 
