@@ -9,12 +9,23 @@ import * as request from 'supertest';
 import { createAndLoginUser } from './helpers';
 import { UserService } from '../src/user/user.service';
 import { User } from '../src/user/user.entity';
+import { Locale } from '../dist/locale/locale.entity';
+import { HomeData } from '../src/home/home.data.entity';
 
 describe('HomeController (e2e)', () => {
   const homeRepoToken = getRepositoryToken(Home);
   const userRepoToken = getRepositoryToken(User);
+  const localeRepoToken = getRepositoryToken(Locale);
+  const homeDataRepoToken = getRepositoryToken(HomeData);
+  const locale = { name: 'TEST_LOCALE' };
+  const homeData = {
+    title: 'TEST_TITLE',
+    description: 'TEST_DESCRIPTION',
+  };
   let homeRepo: Repository<Home>;
   let userRepo: Repository<User>;
+  let localeRepo: Repository<Locale>;
+  let homeDataRepo: Repository<HomeData>;
   let userService: UserService;
   let app: INestApplication;
 
@@ -37,12 +48,22 @@ describe('HomeController (e2e)', () => {
           provide: userRepoToken,
           useClass: Repository,
         },
+        {
+          provide: homeDataRepoToken,
+          useClass: Repository,
+        },
+        {
+          provide: localeRepoToken,
+          useClass: Repository,
+        },
       ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     homeRepo = moduleFixture.get(homeRepoToken);
     userRepo = moduleFixture.get(userRepoToken);
+    localeRepo = moduleFixture.get(localeRepoToken);
+    homeDataRepo = moduleFixture.get(homeDataRepoToken);
     userService = moduleFixture.get<UserService>(UserService);
     await app.init();
   });
@@ -53,14 +74,19 @@ describe('HomeController (e2e)', () => {
   });
 
   it('/home (GET)', async () => {
+    const savedLocale = await localeRepo.save(locale);
+    const savedHomeData = await homeDataRepo.save({
+      ...homeData,
+      locale: { ...savedLocale },
+    });
     const home = await homeRepo.save({
-      title: 'TEST_TITLE',
-      description: 'TEST_DESCRIPTION',
+      homeData: [savedHomeData],
     });
 
     const { status, body } = await request(app.getHttpServer()).get('/home');
 
     await homeRepo.delete(home.id);
+    await localeRepo.delete(savedLocale.id);
 
     expect(status).toBe(HttpStatus.OK);
     expect(Array.isArray(body)).toBe(true);
@@ -68,10 +94,14 @@ describe('HomeController (e2e)', () => {
   });
 
   it('/home/one (GET)', async () => {
+    const savedLocale = await localeRepo.save(locale);
+    const savedHomeData = await homeDataRepo.save({
+      ...homeData,
+      locale: { ...savedLocale },
+    });
     const home = await homeRepo.save({
-      title: 'TEST_TITLE',
-      description: 'TEST_DESCRIPTION',
       selected: true,
+      homeData: [savedHomeData],
     });
 
     const { status, body } = await request(app.getHttpServer()).get(
@@ -79,6 +109,7 @@ describe('HomeController (e2e)', () => {
     );
 
     await homeRepo.delete(home.id);
+    await localeRepo.delete(savedLocale.id);
 
     expect(status).toBe(HttpStatus.OK);
     expect(body).toEqual(home);
@@ -101,8 +132,7 @@ describe('HomeController (e2e)', () => {
       .auth(token.access, { type: 'bearer' })
       .set('Content-Type', 'application/json')
       .send({
-        title: 'TEST_TITLE',
-        description: 'TEST_DESCRIPTION',
+        homeData: [homeData],
       });
     const home = await homeRepo.findOne();
     await homeRepo.delete(home.id);
@@ -111,6 +141,7 @@ describe('HomeController (e2e)', () => {
     expect(!!body.id).toBe(true);
     expect(status).toBe(HttpStatus.CREATED);
     expect(!!home).toBe(true);
+    expect(body.homeData.length).toBe(1);
   });
 
   it('/home (PUT)', async () => {
@@ -125,30 +156,41 @@ describe('HomeController (e2e)', () => {
       app,
     );
 
+    const savedLocale = await localeRepo.save(locale);
+    const savedHomeData = await homeDataRepo.save({
+      ...homeData,
+      locale: { ...savedLocale },
+    });
     const home = await homeRepo.save({
-      title: 'TEST_TITLE',
-      description: 'TEST_DESCRIPTION',
+      selected: true,
+      homeData: [savedHomeData],
     });
 
-    const update = {
-      id: home.id,
-      title: 'TEST_TITLE_NEW',
-      description: 'TEST_DESCRIPTION_NEW',
-      selected: true,
-    };
+    const newTitle = 'NEW_TITLE';
 
     const { status } = await request(app.getHttpServer())
       .put('/home')
       .auth(token.access, { type: 'bearer' })
       .set('Content-Type', 'application/json')
-      .send(update);
+      .send({
+        ...home,
+        homeData: [
+          {
+            ...savedHomeData,
+            title: newTitle,
+          },
+        ],
+      });
 
-    const updatedHome = await homeRepo.findOne(home.id);
+    const updatedHome = await homeRepo.findOne(home.id, {
+      relations: ['homeData'],
+    });
     await homeRepo.delete(home.id);
     await userRepo.delete(token.userId);
+    await localeRepo.delete(savedLocale.id);
 
     expect(status).toBe(HttpStatus.NO_CONTENT);
-    expect(updatedHome).toEqual(update);
+    expect(updatedHome.homeData[0].title).toEqual(newTitle);
   });
 
   it('/home (DELETE)', async () => {
@@ -164,8 +206,7 @@ describe('HomeController (e2e)', () => {
     );
 
     const home = await homeRepo.save({
-      title: 'TEST_TITLE',
-      description: 'TEST_DESCRIPTION',
+      homeData: [],
     });
 
     const { status } = await request(app.getHttpServer())
