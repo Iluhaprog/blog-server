@@ -2,7 +2,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../dist/user/user.entity';
 import { Locale } from '../dist/locale/locale.entity';
 import { CreateLocaleDto } from '../dist/locale/dto/create-locale.dto';
-import { UserService } from '../dist/user/user.service';
+import { UserService } from '../src/user/user.service';
 import { getConnectionManager, Repository } from 'typeorm';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
