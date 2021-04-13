@@ -12,20 +12,30 @@ import { ProjectService } from '../src/project/project.service';
 import * as request from 'supertest';
 import { createAndLoginUser } from './helpers';
 import { UpdateProjectDto } from '../src/project/dto/update-project.dto';
+import { ProjectData } from '../src/project/project.data.entity';
+import { Locale } from '../dist/locale/locale.entity';
 
 describe('ProjectController (e2e)', () => {
   const userRepoToken = getRepositoryToken(User);
   const projectRepoToken = getRepositoryToken(Project);
+  const projectDataRepoToken = getRepositoryToken(ProjectData);
+  const localeRepoToken = getRepositoryToken(Locale);
   const project: CreateProjectDto = {
-    description: 'TEST_DESCRIPTION',
+    projectData: [],
     githubLink: 'TEST_GIT_LINK',
     preview: 'TEST_PREVIEW',
     projectLink: 'TEXT_PRJ_LINK',
-    title: 'TEST_TITLE',
+  };
+  const locale = { name: 'TEST_LOCALE' };
+  const projectData = {
+    title: 'TEST_PROJECT_TITLE',
+    description: 'TEST_PROJECT_DESCRIPTION',
   };
   let userService: UserService;
   let projectRepo: Repository<Project>;
   let userRepo: Repository<User>;
+  let projectDataRepo: Repository<ProjectData>;
+  let localeRepo: Repository<Locale>;
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -48,12 +58,22 @@ describe('ProjectController (e2e)', () => {
           provide: userRepoToken,
           useClass: Repository,
         },
+        {
+          provide: projectDataRepoToken,
+          useClass: Repository,
+        },
+        {
+          provide: localeRepoToken,
+          useClass: Repository,
+        },
       ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     projectRepo = moduleFixture.get(projectRepoToken);
     userRepo = moduleFixture.get(userRepoToken);
+    projectDataRepo = moduleFixture.get(projectDataRepoToken);
+    localeRepo = moduleFixture.get(localeRepoToken);
     userService = moduleFixture.get<UserService>(UserService);
     await app.init();
   });
@@ -64,15 +84,24 @@ describe('ProjectController (e2e)', () => {
   });
 
   it('/project/:order (GET)', async () => {
-    const newProject = await projectRepo.save(project);
+    const newLocale = await localeRepo.save(locale);
+    const newProjectData = await projectDataRepo.save({
+      ...projectData,
+      locale: { ...newLocale },
+    });
+    const newProject = await projectRepo.save({
+      ...project,
+      projectData: [newProjectData],
+    });
     const { status, body } = await request(app.getHttpServer()).get(
       '/project/DESC',
     );
 
     await projectRepo.delete(newProject.id);
+    await localeRepo.delete(newLocale.id);
 
     expect(status).toBe(HttpStatus.OK);
-    expect(body).toEqual([newProject]);
+    expect(body[0].projectData).toEqual([newProjectData]);
   });
 
   it('/project (POST)', async () => {
@@ -111,15 +140,27 @@ describe('ProjectController (e2e)', () => {
       request,
       app,
     );
-    const newProject = await projectRepo.save(project);
-    const newTitle = newProject.title + '_U';
+    const newLocale = await localeRepo.save(locale);
+    const newProjectData = await projectDataRepo.save({
+      ...projectData,
+      locale: { ...newLocale },
+    });
+    const newProject = await projectRepo.save({
+      ...project,
+      projectData: [newProjectData],
+    });
+    const newTitle = newProjectData.title + '_U';
     const updatedProject: UpdateProjectDto = {
-      description: newProject.description,
       githubLink: newProject.githubLink,
       id: newProject.id,
       preview: newProject.preview,
       projectLink: newProject.projectLink,
-      title: newTitle,
+      projectData: [
+        {
+          ...newProjectData,
+          title: newTitle,
+        },
+      ],
     };
 
     const { status } = await request(app.getHttpServer())
@@ -128,13 +169,16 @@ describe('ProjectController (e2e)', () => {
       .set('Content-Type', 'application/json')
       .send(updatedProject);
 
-    const updated = await projectRepo.findOne(newProject.id);
+    const updated = await projectRepo.findOne(newProject.id, {
+      relations: ['projectData', 'projectData.locale'],
+    });
 
     await userRepo.delete(token.userId);
     await projectRepo.delete(updated.id);
+    await localeRepo.delete(newLocale.id);
 
     expect(status).toBe(HttpStatus.NO_CONTENT);
-    expect(updated.title).toBe(newTitle);
+    expect(updated.projectData[0].title).toBe(newTitle);
   });
 
   it('/project (DELETE)', async () => {
