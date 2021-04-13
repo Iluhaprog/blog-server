@@ -5,11 +5,14 @@ import { Project } from '../project.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateProjectDto } from '../dto/create-project.dto';
 import { UpdateProjectDto } from '../dto/update-project.dto';
+import { ProjectData } from '../project.data.entity';
 
 describe('ProjectService', () => {
   const projectToken = getRepositoryToken(Project);
+  const projectDataToken = getRepositoryToken(ProjectData);
   let service: ProjectService;
   let projectRepo: Repository<Project>;
+  let projectDataRepo: Repository<ProjectData>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -19,15 +22,22 @@ describe('ProjectService', () => {
           provide: projectToken,
           useClass: Repository,
         },
+        {
+          provide: projectDataToken,
+          useClass: Repository,
+        },
       ],
     }).compile();
 
     service = module.get<ProjectService>(ProjectService);
     projectRepo = module.get(projectToken);
+    projectDataRepo = module.get(projectDataToken);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+    expect(projectRepo).toBeDefined();
+    expect(projectDataRepo).toBeDefined();
   });
 
   it('should find all projects', async () => {
@@ -38,17 +48,17 @@ describe('ProjectService', () => {
     expect(projects).toEqual([project]);
     expect(projectRepo.find).toHaveBeenCalled();
     expect(projectRepo.find).toBeCalledWith({
+      relations: ['projectData', 'projectData.locale'],
       order: { id: 'DESC' },
     });
   });
 
   it('should create project', async () => {
     const newProject: CreateProjectDto = {
-      description: '',
       githubLink: '',
       preview: '',
       projectLink: '',
-      title: '',
+      projectData: [],
     };
     const userId = 1;
     const project = new Project();
@@ -69,19 +79,27 @@ describe('ProjectService', () => {
   it('should update project', async () => {
     const updatedProject: UpdateProjectDto = {
       id: 1,
-      description: '',
       githubLink: '',
       preview: '',
       projectLink: '',
-      title: '',
+      projectData: [new ProjectData()],
     };
     jest
       .spyOn(projectRepo, 'save')
       .mockResolvedValueOnce(Promise.resolve(undefined));
+    jest
+      .spyOn(projectDataRepo, 'save')
+      .mockResolvedValueOnce(Promise.resolve(undefined));
+    jest.spyOn(projectDataRepo, 'create').mockReturnValue(undefined);
 
     await service.update(updatedProject);
     expect(projectRepo.save).toHaveBeenCalled();
     expect(projectRepo.save).toBeCalledWith(updatedProject);
+    expect(projectDataRepo.save).toHaveBeenCalled();
+    expect(projectDataRepo.create).toHaveBeenCalled();
+    expect(projectDataRepo.create).toBeCalledWith(
+      updatedProject.projectData[0],
+    );
   });
 
   it('should remove project', async () => {

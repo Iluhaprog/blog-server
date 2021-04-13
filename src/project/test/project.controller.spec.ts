@@ -6,9 +6,11 @@ import { Project } from '../project.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateProjectDto } from '../dto/create-project.dto';
 import { UpdateProjectDto } from '../dto/update-project.dto';
+import { ProjectData } from '../project.data.entity';
 
 describe('ProjectController', () => {
   const repoToken = getRepositoryToken(Project);
+  const projectDataToken = getRepositoryToken(ProjectData);
   let controller: ProjectController;
   let service: ProjectService;
   let repo: Repository<Project>;
@@ -20,6 +22,10 @@ describe('ProjectController', () => {
         ProjectService,
         {
           provide: repoToken,
+          useClass: Repository,
+        },
+        {
+          provide: projectDataToken,
           useClass: Repository,
         },
       ],
@@ -49,11 +55,10 @@ describe('ProjectController', () => {
 
   it('should create project', async () => {
     const project: CreateProjectDto = {
-      description: '',
       githubLink: '',
       preview: '',
       projectLink: '',
-      title: '',
+      projectData: [],
     };
     const req = { user: { id: 1 } };
     const expectedValue = new Project();
@@ -69,11 +74,10 @@ describe('ProjectController', () => {
   it('should update project', async () => {
     const project: UpdateProjectDto = {
       id: 1,
-      description: '',
       githubLink: '',
       preview: '',
       projectLink: '',
-      title: '',
+      projectData: [],
     };
     jest.spyOn(service, 'update').mockResolvedValueOnce(undefined);
 

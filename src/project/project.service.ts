@@ -5,16 +5,20 @@ import { Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Order } from '../types/order.type';
+import { ProjectData } from './project.data.entity';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @InjectRepository(Project)
     private projectRepository: Repository<Project>,
+    @InjectRepository(ProjectData)
+    private projectDataRepository: Repository<ProjectData>,
   ) {}
 
   async findAll(order: Order = 'ASC'): Promise<Project[] | any[] | undefined> {
     return this.projectRepository.find({
+      relations: ['projectData', 'projectData.locale'],
       order: { id: order },
     });
   }
@@ -29,6 +33,13 @@ export class ProjectService {
   }
 
   async update(project: UpdateProjectDto): Promise<void> {
+    await Promise.all(
+      project.projectData.map(async (postData) => {
+        return await this.projectDataRepository.save(
+          this.projectDataRepository.create(postData),
+        );
+      }),
+    );
     await this.projectRepository.save(project);
   }
 

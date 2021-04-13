@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateProjectDto {
+class ProjectData {
   @ApiProperty()
   id: number;
 
@@ -9,6 +9,14 @@ export class UpdateProjectDto {
 
   @ApiProperty()
   description: string;
+}
+
+export class UpdateProjectDto {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  projectData: ProjectData[];
 
   @ApiProperty()
   preview: string;

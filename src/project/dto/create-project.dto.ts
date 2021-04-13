@@ -1,12 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateProjectDto {
+class ProjectData {
   @ApiProperty()
   title: string;
 
   @ApiProperty()
   description: string;
 
+  @ApiProperty()
+  locale: { id: number };
+}
+
+export class CreateProjectDto {
   @ApiProperty()
   preview: string;
 
@@ -15,4 +20,7 @@ export class CreateProjectDto {
 
   @ApiProperty()
   githubLink: string;
+
+  @ApiProperty()
+  projectData: ProjectData[];
 }
