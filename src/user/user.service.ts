@@ -7,23 +7,33 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { MismatchPasswordException } from '../exceptions/MismatchPasswordException';
+import { UserData } from './user.data.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(UserData)
+    private userDataRepository: Repository<UserData>,
   ) {}
 
   async findAll(): Promise<any> {
-    return await this.userRepository.find();
+    return await this.userRepository.find({
+      relations: ['userData', 'userData.locale'],
+    });
   }
 
   async findById(id: number): Promise<User> {
-    return this.userRepository.findOne(id);
+    return this.userRepository.findOne(id, {
+      relations: ['userData', 'userData.locale'],
+    });
   }
 
   async findByLogin(login: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ where: { login } });
+    return this.userRepository.findOne({
+      relations: ['userData', 'userData.locale'],
+      where: { login },
+    });
   }
 
   async findByLoginAndPassword(
@@ -43,6 +53,13 @@ export class UserService {
   }
 
   async update(user: UpdateUserDto): Promise<void> {
+    await Promise.all(
+      user.userData.map(async (userData) => {
+        return await this.userDataRepository.save(
+          this.userDataRepository.create(userData),
+        );
+      }),
+    );
     await this.userRepository.update(user.id, user);
   }
 

@@ -8,6 +8,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { hashSync } from 'bcrypt';
 import { UpdateUserPasswordDto } from '../dto/update-user-password.dto';
 import { MismatchPasswordException } from '../../exceptions/MismatchPasswordException';
+import { UserData } from '../user.data.entity';
 
 describe('UserService', () => {
   const newCred: UpdateUserPasswordDto = {
@@ -17,14 +18,12 @@ describe('UserService', () => {
     oldPassword: '12345678',
   };
   const oldUser: User = {
-    about: '',
     avatar: '',
     email: '',
-    firstName: '',
     id: 1,
-    lastName: '',
+    userData: [],
     login: '',
-    skills:'',
+    skills: '',
     password: hashSync('12345678', 10),
     posts: [],
     projects: [],
@@ -38,8 +37,10 @@ describe('UserService', () => {
     },
   };
   const repoToken = getRepositoryToken(User);
+  const userDataToken = getRepositoryToken(UserData);
   let service: UserService;
   let repo: Repository<User>;
+  let userDataRepo: Repository<UserData>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -49,11 +50,16 @@ describe('UserService', () => {
           provide: repoToken,
           useClass: Repository,
         },
+        {
+          provide: userDataToken,
+          useClass: Repository,
+        },
       ],
     }).compile();
 
     service = module.get<UserService>(UserService);
     repo = module.get<Repository<User>>(repoToken);
+    userDataRepo = module.get<Repository<UserData>>(userDataToken);
   });
 
   it('should be defined', () => {
@@ -89,16 +95,15 @@ describe('UserService', () => {
   it('should create and save user', async () => {
     const testUser: User = new User();
     const dto: CreateUserDto = {
-      about: '',
       avatar: '',
       email: '',
-      firstName: '',
-      lastName: '',
+      userData: [],
       login: '',
       password: '',
     };
     jest.spyOn(repo, 'create').mockReturnValue(testUser);
     jest.spyOn(repo, 'save').mockResolvedValueOnce(new User());
+
     const result = await service.create(dto);
 
     expect(result).toEqual(new User());
@@ -108,19 +113,29 @@ describe('UserService', () => {
   });
 
   it('should update user', async () => {
+    const userData = {
+      id: 1,
+      firstName: 'string',
+      lastName: 'strnig',
+      about: 'about',
+    };
     const dto: UpdateUserDto = {
       id: 1,
-      about: '',
       avatar: '',
       email: '',
-      firstName: '',
-      lastName: '',
+      userData: [userData],
       login: '',
     };
-    jest.spyOn(repo, 'update').mockResolvedValueOnce(Promise.resolve(undefined));
+    jest
+      .spyOn(repo, 'update')
+      .mockResolvedValueOnce(Promise.resolve(undefined));
+    jest.spyOn(userDataRepo, 'create').mockReturnValue(undefined);
+    jest.spyOn(userDataRepo, 'save').mockResolvedValueOnce(undefined);
     await service.update(dto);
     expect(repo.update).toHaveBeenCalled();
     expect(repo.update).toBeCalledWith(dto.id, dto);
+    expect(userDataRepo.create).toBeCalledWith(userData);
+    expect(userDataRepo.save).toHaveBeenCalled();
   });
 
   it('should update user password', async () => {

@@ -7,9 +7,11 @@ import { User } from '../user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UpdateUserPasswordDto } from '../dto/update-user-password.dto';
+import { UserData } from '../user.data.entity';
 
 describe('UserController', () => {
   const repoToken = getRepositoryToken(User);
+  const userDataToken = getRepositoryToken(UserData);
   let controller: UserController;
   let service: UserService;
   let repo: Repository<User>;
@@ -21,6 +23,10 @@ describe('UserController', () => {
         UserService,
         {
           provide: repoToken,
+          useClass: Repository,
+        },
+        {
+          provide: userDataToken,
           useClass: Repository,
         },
       ],
@@ -72,11 +78,9 @@ describe('UserController', () => {
 
   it('should create user', async () => {
     const user: CreateUserDto = {
-      about: '',
       avatar: '',
       email: '',
-      firstName: '',
-      lastName: '',
+      userData: [],
       login: '',
       password: '',
     };
@@ -92,11 +96,9 @@ describe('UserController', () => {
   it('should update user', async () => {
     const user: UpdateUserDto = {
       id: 1,
-      about: '',
       avatar: '',
       email: '',
-      firstName: '',
-      lastName: '',
+      userData: [],
       login: '',
     };
     jest.spyOn(service, 'update').mockResolvedValueOnce(undefined);
