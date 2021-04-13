@@ -9,16 +9,8 @@ export class Home {
   id: number;
 
   @ApiProperty()
-  @Column()
-  title: string;
-
-  @ApiProperty()
   @Column({ default: false })
   selected: boolean;
-
-  @ApiProperty()
-  @Column('text')
-  description: string;
 
   @OneToMany(() => HomeData, (homeData) => homeData.home)
   homeData: HomeData[];

@@ -5,11 +5,14 @@ import { Home } from '../home.entity';
 import { Repository } from 'typeorm';
 import { CreateHomeDto } from '../dto/create-home.dto';
 import { UpdateHomeDto } from '../dto/update-home.dto';
+import { HomeData } from '../home.data.entity';
 
 describe('HomeService', () => {
   const homeRepoToken = getRepositoryToken(Home);
+  const homeDataRepoToken = getRepositoryToken(HomeData);
   let service: HomeService;
   let homeRepo: Repository<Home>;
+  let homeDataRepo: Repository<HomeData>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -19,11 +22,16 @@ describe('HomeService', () => {
           provide: homeRepoToken,
           useClass: Repository,
         },
+        {
+          provide: homeDataRepoToken,
+          useClass: Repository,
+        },
       ],
     }).compile();
 
     service = module.get<HomeService>(HomeService);
     homeRepo = module.get(homeRepoToken);
+    homeDataRepo = module.get(homeDataRepoToken);
   });
 
   it('should be defined', () => {
@@ -38,6 +46,7 @@ describe('HomeService', () => {
     expect(findedHome).toEqual(home);
     expect(homeRepo.findOne).toHaveBeenCalled();
     expect(homeRepo.findOne).toBeCalledWith({
+      relations: ['homeData', 'homeData.locale'],
       where: {
         selected: true,
       },
@@ -47,16 +56,18 @@ describe('HomeService', () => {
   it('should get all homes', async () => {
     const home = new Home();
     jest.spyOn(homeRepo, 'find').mockResolvedValueOnce([home]);
-    const findedHomes = await service.getAll();
+    const findHomes = await service.getAll();
 
-    expect(findedHomes).toEqual([home]);
+    expect(findHomes).toEqual([home]);
     expect(homeRepo.find).toHaveBeenCalled();
+    expect(homeRepo.find).toBeCalledWith({
+      relations: ['homeData', 'homeData.locale'],
+    });
   });
 
   it('should create home', async () => {
     const newHome: CreateHomeDto = {
-      description: '',
-      title: '',
+      homeData: [],
     };
     const home = new Home();
     jest.spyOn(homeRepo, 'create').mockReturnValue(home);
@@ -72,18 +83,27 @@ describe('HomeService', () => {
   });
 
   it('should update home', async () => {
+    const testHomeData = {
+      id: 1,
+      title: 'HOME_TITLE',
+      description: 'HOME_DESCRIPTION',
+    };
     const updatedHome: UpdateHomeDto = {
       id: 1,
-      description: '',
-      title: '',
+      homeData: [testHomeData],
     };
     jest
-      .spyOn(homeRepo, 'update')
+      .spyOn(homeRepo, 'save')
       .mockResolvedValueOnce(Promise.resolve(undefined));
+    jest.spyOn(homeDataRepo, 'save').mockResolvedValueOnce(undefined);
+    jest.spyOn(homeDataRepo, 'create').mockReturnValue(undefined);
 
     await service.update(updatedHome);
-    expect(homeRepo.update).toHaveBeenCalled();
-    expect(homeRepo.update).toBeCalledWith(updatedHome.id, updatedHome);
+    expect(homeRepo.save).toHaveBeenCalled();
+    expect(homeRepo.save).toBeCalledWith(updatedHome);
+    expect(homeDataRepo.save).toHaveBeenCalled();
+    expect(homeDataRepo.create).toHaveBeenCalled();
+    expect(homeDataRepo.create).toBeCalledWith(testHomeData);
   });
 
   it('should remove home by id', async () => {
@@ -91,7 +111,9 @@ describe('HomeService', () => {
     jest
       .spyOn(homeRepo, 'delete')
       .mockResolvedValueOnce(Promise.resolve(undefined));
+
     await service.remove(id);
+
     expect(homeRepo.delete).toHaveBeenCalled();
     expect(homeRepo.delete).toBeCalledWith(id);
   });

@@ -6,9 +6,11 @@ import { Home } from '../home.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateHomeDto } from '../dto/create-home.dto';
 import { UpdateHomeDto } from '../dto/update-home.dto';
+import { HomeData } from '../home.data.entity';
 
 describe('HomeController', () => {
   const repoToken = getRepositoryToken(Home);
+  const homeDataToken = getRepositoryToken(HomeData);
   let controller: HomeController;
   let service: HomeService;
   let repo: Repository<Home>;
@@ -20,6 +22,10 @@ describe('HomeController', () => {
         HomeService,
         {
           provide: repoToken,
+          useClass: Repository,
+        },
+        {
+          provide: homeDataToken,
           useClass: Repository,
         },
       ],
@@ -57,7 +63,7 @@ describe('HomeController', () => {
   });
 
   it('should create home', async () => {
-    const home: CreateHomeDto = { description: '', title: '' };
+    const home: CreateHomeDto = { homeData: [] };
     jest.spyOn(service, 'create').mockResolvedValueOnce(home);
 
     const result = await controller.create(home);
@@ -68,7 +74,7 @@ describe('HomeController', () => {
   });
 
   it('should update home', async () => {
-    const home: UpdateHomeDto = { id: 1, description: '', title: '' };
+    const home: UpdateHomeDto = { id: 1, homeData: [] };
     jest.spyOn(service, 'update').mockResolvedValueOnce(undefined);
 
     await controller.update(home);
