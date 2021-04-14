@@ -27,6 +27,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { UserType } from './type/user.type';
 
 @ApiTags('user')
 @Controller('user')
@@ -36,21 +37,21 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get('/current')
-  @ApiOkResponse({ description: 'Return user', type: User })
+  @ApiOkResponse({ description: 'Return user', type: UserType })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async getCurrent(@Req() req): Promise<User> {
     return await this.userService.findById(req.user.id);
   }
 
   @Get(':id')
-  @ApiOkResponse({ description: 'Return user', type: User })
+  @ApiOkResponse({ description: 'Return user', type: UserType })
   @ApiBadRequestResponse({ description: 'Uncorrected id' })
   async findById(@Param('id') id: number): Promise<User> {
     return await this.userService.findById(id);
   }
 
   @Get()
-  @ApiOkResponse({ description: 'Return user', type: User })
+  @ApiOkResponse({ description: 'Return user', type: UserType })
   @ApiBadRequestResponse({ description: 'Bad request' })
   async findAll(): Promise<any> {
     return await this.userService.findAll();
@@ -60,7 +61,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Post('/addData/:localeId')
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'UserData has been created', type: User })
+  @ApiCreatedResponse({ description: 'UserData has been created' })
   @ApiBadRequestResponse({ description: 'Uncorrected user data' })
   async addData(@Param('localeId') localeId, @Request() req): Promise<any> {
     await this.userService.addData(localeId, req.user.id);
@@ -70,7 +71,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'User has been created', type: User })
+  @ApiCreatedResponse({ description: 'User has been created', type: UserType })
   @ApiBadRequestResponse({ description: 'Uncorrected user data' })
   async create(@Body() user: CreateUserDto): Promise<any> {
     return await this.userService.create(user);

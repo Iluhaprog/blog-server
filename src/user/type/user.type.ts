@@ -8,9 +8,9 @@ class Locale {
   name: string;
 }
 
-class UserDataType {
+class UserData {
   @ApiProperty()
-  about: string;
+  id: number;
 
   @ApiProperty()
   firstName: string;
@@ -19,10 +19,16 @@ class UserDataType {
   lastName: string;
 
   @ApiProperty()
+  about: string;
+
+  @ApiProperty()
   locale: Locale;
 }
 
-export class CreateUserDto {
+export class UserType {
+  @ApiProperty()
+  id: number;
+
   @ApiProperty()
   login: string;
 
@@ -35,6 +41,9 @@ export class CreateUserDto {
   @ApiProperty()
   avatar: string;
 
-  @ApiProperty({ type: [UserDataType] })
-  userData: [UserDataType];
+  @ApiProperty()
+  skills: string;
+
+  @ApiProperty({ type: [UserData] })
+  userData: UserData[];
 }
