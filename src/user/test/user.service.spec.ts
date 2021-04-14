@@ -127,6 +127,8 @@ describe('UserService', () => {
       login: '',
       password: '',
     };
+    jest.spyOn(userDataRepo, 'create').mockReturnValue(undefined);
+    jest.spyOn(userDataRepo, 'save').mockResolvedValueOnce(undefined);
     jest.spyOn(repo, 'create').mockReturnValue(testUser);
     jest.spyOn(repo, 'save').mockResolvedValueOnce(new User());
 
