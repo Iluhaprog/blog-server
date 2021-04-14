@@ -17,6 +17,23 @@ export class UserService {
     private userDataRepository: Repository<UserData>,
   ) {}
 
+  async addData(localeId: number, userId: number) {
+    const findUser = await this.userRepository.findOne(userId);
+    const newUserData = await this.userDataRepository.save({
+      firstName: '',
+      lastName: '',
+      about: '',
+      locale: { id: localeId },
+    });
+    await this.userRepository.save({
+      ...findUser,
+      userData: [newUserData],
+    });
+    return await this.userRepository.findOne(userId, {
+      relations: ['userData', 'userData.locale'],
+    });
+  }
+
   async findAll(): Promise<any> {
     return await this.userRepository.find({
       relations: ['userData', 'userData.locale'],

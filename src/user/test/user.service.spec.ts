@@ -66,6 +66,32 @@ describe('UserService', () => {
     expect(service).toBeDefined();
   });
 
+  it('Should create user data for user', async () => {
+    const user = new User();
+    const userData = new UserData();
+    jest.spyOn(repo, 'findOne').mockResolvedValue(user);
+    jest.spyOn(userDataRepo, 'save').mockResolvedValueOnce(userData);
+    jest.spyOn(repo, 'save').mockResolvedValueOnce(undefined);
+    const localeId = 1;
+    const userId = 1;
+
+    await service.addData(localeId, userId);
+
+    expect(repo.findOne).toHaveBeenCalledTimes(2);
+    expect(userDataRepo.save).toHaveBeenCalled();
+    expect(userDataRepo.save).toBeCalledWith({
+      firstName: '',
+      lastName: '',
+      about: '',
+      locale: { id: localeId },
+    });
+    expect(repo.save).toHaveBeenCalled();
+    expect(repo.save).toBeCalledWith({
+      ...user,
+      userData: [userData],
+    });
+  });
+
   it('should get all users', async () => {
     const testUser: User = new User();
     jest.spyOn(repo, 'find').mockResolvedValueOnce([testUser]);
@@ -126,9 +152,7 @@ describe('UserService', () => {
       userData: [userData],
       login: '',
     };
-    jest
-      .spyOn(repo, 'save')
-      .mockResolvedValueOnce(Promise.resolve(undefined));
+    jest.spyOn(repo, 'save').mockResolvedValueOnce(Promise.resolve(undefined));
     jest.spyOn(userDataRepo, 'create').mockReturnValue(undefined);
     jest.spyOn(userDataRepo, 'save').mockResolvedValueOnce(undefined);
     await service.update(dto);

@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Request,
   UseGuards,
   Req,
 } from '@nestjs/common';
@@ -53,6 +54,16 @@ export class UserController {
   @ApiBadRequestResponse({ description: 'Bad request' })
   async findAll(): Promise<any> {
     return await this.userService.findAll();
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/addData/:localeId')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiCreatedResponse({ description: 'UserData has been created', type: User })
+  @ApiBadRequestResponse({ description: 'Uncorrected user data' })
+  async addData(@Param('localeId') localeId, @Request() req): Promise<any> {
+    await this.userService.addData(localeId, req.user.id);
   }
 
   @ApiBearerAuth()

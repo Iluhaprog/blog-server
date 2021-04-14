@@ -42,6 +42,15 @@ describe('UserController', () => {
     expect(service).toBeDefined();
   });
 
+  it('should create user data for user', async () => {
+    jest.spyOn(service, 'addData').mockResolvedValueOnce(undefined);
+    const localeId = 1;
+    const req = { user: { id: 1 } };
+    await controller.addData(localeId, req);
+    expect(service.addData).toHaveBeenCalled();
+    expect(service.addData).toBeCalledWith(localeId, req.user.id);
+  });
+
   it('should find all users', async () => {
     const user = new User();
     jest.spyOn(service, 'findAll').mockImplementation(async () => [user]);
