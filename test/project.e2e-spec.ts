@@ -110,6 +110,34 @@ describe('ProjectController (e2e)', () => {
     expect(body[0].projectData).toEqual([newProjectData]);
   });
 
+  it('/project/addData/:localeId/:projectId (POST)', async () => {
+    const login = 'TEST_LOGIN';
+    const password = 'TEST_PASSWORD';
+    const token = await createAndLoginUser(
+      login,
+      password,
+      userService,
+      request,
+      app,
+    );
+    const locale = await localeRepo.save({ name: 'TEST_LOCALE' });
+    const savedProject = await projectRepo.save({
+      ...project,
+      projectData: [],
+    });
+
+    const { status, body } = await request(app.getHttpServer())
+      .post(`/project/addData/${locale.id}/${savedProject.id}`)
+      .auth(token.access, { type: 'bearer' });
+
+    await localeRepo.delete(locale.id);
+    await userRepo.delete(token.userId);
+    await projectRepo.delete(savedProject.id);
+
+    expect(status).toBe(HttpStatus.CREATED);
+    expect(!!body.id).toBe(true);
+  });
+
   it('/project (POST)', async () => {
     const login = 'TEST_LOGIN';
     const password = 'TEST_PASSWORD';

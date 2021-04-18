@@ -42,6 +42,18 @@ describe('ProjectController', () => {
     expect(repo).toBeDefined();
   });
 
+  it('should add project data', async () => {
+    const projectData = new ProjectData();
+    const [localeId, projectId] = [1, 1];
+    jest.spyOn(service, 'addData').mockResolvedValueOnce(projectData);
+
+    const result = await controller.addData(localeId, projectId);
+
+    expect(result).toEqual(projectData);
+    expect(service.addData).toHaveBeenCalled();
+    expect(service.addData).toBeCalledWith(localeId, projectId);
+  });
+
   it('should find all projects', async () => {
     const project = new Project();
     jest.spyOn(service, 'findAll').mockResolvedValueOnce([project]);

@@ -23,6 +23,20 @@ export class ProjectService {
     });
   }
 
+  async addData(localeId: number, projectId: number): Promise<any> {
+    const findProject = await this.projectRepository.findOne(projectId);
+    const newProjectData = await this.projectDataRepository.save({
+      title: '',
+      description: '',
+      locale: { id: localeId },
+    });
+    await this.projectRepository.save({
+      ...findProject,
+      projectData: [newProjectData],
+    });
+    return newProjectData;
+  }
+
   async create(project: CreateProjectDto, userId: number): Promise<any> {
     return await this.projectRepository.save(
       this.projectRepository.create({

@@ -40,6 +40,32 @@ describe('ProjectService', () => {
     expect(projectDataRepo).toBeDefined();
   });
 
+  it('should add project data', async () => {
+    const project = new Project();
+    const projectData = new ProjectData();
+    const [localeId, projectId] = [1, 1];
+    jest.spyOn(projectRepo, 'findOne').mockResolvedValueOnce(project);
+    jest.spyOn(projectRepo, 'save').mockResolvedValueOnce(project);
+    jest.spyOn(projectDataRepo, 'save').mockResolvedValueOnce(projectData);
+
+    const result = await service.addData(localeId, projectId);
+
+    expect(result).toEqual(projectData);
+    expect(projectRepo.findOne).toHaveBeenCalled();
+    expect(projectRepo.findOne).toBeCalledWith(projectId);
+    expect(projectRepo.save).toHaveBeenCalled();
+    expect(projectRepo.save).toBeCalledWith({
+      ...project,
+      projectData: [projectData],
+    });
+    expect(projectDataRepo.save).toHaveBeenCalled();
+    expect(projectDataRepo.save).toBeCalledWith({
+      title: '',
+      description: '',
+      locale: { id: localeId },
+    });
+  });
+
   it('should find all projects', async () => {
     const project = new Project();
     jest.spyOn(projectRepo, 'find').mockResolvedValueOnce([project]);

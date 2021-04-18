@@ -44,6 +44,22 @@ export class ProjectController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
+  @Post('/addData/:localeId/:projectId')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiCreatedResponse({
+    description: 'Project has been created',
+    type: Project,
+  })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  async addData(
+    @Param('localeId') localeId: number,
+    @Param('projectId') projectId: number,
+  ): Promise<any> {
+    return await this.projectService.addData(localeId, projectId);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({
