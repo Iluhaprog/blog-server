@@ -45,6 +45,19 @@ export class HomeController {
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
+  @Post('/addData/:localeId/:homeId')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiCreatedResponse({ description: 'Create home', type: Home })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  async addData(
+    @Param('localeId') localeId: number,
+    @Param('homeId') homeId: number,
+  ): Promise<any> {
+    return await this.homeService.addData(localeId, homeId);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ description: 'Create home', type: Home })

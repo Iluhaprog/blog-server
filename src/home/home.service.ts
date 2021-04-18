@@ -30,6 +30,20 @@ export class HomeService {
     });
   }
 
+  async addData(localeId: number, homeId: number): Promise<any> {
+    const findHome = await this.homeRepository.findOne(homeId);
+    const newHomeData = await this.homeDataRepository.save({
+      title: '',
+      description: '',
+      locale: { id: localeId },
+    });
+    await this.homeRepository.save({
+      ...findHome,
+      homeData: [newHomeData],
+    });
+    return newHomeData;
+  }
+
   async create(home: CreateHomeDto): Promise<any> {
     return await this.homeRepository.save(this.homeRepository.create(home));
   }

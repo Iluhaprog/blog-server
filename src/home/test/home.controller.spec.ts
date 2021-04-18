@@ -62,6 +62,18 @@ describe('HomeController', () => {
     expect(service.get).toHaveBeenCalled();
   });
 
+  it('should add home data', async () => {
+    const homeData = new HomeData();
+    const [localeId, homeId] = [1, 1];
+    jest.spyOn(service, 'addData').mockResolvedValueOnce(homeData);
+
+    const result = await controller.addData(localeId, homeId);
+
+    expect(result).toEqual(homeData);
+    expect(service.addData).toHaveBeenCalled();
+    expect(service.addData).toBeCalledWith(localeId, homeId);
+  });
+
   it('should create home', async () => {
     const home: CreateHomeDto = { homeData: [] };
     jest.spyOn(service, 'create').mockResolvedValueOnce(home);

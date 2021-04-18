@@ -65,6 +65,32 @@ describe('HomeService', () => {
     });
   });
 
+  it('should add home data', async () => {
+    const home = new Home();
+    const homeData = new HomeData();
+    const [localeId, homeId] = [1, 1];
+    jest.spyOn(homeRepo, 'findOne').mockResolvedValueOnce(home);
+    jest.spyOn(homeRepo, 'save').mockResolvedValueOnce(home);
+    jest.spyOn(homeDataRepo, 'save').mockResolvedValueOnce(homeData);
+
+    const result = await service.addData(localeId, homeId);
+
+    expect(result).toEqual(homeData);
+    expect(homeRepo.findOne).toHaveBeenCalled();
+    expect(homeRepo.findOne).toBeCalledWith(homeId);
+    expect(homeRepo.save).toHaveBeenCalled();
+    expect(homeRepo.save).toBeCalledWith({
+      ...home,
+      homeData: [homeData],
+    });
+    expect(homeDataRepo.save).toHaveBeenCalled();
+    expect(homeDataRepo.save).toBeCalledWith({
+      title: '',
+      description: '',
+      locale: { id: localeId },
+    });
+  });
+
   it('should create home', async () => {
     const newHome: CreateHomeDto = {
       homeData: [],

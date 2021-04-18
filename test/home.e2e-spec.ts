@@ -121,6 +121,35 @@ describe('HomeController (e2e)', () => {
     expect(body).toEqual(home);
   });
 
+  it('/home/addData/:localeId/:homeId', async () => {
+    const username = 'TEST_LOGIN';
+    const password = 'TEST_PASSWORD';
+
+    const token = await createAndLoginUser(
+      username,
+      password,
+      userService,
+      request,
+      app,
+    );
+
+    const locale = await localeRepo.save({ name: 'TEST_LOCALE' });
+    const savedHome = await homeRepo.save({
+      homeData: [],
+    });
+
+    const { status, body } = await request(app.getHttpServer())
+      .post(`/home/addData/${locale.id}/${savedHome.id}`)
+      .auth(token.access, { type: 'bearer' });
+
+    await userRepo.delete(token.userId);
+    await localeRepo.delete(locale.id);
+    await homeRepo.delete(savedHome.id);
+
+    expect(status).toBe(HttpStatus.CREATED);
+    expect(!!body.id).toBe(true);
+  });
+
   it('/home (POST)', async () => {
     const username = 'TEST_LOGIN';
     const password = 'TEST_PASSWORD';
