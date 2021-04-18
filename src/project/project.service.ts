@@ -38,12 +38,24 @@ export class ProjectService {
   }
 
   async create(project: CreateProjectDto, userId: number): Promise<any> {
-    return await this.projectRepository.save(
+    const newProject = await this.projectRepository.save(
       this.projectRepository.create({
         ...project,
         user: { id: userId },
       }),
     );
+    await Promise.all(
+      project.projectData.map(async (projectData) => {
+        return await this.projectDataRepository.save(
+          this.projectDataRepository.create({
+            ...projectData,
+            project: { id: newProject.id },
+          }),
+        );
+      }),
+    );
+
+    return newProject;
   }
 
   async update(project: UpdateProjectDto): Promise<void> {

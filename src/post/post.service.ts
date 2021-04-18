@@ -84,7 +84,7 @@ export class PostService {
   }
 
   async create(post: CreatePostDto, userId: number): Promise<any> {
-    return await this.postRepository.save(
+    const newPost = await this.postRepository.save(
       this.postRepository.create({
         ...post,
         creationDate: new Date(),
@@ -92,6 +92,17 @@ export class PostService {
         tags: post.tags.map((tag: number) => ({ id: tag })),
       }),
     );
+    await Promise.all(
+      post.postData.map(async (postData) => {
+        return await this.postDataRepository.save(
+          this.postDataRepository.create({
+            ...postData,
+            post: { id: newPost.id },
+          }),
+        );
+      }),
+    );
+    return newPost;
   }
 
   async update(post: UpdatePostDto): Promise<void> {

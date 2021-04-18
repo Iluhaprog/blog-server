@@ -66,14 +66,20 @@ export class UserService {
   }
 
   async create(user: CreateUserDto): Promise<any> {
+    const newUser = await this.userRepository.save(
+      this.userRepository.create(user),
+    );
     await Promise.all(
       user.userData.map(async (userData) => {
         return await this.userDataRepository.save(
-          this.userDataRepository.create(userData),
+          this.userDataRepository.create({
+            ...userData,
+            user: { id: newUser.id },
+          }),
         );
       }),
     );
-    return await this.userRepository.save(this.userRepository.create(user));
+    return newUser;
   }
 
   async update(user: UpdateUserDto): Promise<void> {

@@ -45,7 +45,18 @@ export class HomeService {
   }
 
   async create(home: CreateHomeDto): Promise<any> {
-    return await this.homeRepository.save(this.homeRepository.create(home));
+    const newHome = await this.homeRepository.save(this.homeRepository.create(home));
+    await Promise.all(
+      home.homeData.map(async (homeData) => {
+        return await this.homeDataRepository.save(
+          this.homeDataRepository.create({
+            ...homeData,
+            home: { id: newHome.id },
+          }),
+        );
+      }),
+    );
+    return newHome;
   }
 
   async update(home: UpdateHomeDto): Promise<void> {
