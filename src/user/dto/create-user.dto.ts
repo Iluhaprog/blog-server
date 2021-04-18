@@ -36,5 +36,5 @@ export class CreateUserDto {
   avatar: string;
 
   @ApiProperty({ type: [UserDataType] })
-  userData: [UserDataType];
+  userData: UserDataType[];
 }
