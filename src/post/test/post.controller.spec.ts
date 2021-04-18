@@ -6,7 +6,7 @@ import { Post } from '../post.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
-import { PostData } from "../post.data.entity";
+import { PostData } from '../post.data.entity';
 
 describe('PostController', () => {
   const repoToken = getRepositoryToken(Post);
@@ -40,6 +40,18 @@ describe('PostController', () => {
     expect(controller).toBeDefined();
     expect(service).toBeDefined();
     expect(repo).toBeDefined();
+  });
+
+  it('should add post data', async () => {
+    const postData = new PostData();
+    const [localeId, postId] = [1, 1];
+    jest.spyOn(service, 'addData').mockResolvedValueOnce(postData);
+
+    const result = await controller.addData(localeId, postId);
+
+    expect(result).toEqual(postData);
+    expect(service.addData).toHaveBeenCalled();
+    expect(service.addData).toBeCalledWith(localeId, postId);
   });
 
   it('should find all posts', async () => {

@@ -88,6 +88,38 @@ describe('PostController (e2e)', () => {
     await defaultConnection.close();
   });
 
+  it('/post/addData/:localeId/:postId (POST)', async () => {
+    const login = 'TEST_LOGIN';
+    const password = 'TEST_PASSWORD';
+    const token = await createAndLoginUser(
+      login,
+      password,
+      userService,
+      request,
+      app,
+    );
+
+    const locale = await localeRepo.save({ name: 'TEST_LOCALE' });
+    const post = await postRepo.save({
+      preview: '',
+      isVisible: true,
+      creationDate: new Date(),
+      postData: [],
+      tags: [],
+    });
+
+    const { status, body } = await request(app.getHttpServer())
+      .post(`/post/addData/${locale.id}/${post.id}`)
+      .auth(token.access, { type: 'bearer' });
+
+    await userRepo.delete(token.userId);
+    await postRepo.delete(post.id);
+    await localeRepo.delete(locale.id);
+
+    expect(status).toBe(HttpStatus.CREATED);
+    expect(!!body.id).toBe(true);
+  });
+
   it('/post/:page/:limit/:order (GET)', async () => {
     const locale = await localeRepo.save({ name: 'TEST_LOCALE' });
     const postData1 = await postDataRepo.save({

@@ -39,6 +39,34 @@ describe('PostService', () => {
     expect(service).toBeDefined();
   });
 
+  it('should create post data', async () => {
+    const post = new Post();
+    const postData = new PostData();
+    const localeId = 1;
+    const postId = 1;
+    jest.spyOn(postRepo, 'findOne').mockResolvedValueOnce(post);
+    jest.spyOn(postRepo, 'save').mockResolvedValueOnce(post);
+    jest.spyOn(postDataRepo, 'save').mockResolvedValueOnce(postData);
+
+    const result = await service.addData(localeId, postId);
+
+    expect(result).toEqual(postData);
+    expect(postRepo.findOne).toHaveBeenCalled();
+    expect(postRepo.findOne).toBeCalledWith(postId);
+    expect(postRepo.save).toHaveBeenCalled();
+    expect(postRepo.save).toBeCalledWith({
+      ...post,
+      postData: [postData],
+    });
+    expect(postDataRepo.save).toHaveBeenCalled();
+    expect(postDataRepo.save).toBeCalledWith({
+      title: '',
+      text: '',
+      description: '',
+      locale: { id: localeId },
+    });
+  });
+
   it('should find visible posts', async () => {
     const post = new Post();
     jest.spyOn(postRepo, 'findAndCount').mockResolvedValueOnce([[post], 1]);

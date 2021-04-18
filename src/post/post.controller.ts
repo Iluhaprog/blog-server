@@ -28,6 +28,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { PostPagination } from './dto/pagination-post.dto';
 import { Order } from '../types/order.type';
+import { PostData } from './post.data.entity';
 
 @ApiTags('post')
 @Controller('post')
@@ -84,6 +85,21 @@ export class PostController {
   @ApiOkResponse({ description: 'Return last posts', type: [PostEntity] })
   async findLast(): Promise<PostEntity[] | [] | undefined> {
     return await this.postService.findLast();
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/addData/:localeId/:postId')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiNoContentResponse({
+    description: 'Post has been created',
+    type: PostData,
+  })
+  async addData(
+    @Param('localeId') localeId: number,
+    @Param('postId') postId: number,
+  ): Promise<any> {
+    return await this.postService.addData(localeId, postId);
   }
 
   @ApiBearerAuth()

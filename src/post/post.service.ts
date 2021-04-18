@@ -68,6 +68,21 @@ export class PostService {
     });
   }
 
+  async addData(localeId: number, postId: number): Promise<any> {
+    const findPost = await this.postRepository.findOne(postId);
+    const newPostData = await this.postDataRepository.save({
+      title: '',
+      description: '',
+      text: '',
+      locale: { id: localeId },
+    });
+    await this.postRepository.save({
+      ...findPost,
+      postData: [newPostData],
+    });
+    return newPostData;
+  }
+
   async create(post: CreatePostDto, userId: number): Promise<any> {
     return await this.postRepository.save(
       this.postRepository.create({
