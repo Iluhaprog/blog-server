@@ -28,7 +28,6 @@ export class PostData {
   })
   post: Post;
 
-  @ApiProperty({ name: 'locale', type: Locale })
   @ManyToOne((type) => Locale, (locale) => locale.postData, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

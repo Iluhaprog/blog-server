@@ -21,7 +21,7 @@ export class Locale {
   @OneToMany(() => ProjectData, (projectData) => projectData.locale)
   projectData: ProjectData;
 
-  @OneToMany(() => HomeData, (homeData) => homeData.home)
+  @OneToMany(() => HomeData, (homeData) => homeData.locale)
   homeData: HomeData[];
 
   @OneToMany(() => UserData, (userData: UserData) => userData.locale)
