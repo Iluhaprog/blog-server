@@ -9,6 +9,6 @@ class HomeData {
 }
 
 export class CreateHomeDto {
-  @ApiProperty()
+  @ApiProperty({ type: [HomeData] })
   homeData: HomeData[];
 }

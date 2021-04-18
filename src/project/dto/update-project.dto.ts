@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-class ProjectData {
+class ProjectDataUT {
   @ApiProperty()
   id: number;
 
@@ -15,8 +15,8 @@ export class UpdateProjectDto {
   @ApiProperty()
   id: number;
 
-  @ApiProperty()
-  projectData: ProjectData[];
+  @ApiProperty({ type: [ProjectDataUT] })
+  projectData: ProjectDataUT[];
 
   @ApiProperty()
   preview: string;

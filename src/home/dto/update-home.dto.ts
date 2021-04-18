@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-class HomeData {
+class HomeDataUT {
   @ApiProperty()
   id: number;
 
@@ -15,6 +15,6 @@ export class UpdateHomeDto {
   @ApiProperty()
   id: number;
 
-  @ApiProperty()
-  homeData: HomeData[];
+  @ApiProperty({ type: [HomeDataUT] })
+  homeData: HomeDataUT[];
 }

@@ -3,9 +3,15 @@ import { ApiProperty } from '@nestjs/swagger';
 class Locale {
   @ApiProperty()
   id: number;
+
+  @ApiProperty()
+  name: string;
 }
 
-class ProjectDataCT {
+class ProjectDataType {
+  @ApiProperty()
+  id: number;
+
   @ApiProperty()
   title: string;
 
@@ -16,7 +22,10 @@ class ProjectDataCT {
   locale: Locale;
 }
 
-export class CreateProjectDto {
+export class ProjectType {
+  @ApiProperty()
+  id: number;
+
   @ApiProperty()
   preview: string;
 
@@ -26,6 +35,6 @@ export class CreateProjectDto {
   @ApiProperty()
   githubLink: string;
 
-  @ApiProperty({ type: [ProjectDataCT] })
-  projectData: ProjectDataCT[];
+  @ApiProperty({ type: [ProjectDataType] })
+  projectData: ProjectDataType[];
 }

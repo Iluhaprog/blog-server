@@ -29,6 +29,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { PostPagination } from './dto/pagination-post.dto';
 import { Order } from '../types/order.type';
 import { PostData } from './post.data.entity';
+import { PostType } from "./type/post.type";
 
 @ApiTags('post')
 @Controller('post')
@@ -37,7 +38,7 @@ export class PostController {
 
   @Post('/by-tags/:page/:limit')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return posts', type: [PostEntity] })
+  @ApiOkResponse({ description: 'Return posts', type: [PostPagination] })
   async findByTags(
     @Body() tags: number[],
     @Param('page') page: number,
@@ -74,7 +75,7 @@ export class PostController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return post by id', type: PostEntity })
+  @ApiOkResponse({ description: 'Return post by id', type: PostType })
   @ApiBadRequestResponse({ description: 'An uncorrected id' })
   async findById(@Param('id') id: number): Promise<PostEntity | undefined> {
     return await this.postService.findById(id);
@@ -82,7 +83,7 @@ export class PostController {
 
   @Get('')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return last posts', type: [PostEntity] })
+  @ApiOkResponse({ description: 'Return last posts', type: [PostType] })
   async findLast(): Promise<PostEntity[] | [] | undefined> {
     return await this.postService.findLast();
   }
@@ -108,7 +109,7 @@ export class PostController {
   @HttpCode(HttpStatus.CREATED)
   @ApiNoContentResponse({
     description: 'Post has been created',
-    type: PostEntity,
+    type: PostType,
   })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(@Request() req, @Body() post: CreatePostDto): Promise<void> {

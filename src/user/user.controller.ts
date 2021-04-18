@@ -28,6 +28,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { UserType } from './type/user.type';
+import { UserData } from './user.data.entity';
 
 @ApiTags('user')
 @Controller('user')
@@ -61,7 +62,10 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Post('/addData/:localeId')
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'UserData has been created' })
+  @ApiCreatedResponse({
+    description: 'UserData has been created',
+    type: UserData,
+  })
   @ApiBadRequestResponse({ description: 'Uncorrected user data' })
   async addData(@Param('localeId') localeId, @Request() req): Promise<any> {
     await this.userService.addData(localeId, req.user.id);

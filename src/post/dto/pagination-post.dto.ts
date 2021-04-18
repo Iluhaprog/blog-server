@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Post } from '../post.entity';
+import { PostType } from '../type/post.type';
 
 export class PostPagination {
-    @ApiProperty({ type: Post, isArray: true })
-    data: Post[];
+  @ApiProperty({ type: PostType, isArray: true })
+  data: PostType[];
 
-    @ApiProperty()
-    total: number;
+  @ApiProperty()
+  total: number;
 }

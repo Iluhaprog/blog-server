@@ -26,6 +26,8 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Order } from '../types/order.type';
+import { ProjectType } from './type/project.type';
+import { ProjectData } from "./project.data.entity";
 
 @ApiTags('project')
 @Controller('project')
@@ -34,7 +36,7 @@ export class ProjectController {
 
   @Get(':order')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return all projects', type: [Project] })
+  @ApiOkResponse({ description: 'Return all projects', type: [ProjectType] })
   @ApiParam({ name: 'order', enum: ['ASC', 'DESC'] })
   async findAll(
     @Param('order') order: Order,
@@ -48,7 +50,7 @@ export class ProjectController {
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({
     description: 'Project has been created',
-    type: Project,
+    type: ProjectData,
   })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async addData(
@@ -64,7 +66,7 @@ export class ProjectController {
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({
     description: 'Project has been created',
-    type: Project,
+    type: ProjectType,
   })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(

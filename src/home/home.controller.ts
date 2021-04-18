@@ -23,6 +23,8 @@ import { Home } from './home.entity';
 import { CreateHomeDto } from './dto/create-home.dto';
 import { UpdateHomeDto } from './dto/update-home.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { HomeType } from './type/home.type';
+import { HomeData } from "./home.data.entity";
 
 @ApiTags('home')
 @Controller('home')
@@ -31,14 +33,14 @@ export class HomeController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return all homes', type: [Home] })
+  @ApiOkResponse({ description: 'Return all homes', type: [HomeType] })
   async getAll(): Promise<Home[] | any[] | undefined> {
     return await this.homeService.getAll();
   }
 
   @Get('/one')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ description: 'Return one selected home', type: Home })
+  @ApiOkResponse({ description: 'Return one selected home', type: HomeType })
   async get(): Promise<Home | undefined> {
     return await this.homeService.get();
   }
@@ -47,7 +49,7 @@ export class HomeController {
   @UseGuards(AuthGuard('jwt'))
   @Post('/addData/:localeId/:homeId')
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'Create home', type: Home })
+  @ApiCreatedResponse({ description: 'Create home', type: HomeData })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async addData(
     @Param('localeId') localeId: number,
@@ -60,7 +62,7 @@ export class HomeController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'Create home', type: Home })
+  @ApiCreatedResponse({ description: 'Create home', type: HomeType })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async create(@Body() home: CreateHomeDto): Promise<any> {
     return await this.homeService.create(home);
