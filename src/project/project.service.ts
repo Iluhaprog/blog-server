@@ -60,9 +60,9 @@ export class ProjectService {
 
   async update(project: UpdateProjectDto): Promise<void> {
     await Promise.all(
-      project.projectData.map(async (postData) => {
+      project.projectData.map(async (projectData) => {
         return await this.projectDataRepository.save(
-          this.projectDataRepository.create(postData),
+          this.projectDataRepository.create(projectData),
         );
       }),
     );
