@@ -102,7 +102,9 @@ export class PostService {
         );
       }),
     );
-    return newPost;
+    return await this.postRepository.findOne(newPost.id, {
+      relations: ['postData', 'postData.locale'],
+    });
   }
 
   async update(post: UpdatePostDto): Promise<void> {

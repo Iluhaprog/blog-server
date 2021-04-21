@@ -144,6 +144,8 @@ describe('PostService', () => {
     jest
       .spyOn(postRepo, 'save')
       .mockResolvedValueOnce(Promise.resolve(expectedValue));
+    jest.spyOn(postRepo, 'findOne').mockResolvedValueOnce(expectedValue);
+
 
     const result = await service.create(newPost, userId);
     expect(result).toEqual(expectedValue);

@@ -55,7 +55,9 @@ export class ProjectService {
       }),
     );
 
-    return newProject;
+    return await this.projectRepository.findOne(newProject.id, {
+      relations: ['projectData', 'projectData.locale'],
+    });
   }
 
   async update(project: UpdateProjectDto): Promise<void> {

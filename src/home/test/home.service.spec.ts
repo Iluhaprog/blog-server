@@ -101,7 +101,7 @@ describe('HomeService', () => {
     jest.spyOn(homeRepo, 'save').mockResolvedValueOnce(Promise.resolve(home));
     jest.spyOn(homeDataRepo, 'save').mockResolvedValueOnce(homeData);
     jest.spyOn(homeDataRepo, 'create').mockReturnValue(homeData);
-
+    jest.spyOn(homeRepo, 'findOne').mockResolvedValueOnce(home);
     const result = await service.create(newHome);
 
     expect(result).toEqual(home);

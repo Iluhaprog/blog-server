@@ -56,7 +56,9 @@ export class HomeService {
         );
       }),
     );
-    return newHome;
+    return await this.homeRepository.findOne(newHome.id, {
+      relations: ['homeData', 'homeData.locale'],
+    });
   }
 
   async update(home: UpdateHomeDto): Promise<void> {
