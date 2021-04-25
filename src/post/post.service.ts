@@ -47,6 +47,9 @@ export class PostService {
   }
 
   async findByTags(tags: number[], page, limit): Promise<any> {
+    if (!tags.length) {
+      return [[], 0];
+    }
     return await this.postRepository
       .createQueryBuilder('post')
       .innerJoinAndSelect('post.tags', 'tag', 'tag.id IN (:...tags)', { tags })
