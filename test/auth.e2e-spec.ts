@@ -90,7 +90,7 @@ describe('AuthController (e2e)', () => {
     const response = await request(app.getHttpServer())
       .get('/auth/refresh-token')
       .auth(token.access, { type: 'bearer' })
-      .query({ token: token.refresh });
+      .query({ token: token.refresh, userId: token.userId });
     const newTokens = response.body || {};
     await service.remove(token.userId);
 

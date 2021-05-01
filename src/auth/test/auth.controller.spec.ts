@@ -92,7 +92,7 @@ describe('AuthController', () => {
     const req = { user: { id: 1 } };
     jest.spyOn(service, 'refresh').mockResolvedValueOnce(data);
 
-    const responce = await controller.refreshToken(token, req);
+    const responce = await controller.refreshToken(token, req.user.id);
 
     expect(responce).toEqual(data);
     expect(service.refresh).toHaveBeenCalled();

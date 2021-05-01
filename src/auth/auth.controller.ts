@@ -46,7 +46,6 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get('refresh-token')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({
@@ -56,9 +55,9 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async refreshToken(
     @Query('token') token: string,
-    @Request() req,
+    @Query('userId') userId,
   ): Promise<any> {
-    return this.authService.refresh(token, req.user.id);
+    return this.authService.refresh(token, userId);
   }
 
   @ApiBearerAuth()
