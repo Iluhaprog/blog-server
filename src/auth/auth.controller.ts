@@ -46,7 +46,6 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get('refresh-token')
   @HttpCode(HttpStatus.OK)
