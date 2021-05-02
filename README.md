@@ -17,10 +17,10 @@
     SECRET=secret
     JWT_EXPIRES_IN=1d
 5. You need to enter the following commands 
-    ***npm run build***
-    ***node dist/console.js new locale ru***
-    ***node dist/console.js new locale en***
-    ***node dist/console.js new user <login> <password> <email>*** Instead of <login> <password> <email>, enter your login password and email.
-    ***node dist/main.js***
-    *Here we created a build, then created the languages supported by the project and the user*
+    1. ***npm run build***
+    2. ***node dist/console.js new locale ru***
+    3. ***node dist/console.js new locale en***
+    4. ***node dist/console.js new user <login> <password> <email>*** Instead of <login> <password> <email>, enter your login password and email.
+    5. ***node dist/main.js***
+    6. *Here we created a build, then created the languages supported by the project and the user*
 6. Now go to your browser at http://localhost:{PORT} (you specified this port in **.env**). Here you can familiarize yourself with the api of this service.
