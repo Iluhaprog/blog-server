@@ -71,8 +71,8 @@ export class UserController {
     await this.userService.addData(localeId, req.user.id);
   }
 
-  //@ApiBearerAuth()
-  //@UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ description: 'User has been created', type: UserType })
