@@ -3,9 +3,19 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
+  const allowedOrigins = process.env.ORIGINS.split(',');
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: process.env.ORIGIN || true,
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg =
+          'The CORS policy for this site does not ' +
+          'allow access from the specified Origin.';
+        return callback(new Error(msg), false);
+      }
+
+      return callback(null, true);
+    },
     methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
     preflightContinue: false,
     optionsSuccessStatus: 200,
